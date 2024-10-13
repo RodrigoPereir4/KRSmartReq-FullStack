@@ -13,7 +13,7 @@ const GridMain = styled.div`
 
     display: grid;
     grid-template-columns: 1fr 0.5fr;
-    grid-template-rows: 80px 350px 0.5fr;
+    grid-template-rows: 80px 1fr 0.5fr 0.5fr;
     grid-template-areas: "text blue"
     "red blue"
     "green blue"

@@ -16,22 +16,33 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
 
   background-color: #fcaf38;
 
   .logo{
-    margin: 25px;
+    margin: 30px 25px;
   }
 
 `;
+
+const ListaBotoes = styled.div`
+  width: 100%;
+  height: 100px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+`
 
 const LinhaDividir = styled.div`
   background-color: #584438;
 
   width: 100%;
   height: 2px;
-  margin: 10px;
+  margin: 15px;
+
+  border: 0.2px solid black;
 `;
 
 export default function Navbar() {
@@ -39,7 +50,7 @@ export default function Navbar() {
     <Container>
       <Image className="logo" src={logoImage}/>
 
-      <>
+      <ListaBotoes>
         <ButtonBar imageSrc={userImagem} text="Realizar Requisição"/>
 
         <LinhaDividir />
@@ -50,9 +61,10 @@ export default function Navbar() {
         <ButtonBar imageSrc={userImagem} text="Botão 04"/>
         <ButtonBar imageSrc={userImagem} text="Botão 05"/>
         <LinhaDividir />
-      </>
+      
 
-      <ButtonBar imageSrc={userImagem} text="Botão para sair"/>
+        <ButtonBar imageSrc={userImagem} text="Botão para sair"/>
+      </ListaBotoes>
     </Container>
   );
 }
