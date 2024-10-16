@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import userImage from "/images/user2.png";
 
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/sideBar/Navbar";
 
 const GridMain = styled.div`
     width:100%;

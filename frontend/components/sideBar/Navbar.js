@@ -3,8 +3,8 @@
 import Image from "next/image";
 import styled from "styled-components";
 
-import userImagem from "../images/user2.png";
-import logoImage from "../images/logo.png";
+import userImagem from "../../images/user2.png";
+import logoImage from "../../images/logo.png";
 
 import ButtonBar from "./ButtonBar";
 
