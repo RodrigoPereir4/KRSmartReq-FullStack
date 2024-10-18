@@ -22,6 +22,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
+/*
 function createData(id, name, calories, fat, carbs, protein) {
   return {
     id,
@@ -33,7 +34,7 @@ function createData(id, name, calories, fat, carbs, protein) {
   };
 }
 
-/*const rows2 = [
+const rows2 = [
   createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
   createData(2, 'Donut', 452, 25.0, 51, 4.9),
   createData(3, 'Eclair', 262, 16.0, 24, 6.0),
@@ -47,7 +48,8 @@ function createData(id, name, calories, fat, carbs, protein) {
   createData(11, 'Marshmallow', 318, 0, 81, 2.0),
   createData(12, 'Nougat', 360, 19.0, 9, 37.0),
   createData(13, 'Oreo', 437, 18.0, 63, 4.0),
-];*/
+];
+*/
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -157,7 +159,7 @@ function EnhancedTableToolbar(props) {
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={props.handleDeleteRow}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -183,6 +185,11 @@ export default function EnhancedTable(props) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleDeleteRow = () => {
+    props.onDeleteRow(selected); // Chama a função passada do pai
+    setSelected([]);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -246,7 +253,7 @@ export default function EnhancedTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} handleDeleteRow={handleDeleteRow} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

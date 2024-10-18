@@ -51,10 +51,14 @@ export default function Requisicao(){
         setRows((prevRows) => [...prevRows, newRow]);
     };
 
+    const handleDeleteRow = (selected) => {
+        setRows((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
+    };
+
     return(
         <>
             <button onClick={handleAddRow}>Adicionar LinhaAAAA</button>
-            <EnhancedTable tableHeader={tableHeader} rows={rows} />
+            <EnhancedTable tableHeader={tableHeader} rows={rows} onDeleteRow={handleDeleteRow}/>
         </>
     );
 }
