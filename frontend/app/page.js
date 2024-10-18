@@ -269,7 +269,7 @@ export default function Home() {
         <Container>
             <Login onSubmit={handleSubmit}>
 
-                <h1>Iniciar Sessão</h1>
+                <h1>Inicia Sessão</h1>
 
                 <CampoTexto>
                     <div>
