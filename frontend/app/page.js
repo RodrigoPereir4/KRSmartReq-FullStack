@@ -28,7 +28,7 @@ const Container = styled.div`
 const Login = styled.form`
     width: 785px;
     height: auto;
-    padding: 0px 102px;
+    padding: 0px 62px 0px 102px;
     
     display:flex;
     flex-direction: column;
@@ -46,8 +46,7 @@ const Login = styled.form`
         font-size: 32px;
     }
 
-   @media (max-width: 1530px) {
-        padding: 0px 82px 0px 120px;
+    @media (min-width: 1246px){
         margin-right: 20px;
 
         h1{
@@ -58,6 +57,28 @@ const Login = styled.form`
             font-size: 30px;
         }
     }
+
+    @media (min-width: 1246px) and (max-width: 1409px){
+        padding: 0px 0px 0px 200px; 
+    }
+
+    @media (min-width: 1410px) and (max-width: 1529px){
+        padding: 0px 0px 0px 130px; 
+
+        button {
+            margin-right: 30px;
+        }
+    }
+
+   @media (min-width: 1530px) and (max-width: 1679px) {
+        padding: 0px 82px 0px 120px;
+    }
+
+    @media (min-width: 1680px) and (max-width: 1921px){ 
+         button {
+            margin-right: 35px;
+        }
+    }    
 `;
 
 const CampoTexto = styled.div`
@@ -114,7 +135,7 @@ const CampoTexto = styled.div`
         display: none; /* Para Edge */
     }
 
-    @media (max-width: 1530px) {
+    @media (min-width: 1280px) and (max-width: 1680px) {
         img {
             width: 30px;
             height: 30px;
@@ -151,7 +172,7 @@ const CheckboxContainer = styled.div`
     }
 
     
-    @media (max-width: 1530px) {
+    @media (min-width: 1280px) and (max-width: 1680px) {
         margin: 37px 0px 35px 0px;
 
         label {
@@ -201,7 +222,7 @@ const CustomCheckbox = styled.span`
     }
 
     
-    @media (max-width: 1530px) {
+    @media (min-width: 1280px) and (max-width: 1680px) {
         width: 26px;
         height: 26px;
     }
@@ -225,7 +246,7 @@ const BotaoAmarelo = styled.button`
     }
 
     
-    @media (max-width: 1530px) {
+    @media (min-width: 1280px) and (max-width: 1680px) {
         font-size: 36px;
         margin-top: 40px;
 
@@ -299,11 +320,16 @@ export default function Home() {
                 </div>
             </Login>
 
-            <Image
-                src={capaLogin}
-                alt="Descrição da imagem"
-                className="homeImage"
-            />
+            <div style={{marginLeft: 20}}>
+                <Image
+                    src={capaLogin}
+                    alt="Descrição da imagem"
+                    width={1095}
+                    height={1128}
+                    layout="responsive"
+                    className="homeImage"
+                />
+            </div>
 
         </Container>
     );
