@@ -19,9 +19,27 @@ const Container = styled.div`
     align-items: center;
 
     .homeImage{
-        min-width: 800px;
+        width: 1090px;
         height: auto;
         object-fit: fill;
+    }
+
+    @media (min-width: 1246px) and (max-width: 1624px){
+        .homeImage{
+            width: 800px;
+        }
+    }
+
+    @media (min-width: 1625px) and (max-width: 1720px){
+        .homeImage{
+            width: 900px;
+        }
+    }
+
+    @media (min-width: 1720px) and (max-width: 1800px){
+        .homeImage{
+            width: 1000px;
+        }
     }
 `;
 
@@ -326,7 +344,7 @@ export default function Home() {
                     alt="Descrição da imagem"
                     width={1095}
                     height={1128}
-                    layout="responsive"
+                    sizes="800px"
                     className="homeImage"
                 />
             </div>
