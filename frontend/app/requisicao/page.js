@@ -2,10 +2,10 @@
 
 import styled from "styled-components"
 
-import { Button } from "@mui/material";
 import EnhancedTable from "@/components/MUI/Tabela";
+import { useState } from "react";
 
-const headCells = [
+const tableHeader = [
     {
       id: 'name',
       numeric: false,
@@ -36,10 +36,25 @@ const headCells = [
       disablePadding: false,
       label: 'Protein (g)',
     },
-  ];
+];
+
+
+function createData(id, name, calories, fat, carbs, protein) {
+    return { id, name, calories, fat, carbs, protein };
+}
 
 export default function Requisicao(){
+    const [rows, setRows] = useState([]);
+
+    const handleAddRow = () => {
+        const newRow = createData(rows.length + 1, 'Cupcake', 305, 3.7, 67, 4.3);
+        setRows((prevRows) => [...prevRows, newRow]);
+    };
+
     return(
-        <EnhancedTable tableHeader={headCells}/>
+        <>
+            <button onClick={handleAddRow}>Adicionar LinhaAAAA</button>
+            <EnhancedTable tableHeader={tableHeader} rows={rows} />
+        </>
     );
 }

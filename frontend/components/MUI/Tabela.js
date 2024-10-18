@@ -33,7 +33,7 @@ function createData(id, name, calories, fat, carbs, protein) {
   };
 }
 
-const rows = [
+/*const rows2 = [
   createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
   createData(2, 'Donut', 452, 25.0, 51, 4.9),
   createData(3, 'Eclair', 262, 16.0, 24, 6.0),
@@ -47,7 +47,7 @@ const rows = [
   createData(11, 'Marshmallow', 318, 0, 81, 2.0),
   createData(12, 'Nougat', 360, 19.0, 9, 37.0),
   createData(13, 'Oreo', 437, 18.0, 63, 4.0),
-];
+];*/
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -64,8 +64,6 @@ function getComparator(order, orderBy) {
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
-
-
 
 function EnhancedTableHead(props) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
@@ -194,7 +192,7 @@ export default function EnhancedTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = props.rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -233,16 +231,16 @@ export default function EnhancedTable(props) {
     setDense(event.target.checked);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
+  // Avoid a layout jump when reaching the last page with empty props.rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
-      [...rows]
+      [...props.rows]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage],
+    [props.rows, order, orderBy, page, rowsPerPage]
   );
 
   return (
@@ -261,7 +259,7 @@ export default function EnhancedTable(props) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={props.rows.length}
               tableHeader={props.tableHeader}
             />
             <TableBody>
@@ -319,7 +317,7 @@ export default function EnhancedTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={props.rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
