@@ -45,20 +45,108 @@ function createData(id, name, calories, fat, carbs, protein) {
 
 export default function Requisicao(){
     const [rows, setRows] = useState([]);
+    const [name, setName] = useState('');
+    const [calories, setCalories] = useState('');
+    const [fat, setFat] = useState('');
+    const [carbs, setCarbs] = useState('');
+    const [protein, setProtein] = useState('');
 
     const handleAddRow = () => {
-        const newRow = createData(rows.length + 1, 'Cupcake', 305, 3.7, 67, 4.3);
+        const newRow = createData(
+            rows.length + 1,
+            name,
+            Number(calories),
+            Number(fat),
+            Number(carbs),
+            Number(protein)
+        );
         setRows((prevRows) => [...prevRows, newRow]);
+        // Limpa os campos após adicionar
+        setName('');
+        setCalories('');
+        setFat('');
+        setCarbs('');
+        setProtein('');
     };
 
     const handleDeleteRow = (selected) => {
         setRows((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
     };
 
+    const handleNameChange = (e) => {
+        setName(e.target.value);
+    };
+
+    const handleCaloriesChange = (e) => {
+        setCalories(e.target.value);
+    };
+
+    const handleFatChange = (e) => {
+        setFat(e.target.value);
+    };
+
+    const handleCarbsChange = (e) => {
+        setCarbs(e.target.value);
+    };
+
+    const handleProteinChange = (e) => {
+        setProtein(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if(rows.length==0){
+            alert("ERRO! Insira algum item para realizar a requisição"); //TODO: Adicionar alert personalizado
+        } else {
+            console.log('Submitting data:', rows);
+        }
+        // Aqui você pode enviar os dados para um servidor ou fazer outra ação
+    };
+
     return(
         <>
-            <button onClick={handleAddRow}>Adicionar LinhaAAAA</button>
-            <EnhancedTable tableHeader={tableHeader} rows={rows} onDeleteRow={handleDeleteRow}/>
+            <form onSubmit={handleSubmit}>
+                <button type="button" onClick={handleAddRow}>Adicionar LinhaAAAA</button>
+
+                <label>Nome</label>
+                <input 
+                    type="text" 
+                    value={name} 
+                    onChange={handleNameChange}  
+                />
+                
+                <label>Calorias</label>
+                <input 
+                    type="number" 
+                    value={calories} 
+                    onChange={handleCaloriesChange}  
+                />
+
+                <label>Gordura (g)</label>
+                <input 
+                    type="number" 
+                    value={fat} 
+                    onChange={handleFatChange}  
+                />
+
+                <label>Carboidratos (g)</label>
+                <input 
+                    type="number" 
+                    value={carbs} 
+                    onChange={handleCarbsChange}  
+                />
+
+                <label>Proteínas (g)</label>
+                <input 
+                    type="number" 
+                    value={protein} 
+                    onChange={handleProteinChange}  
+                />
+           
+                <EnhancedTable tableHeader={tableHeader} rows={rows} onDeleteRow={handleDeleteRow}/>
+                <button type="submit">Submit</button>
+            </form>
         </>
     );
 }
