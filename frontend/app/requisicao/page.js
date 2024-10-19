@@ -52,15 +52,21 @@ export default function Requisicao(){
     const [protein, setProtein] = useState('');
 
     const handleAddRow = () => {
-        const newRow = createData(
-            rows.length + 1,
-            name,
-            Number(calories),
-            Number(fat),
-            Number(carbs),
-            Number(protein)
-        );
-        setRows((prevRows) => [...prevRows, newRow]);
+        if(verificarAtributosNullos()){
+            const newRow = createData(
+                rows.length + 1,
+                name,
+                Number(calories),
+                Number(fat),
+                Number(carbs),
+                Number(protein)
+            );
+
+            setRows((prevRows) => [...prevRows, newRow]);
+        }else{
+            alert("Preencha os campos necessários!"); //TODO: Alert personalizado
+        }
+
         // Limpa os campos após adicionar
         setName('');
         setCalories('');
@@ -68,6 +74,13 @@ export default function Requisicao(){
         setCarbs('');
         setProtein('');
     };
+
+    const verificarAtributosNullos = () =>{
+        const atributosParaVerificar = [name, calories, fat, carbs, protein];
+        const test = !atributosParaVerificar.some(attr => attr === '');
+
+        return test;
+    }
 
     const handleDeleteRow = (selected) => {
         setRows((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
