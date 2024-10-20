@@ -17,7 +17,7 @@ public class SetorModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer setorId;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = false, unique = true)
     private String setorNome;
         
 }
