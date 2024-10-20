@@ -40,6 +40,11 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @GetMapping("/listarEmail")
+    public Iterable<String> listarEmailUsuarios(){
+        return userRepository.findAllUserEmail();
+    }
+
     @PostMapping("/cadastrar")
     public String cadastrarUsuario(@RequestBody UserModel user){
         String msg = "Erro! Não foi possivel cadastrar o usuário";
