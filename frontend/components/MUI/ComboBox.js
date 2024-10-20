@@ -2,7 +2,6 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import { listarItensComboBox } from '@/services/RequisicaoService';
 
 function sleep(duration) {
   return new Promise((resolve) => {
@@ -12,16 +11,13 @@ function sleep(duration) {
   });
 }
 
-export default function ComboBox() {
+export default function ComboBox(props) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
-  const [value, setValue] = React.useState('');
-  const [inputValue, setInputValue] = React.useState('');
-
   const handleOpen = async () => {
-    const response = await listarItensComboBox();
+    const response = await props.listarItens();
 
     if(response.length === 0){
       setOpen(false);
@@ -43,24 +39,13 @@ export default function ComboBox() {
     setOptions([]);
   };
 
-  const handleValueChange = (event, newValue) => {
-    setValue(newValue);
-    if(newValue != null){
-      alert(newValue);
-    }
-  };
-
-  const handleInputValueChange = (event, newInputValue) => {
-    setInputValue(newInputValue);
-  };
-
   return (
     <Autocomplete
       sx={{ width: 300 }}
-      value={value}
-      onChange={handleValueChange}
-      inputValue={inputValue}
-      onInputChange={handleInputValueChange}
+      value={props.value}
+      onChange={props.handleValueChange}
+      inputValue={props.inputValue}
+      onInputChange={props.handleInputValueChange}
 
       open={open}
       onOpen={handleOpen}

@@ -5,9 +5,24 @@ import styled from "styled-components"
 import EnhancedTable from "@/components/MUI/Tabela";
 import { useState } from "react";
 import { useRequisicao } from "@/hooks/useRequisicao";
+import { listarItensComboBox } from "@/services/RequisicaoService";
 import ComboBox from "@/components/MUI/ComboBox";
 
 export default function Requisicao(){
+
+    const [produto, setProduto] = useState('');
+    const [inputProductValue, setInputProductValue] = useState('');
+
+    const handleProductValueChange = (event, newValue) => {
+        setProduto(newValue);
+        if(newValue != null){
+          alert(newValue);
+        }
+    };
+    
+    const handleInputProductValueChange = (event, newInputValue) => {
+        setInputProductValue(newInputValue);
+    };
 
     const {
         tableHeader,
@@ -39,7 +54,10 @@ export default function Requisicao(){
             <form onSubmit={handleSubmit}>
                 <button type="button" onClick={handleAddRow}>Adicionar LinhaAAAA</button>
 
-                <ComboBox/>
+                <ComboBox listarItens={listarItensComboBox} value={produto} inputValue={inputProductValue} 
+                handleValueChange={handleProductValueChange} handleInputValueChange={handleInputProductValueChange}/>
+
+                <ComboBox listarItens={listarItensComboBox}/>
                 <label>Nome</label>
                 <input 
                     type="text" 
