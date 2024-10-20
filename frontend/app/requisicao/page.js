@@ -5,6 +5,7 @@ import styled from "styled-components"
 import EnhancedTable from "@/components/MUI/Tabela";
 import { useState } from "react";
 import { useRequisicao } from "@/hooks/useRequisicao";
+import ComboBox from "@/components/MUI/ComboBox";
 
 export default function Requisicao(){
 
@@ -38,6 +39,7 @@ export default function Requisicao(){
             <form onSubmit={handleSubmit}>
                 <button type="button" onClick={handleAddRow}>Adicionar LinhaAAAA</button>
 
+                <ComboBox/>
                 <label>Nome</label>
                 <input 
                     type="text" 
