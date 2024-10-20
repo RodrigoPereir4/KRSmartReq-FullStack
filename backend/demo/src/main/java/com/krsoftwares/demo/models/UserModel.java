@@ -10,14 +10,14 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "userTest")
+@Table(name = "Usuario")
 public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true) //Pode usar name = para colocar o nome da tabela
+    @Column(nullable = false, unique = true) //Pode usar name = para colocar o nome da coluna
     private String email;
 
     @Column(nullable = false)
