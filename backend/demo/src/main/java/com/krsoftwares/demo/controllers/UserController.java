@@ -2,6 +2,7 @@ package com.krsoftwares.demo.controllers;
 
 import java.util.Optional;
 
+import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,26 @@ public class UserController {
     @GetMapping("/listar")
     public Iterable<UserModel> listarUsuarios(){
         return userRepository.findAll();
+    }
+
+    @PostMapping("/cadastrar")
+    public String cadastrarUsuario(@RequestBody UserModel user){
+        String msg = "Erro! Não foi possivel cadastrar o usuário";
+        
+        try{
+            if(userRepository.existsByEmail(user.getEmail())){
+                msg = "Erro! Esse email já está cadastrado no sistema";
+            }
+            
+            if(user.getEmail()!=null && user.getPassword()!=null && !userRepository.existsByEmail(user.getEmail())){
+                userRepository.save(user);
+                msg="Usuario Cadastrado com sucesso!";
+            }
+        } catch(PropertyValueException e){
+            msg = "Preencha todos os campos necessarios!";
+        }
+        
+        return msg;
     }
 }
 

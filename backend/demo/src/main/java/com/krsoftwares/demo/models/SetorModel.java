@@ -10,16 +10,14 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Usuario")
-public class UserModel {
-
+@Table(name = "Setor")
+public class SetorModel {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer setorId;
 
-    @Column(nullable = false, unique = true) //Pode usar name = para colocar o nome da coluna
-    private String email;
-
-    @Column(nullable = false)
-    private String password;   
+    @Column(nullable = true, unique = true)
+    private String setorNome;
+        
 }
