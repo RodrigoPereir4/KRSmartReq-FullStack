@@ -3,7 +3,7 @@
 import styled from "styled-components"
 
 import EnhancedTable from "@/components/MUI/Tabela";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRequisicao } from "@/hooks/useRequisicao";
 import { listarItensComboBox } from "@/services/RequisicaoService";
 import ComboBox from "@/components/MUI/ComboBox";
@@ -22,6 +22,20 @@ export default function Requisicao(){
     
     const handleInputProductValueChange = (event, newInputValue) => {
         setInputProductValue(newInputValue);
+    };
+
+    const [categoria, setCategoria] = useState('');
+    const [inputCategoriaValue, setInputCategoriaValue] = useState('');
+
+    const handleCategoriaValueChange = (event, newValue) => { 
+        setCategoria(newValue);
+        if(newValue != null){
+            alert(newValue);
+          }
+    };
+
+    const handleInputCategoriaValueChange = (event, newInputValue) => {
+        setInputCategoriaValue(newInputValue);
     };
 
     const {
@@ -49,15 +63,30 @@ export default function Requisicao(){
         handleSubmit
     } = useRequisicao();
 
+    function testListarItensCategoria(){
+        return ['2', '3'];
+    }
+
     return(
         <>
             <form onSubmit={handleSubmit}>
                 <button type="button" onClick={handleAddRow}>Adicionar LinhaAAAA</button>
 
-                <ComboBox listarItens={listarItensComboBox} value={produto} inputValue={inputProductValue} 
-                handleValueChange={handleProductValueChange} handleInputValueChange={handleInputProductValueChange}/>
+                <ComboBox listarItens={listarItensComboBox} 
+                    value={produto} 
+                    inputValue={inputProductValue} 
+                    categoria={categoria}
+                    handleValueChange={handleProductValueChange} 
+                    handleInputValueChange={handleInputProductValueChange}
+                />
 
-                <ComboBox listarItens={listarItensComboBox}/>
+                <ComboBox 
+                    listarItens={testListarItensCategoria} 
+                    value={categoria} 
+                    inputValue={inputCategoriaValue} 
+                    handleValueChange={handleCategoriaValueChange} 
+                    handleInputValueChange={handleInputCategoriaValueChange} 
+                />
                 <label>Nome</label>
                 <input 
                     type="text" 

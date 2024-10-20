@@ -17,8 +17,8 @@ export default function ComboBox(props) {
   const [loading, setLoading] = React.useState(false);
 
   const handleOpen = async () => {
-    const response = await props.listarItens();
-
+    const response = await props.listarItens(props.categoria);
+    
     if(response.length === 0){
       setOpen(false);
       alert("Não existe nenhum item nessa categoria!");

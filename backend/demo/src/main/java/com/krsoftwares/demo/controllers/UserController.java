@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krsoftwares.demo.models.UserModel;
@@ -38,6 +39,14 @@ public class UserController {
     @GetMapping("/listar")
     public Iterable<UserModel> listarUsuarios(){
         return userRepository.findAll();
+    }
+
+    @GetMapping("/listarPorCategoria")
+    public Iterable<String> listarUsuarios(@RequestParam(required = false) Integer setor){
+        if(setor == null){
+            return userRepository.findAllUserEmail();
+        }
+        return userRepository.findBySetor(setor);
     }
 
     @GetMapping("/listarEmail")

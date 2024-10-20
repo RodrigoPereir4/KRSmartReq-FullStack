@@ -1,6 +1,13 @@
-export async function listarItensComboBox(){
+export async function listarItensComboBox(categoria){
 
-    const response = await fetch("http://localhost:8080/users/listarEmail", {
+    let url = 'http://localhost:8080/users/listarPorCategoria';
+
+    // Se a categoria estiver definida, adiciona como parâmetro
+    if (categoria != undefined && categoria != null) {
+        url += `?setor=${categoria}`;
+    }
+
+    const response = await fetch(url, {
         method: 'GET',
         headers:{
             'Content-Type': 'application/json'
