@@ -9,9 +9,9 @@ import logoImage from "../../images/logo.png";
 import ButtonBar from "./ButtonBar";
 
 const Container = styled.div`
-  width: 280px;
+  min-width: 230px;
   height: 100vh;
-  padding: 30px;
+  padding: 20px;
 
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@ const LinhaDividir = styled.div`
 export default function Navbar() {
   return (
     <Container>
-      <Image className="logo" src={logoImage}/>
+      <Image className="logo" alt="Logo da Dengo" src={logoImage}/>
 
       <ListaBotoes>
         <ButtonBar imageSrc={userImagem} text="Realizar Requisição"/>

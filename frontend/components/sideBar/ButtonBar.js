@@ -6,6 +6,7 @@ import Image from "next/image";
 const Button = styled.button`
     width: 100%;
     height: 35px;
+    padding: 10px;
 
     border: none;
     border-radius: 4px;
@@ -28,7 +29,7 @@ const Button = styled.button`
 export default function ButtonBar(props){
     return(
         <Button>
-          <Image width={35} height={35} src={props.imageSrc} />
+          <Image width={20} height={20} src={props.imageSrc} alt="Imagem de um Icone"/>
           {props.text}
         </Button>
     );
