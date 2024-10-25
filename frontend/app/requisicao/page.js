@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import { useRequisicao } from "@/hooks/useRequisicao";
 import { listarItensComboBox } from "@/services/RequisicaoService";
 import ComboBox from "@/components/MUI/ComboBox";
+import { DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import 'dayjs/locale/en-gb';
 
 export default function Requisicao(){
 
@@ -67,12 +71,35 @@ export default function Requisicao(){
         return ['2', '3'];
     }
 
+    //DATE PICKER ---------------------------------
+    const [dataInicio, setDataInicio] = useState(null);
+    const [dataEntrega, setDataEntrega] = useState(null);
+
+    const handleDataInicioChange = (newValue) => {
+        setDataInicio(newValue);
+    }
+
+    const handleDataEntregaChange = (newValue) => {
+        if(newValue.isBefore(dataInicio)){
+            setDataInicio(newValue);
+            alert("Selecione uma data de entrega válida! Depois ou igual a inicial.")
+        } else{
+            setDataEntrega(newValue);
+        }
+    }
+
+    const formatDate = (date) => {
+      if (!date) return '';
+      return format(date, 'dd/MM/yyyy'); // Formata a data
+    };
+
     return(
         <>
             <form onSubmit={handleSubmit}>
                 <button type="button" onClick={handleAddRow}>Adicionar LinhaAAAA</button>
 
-                <ComboBox listarItens={listarItensComboBox} 
+                <ComboBox 
+                    listarItens={listarItensComboBox} 
                     value={produto} 
                     inputValue={inputProductValue} 
                     categoria={categoria}
@@ -121,7 +148,33 @@ export default function Requisicao(){
                     value={protein} 
                     onChange={handleProteinChange}  
                 />
-           
+
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+                    <DatePicker 
+                        label="Data de Inicio" 
+                        value={dataInicio}
+                        onChange={handleDataInicioChange}
+                        slotProps={{
+                            textField: {
+                              helperText: 'DD/MM/YYYY',
+                            },
+                        }}
+                    />
+                </LocalizationProvider>
+
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+                    <DatePicker 
+                        label="Data de Entrega" 
+                        value={dataEntrega}
+                        onChange={handleDataEntregaChange}
+                        slotProps={{
+                            textField: {
+                              helperText: 'DD/MM/YYYY',
+                            },
+                        }}
+                    />
+                </LocalizationProvider>
+
                 <EnhancedTable tableHeader={tableHeader} rows={rows} onDeleteRow={handleDeleteRow}/>
                 <button type="submit">Submit</button>
             </form>
