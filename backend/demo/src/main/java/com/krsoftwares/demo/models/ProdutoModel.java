@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -12,7 +13,8 @@ import lombok.Data;
 public class ProdutoModel {
     
     @Id
-    @Column(name = "SKU", nullable = false, unique = true)
+    @Column(name = "SKU", nullable = false, unique = true, length = 16)
+    @Size(max = 20, message = "O SKU pode ter no máximo 16 caracteres")
     private String SKU;
 
     @Column(name = "Nome", nullable = false)
