@@ -18,7 +18,23 @@ import userImage from "@/images/user2.png";
 import { TextField, InputAdornment } from "@mui/material";
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
 
+const Container = styled.div`
 
+`
+
+const InputContainer = styled.div`
+    display: flex;
+    gap: 18px;
+    margin-bottom: 20px;
+
+    &:first-child {
+        margin-bottom: 10px;
+    }
+
+    #nome-input{
+        width: 320px;
+    }
+`
 
 export default function Requisicao(){
 
@@ -104,15 +120,16 @@ export default function Requisicao(){
     return(
         <div style={{display:"flex"}}>
             <Navbar/>
-            <div>
+            <div style={{padding: 20}}>
                 <div style={{display:"flex", justifyContent:"center", gap:25, marginTop: 85, marginBottom:50}}>
                     <Image src={userImage}/>
                     <h1>Realizar Requisição</h1>
                 </div>
-                <form onSubmit={handleSubmit} style={{display:"flex", flexWrap:"wrap"}}>
+                <form onSubmit={handleSubmit} style={{display:"flex", flexWrap:"wrap", maxWidth:650}}>
  
-                    <div>
+                    <InputContainer>
                         <TextField
+                            id="nome-input"
                             value={name} 
                             onChange={handleNameChange}  
                             label="Nome"
@@ -120,36 +137,41 @@ export default function Requisicao(){
                         />
 
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
-                            <DatePicker 
-                                label="Data de Inicio" 
-                                value={dataInicio}
-                                onChange={handleDataInicioChange}
-                                slotProps={{
-                                    textField: {
-                                    helperText: 'DD/MM/YYYY',
-                                    },
-                                }}
-                            />
+                                <DatePicker 
+                                    id="data-inicio"
+                                    label="Data de Inicio" 
+                                    value={dataInicio}
+                                    onChange={handleDataInicioChange}
+                                    slotProps={{
+                                        textField: {
+                                        helperText: 'DD/MM/AAAA',
+                                        },
+                                    }}
+                                />
                         </LocalizationProvider>
 
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
                             <DatePicker 
+                                id="data-entrega"
                                 label="Data de Entrega" 
                                 value={dataEntrega}
                                 onChange={handleDataEntregaChange}
                                 slotProps={{
                                     textField: {
-                                    helperText: 'DD/MM/YYYY',
+                                    helperText: 'DD/MM/AAAA',
                                     },
                                 }}
                             />
                         </LocalizationProvider>
         
-                    </div>
+                    </InputContainer>
                     
 
-                    <div>
+                    <InputContainer>
+                       
                         <ComboBox 
+                            sx={{ width: 255 }}
+                            label="Categoria"
                             listarItens={testListarItensCategoria} 
                             value={categoria} 
                             inputValue={inputCategoriaValue} 
@@ -158,19 +180,21 @@ export default function Requisicao(){
                         />
 
                         <TextField style={{margin: 0+"px"}}
+                            sx={{ width: 378 }}
                             label="Quantidade"
                             type="number"
-                            sx={{ m: 1, width: '25ch' }}
                             slotProps={{
                                 input: {
                                 startAdornment: <InputAdornment position="start">kg</InputAdornment>,
                                 },
                             }}
                         />
-                    </div>
+                    </InputContainer>
                     
-                    <div>
+                    <InputContainer style={{alignItems: "center"}}>
                         <ComboBox 
+                            sx={{ width: 482}}
+                            label="Itens"
                             listarItens={listarItensComboBox} 
                             value={produto} 
                             inputValue={inputProductValue} 
@@ -179,8 +203,8 @@ export default function Requisicao(){
                             handleInputValueChange={handleInputProductValueChange}
                         />
 
-                        <BotaoPersonalizado onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
-                    </div>
+                        <BotaoPersonalizado type="button" onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
+                    </InputContainer>
 
                     <EnhancedTable tableHeader={tableHeader} rows={rows} onDeleteRow={handleDeleteRow}/>
                     <button type="submit">Submit</button>
