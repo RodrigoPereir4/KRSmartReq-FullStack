@@ -117,6 +117,9 @@ export default function Requisicao(){
       return format(date, 'dd/MM/yyyy'); // Formata a data
     };
 
+    //TEST MUDANDO TABELA
+    const param = ['name', 'calories', 'fat', 'carbs'];
+
     return(
         <div style={{display:"flex"}}>
             <Navbar/>
@@ -206,7 +209,7 @@ export default function Requisicao(){
                         <BotaoPersonalizado type="button" onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
                     </InputContainer>
 
-                    <EnhancedTable tableHeader={tableHeader} rows={rows} onDeleteRow={handleDeleteRow}/>
+                    <EnhancedTable title="Produtos Requisitados" parameters={param} tableHeader={tableHeader} rows={rows} onDeleteRow={handleDeleteRow}/>
                     <button type="submit">Submit</button>
                 </form>
             </div>

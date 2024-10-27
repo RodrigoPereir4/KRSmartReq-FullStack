@@ -4,34 +4,34 @@ import { useState } from "react";
 
 const tableHeader = [
     {
-      id: 'name',
+      id: 'nome',
       numeric: false,
       disablePadding: true,
-      label: 'Dessert (100g serving)',
+      label: 'Nome do Produto',
     },
     {
-      id: 'calories',
-      numeric: true,
-      disablePadding: false,
-      label: 'Calories',
+        id: 'categoria',
+        numeric: false,
+        disablePadding: false,
+        label: 'Categoria',
     },
     {
-      id: 'fat',
+      id: 'quantidade',
       numeric: true,
       disablePadding: false,
-      label: 'Fat (g)',
+      label: 'Quantidade',
     },
     {
-      id: 'carbs',
-      numeric: true,
+      id: 'dataSolicitada',
+      numeric: false,
       disablePadding: false,
-      label: 'Carbs (g)',
+      label: 'Data Solicitada',
     },
     {
-      id: 'protein',
+      id: 'dataEntrega',
       numeric: true,
       disablePadding: false,
-      label: 'Protein (g)',
+      label: 'Data de Entrega',
     },
 ];
 

@@ -125,7 +125,7 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          {props.title}
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -224,7 +224,7 @@ export default function EnhancedTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} handleDeleteRow={handleDeleteRow} />
+        <EnhancedTableToolbar title={props.title} numSelected={selected.length} handleDeleteRow={handleDeleteRow} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
