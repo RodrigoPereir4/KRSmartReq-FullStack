@@ -41,7 +41,7 @@ export default function ComboBox(props) {
 
   return (
     <Autocomplete
-      sx={{ width: 300 }}
+      sx={props.sx}
       value={props.value}
       onChange={props.handleValueChange}
       inputValue={props.inputValue}
@@ -57,7 +57,7 @@ export default function ComboBox(props) {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Asynchronous"
+          label={props.label}
           slotProps={{
             input: {
               ...params.InputProps,
