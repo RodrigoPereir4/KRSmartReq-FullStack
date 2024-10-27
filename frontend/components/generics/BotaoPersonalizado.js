@@ -21,6 +21,6 @@ const Botao = styled.button`
 
 export default function BotaoPersonalizado(props){
     return(
-        <Botao color={props.color}>{props.text}</Botao>
+        <Botao type={props.type} onClick={props.onClick} color={props.color}>{props.text}</Botao>
     );
 }
