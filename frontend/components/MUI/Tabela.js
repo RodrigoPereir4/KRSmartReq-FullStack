@@ -39,7 +39,7 @@ function getComparator(order, orderBy) {
 }
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, fontHeader } =
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -62,9 +62,10 @@ function EnhancedTableHead(props) {
         {props.tableHeader.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
+            style={{fontSize: `${fontHeader}px`}}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -239,6 +240,7 @@ export default function EnhancedTable(props) {
               onRequestSort={handleRequestSort}
               rowCount={props.rows.length}
               tableHeader={props.tableHeader}
+              fontHeader={props.fontHeader}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -273,10 +275,10 @@ export default function EnhancedTable(props) {
                     >
                       {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell align="left">{row.calories}</TableCell>
+                    <TableCell align="left">{row.fat}</TableCell>
+                    <TableCell align="left">{row.carbs}</TableCell>
+                    <TableCell align="left">{row.protein}</TableCell>
                   </TableRow>
                 );
               })}

@@ -209,7 +209,14 @@ export default function Requisicao(){
                         <BotaoPersonalizado type="button" onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
                     </InputContainer>
 
-                    <EnhancedTable title="Produtos Requisitados" parameters={param} tableHeader={tableHeader} rows={rows} onDeleteRow={handleDeleteRow}/>
+                    <EnhancedTable 
+                        title="Produtos Requisitados" 
+                        parameters={param} 
+                        tableHeader={tableHeader} 
+                        rows={rows} 
+                        onDeleteRow={handleDeleteRow}
+                        fontHeader={12}
+                        />
                     <button type="submit">Submit</button>
                 </form>
             </div>
