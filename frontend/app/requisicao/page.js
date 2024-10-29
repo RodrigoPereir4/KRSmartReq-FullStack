@@ -38,6 +38,50 @@ const InputContainer = styled.div`
 
 export default function Requisicao(){
 
+    const {
+        tableHeader,
+        rows,
+        setRows,
+        nome,
+        setNome,
+        dataSolicitada,
+        setDataSolicitada,
+        dataEntrega,
+        setDataEntrega,
+        categoria,
+        setCategoria,
+        inputCategoriaValue,
+        setInputCategoriaValue,
+        quantidade,
+        setQuantidade,
+        item,
+        setItem,
+        inputItemValue,
+        setInputItemValue,
+        handleAddRow,
+        verificarAtributosNullos,
+        handleDeleteRow,
+        handleNomeChange,
+        handleDataSolicitadaChange,
+        handleDataEntregaChange,
+        handleQuantidadeChange,
+        handleCategoriaValueChange,
+        handleInputCategoriaValueChange,
+        handleItemValueChange,
+        handleInputItemValueChange,
+        handleSubmit,
+        erros, 
+        setErros,
+        preenchidos, 
+        setPreenchidos
+    } = useRequisicao();
+
+    function testListarItensCategoria(){
+        return ['2', '3'];
+    }
+
+    /*
+    //PRODUTO --------------------------------- 
     const [produto, setProduto] = useState('');
     const [inputProductValue, setInputProductValue] = useState('');
 
@@ -52,6 +96,7 @@ export default function Requisicao(){
         setInputProductValue(newInputValue);
     };
 
+    //CATEGORIA ---------------------------------
     const [categoria, setCategoria] = useState('');
     const [inputCategoriaValue, setInputCategoriaValue] = useState('');
 
@@ -66,64 +111,35 @@ export default function Requisicao(){
         setInputCategoriaValue(newInputValue);
     };
 
-    const {
-        tableHeader,
-        rows,
-        setRows,
-        name,
-        setName,
-        calories,
-        setCalories,
-        fat,
-        setFat,
-        carbs,
-        setCarbs,
-        protein,
-        setProtein,
-        handleAddRow,
-        verificarAtributosNullos,
-        handleDeleteRow,
-        handleNameChange,
-        handleCaloriesChange,
-        handleFatChange,
-        handleCarbsChange,
-        handleProteinChange,
-        handleSubmit
-    } = useRequisicao();
-
-    function testListarItensCategoria(){
-        return ['2', '3'];
-    }
-
     //DATE PICKER ---------------------------------
-    const [dataInicio, setDataInicio] = useState(null);
+    
+    const [dataSolicitada, setDataSolicitada] = useState(null);
     const [dataEntrega, setDataEntrega] = useState(null);
 
-    const handleDataInicioChange = (newValue) => {
-        setDataInicio(newValue);
+    const handleDataSolicitadaChange = (newValue) => {
+        setDataSolicitada(newValue);
     }
 
     const handleDataEntregaChange = (newValue) => {
-        if(newValue.isBefore(dataInicio)){
-            setDataInicio(newValue);
+        if(newValue.isBefore(dataSolicitada)){
+            setDataSolicitada(newValue);
             alert("Selecione uma data de entrega válida! Depois ou igual a inicial.")
         } else{
             setDataEntrega(newValue);
         }
     }
-
-    const formatDate = (date) => {
-      if (!date) return '';
-      return format(date, 'dd/MM/yyyy'); // Formata a data
-    };
+    */
 
     //TEST MUDANDO TABELA
     const param = ['name', 'calories', 'fat', 'carbs'];
 
+    const today = dayjs();
+    const tomorrow = dayjs().add(1, 'day');
+
     return(
         <div style={{display:"flex"}}>
             <Navbar/>
-            <div style={{padding: 20}}>
+            <div style={{padding: 20, margin: "auto"}}>
                 <div style={{display:"flex", justifyContent:"center", gap:25, marginTop: 85, marginBottom:50}}>
                     <Image src={userImage}/>
                     <h1>Realizar Requisição</h1>
@@ -131,20 +147,22 @@ export default function Requisicao(){
                 <form onSubmit={handleSubmit} style={{display:"flex", flexWrap:"wrap", maxWidth:650}}>
  
                     <InputContainer>
-                        <TextField
+                        <TextField style={{margin: 0+"px"}}
                             id="nome-input"
-                            value={name} 
-                            onChange={handleNameChange}  
+                            value={nome} 
+                            onChange={handleNomeChange}  
                             label="Nome"
-                            error
+
+                            color={erros.includes('Nome') ? 'error' : preenchidos.includes('Nome') ? 'success' : 'secondary'}
                         />
 
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
                                 <DatePicker 
-                                    id="data-inicio"
-                                    label="Data de Inicio" 
-                                    value={dataInicio}
-                                    onChange={handleDataInicioChange}
+                                    id="data-solicitada"
+                                    label="Data Solicitada" 
+                                    defaultValue={today}
+                                    value={dataSolicitada}
+                                    onChange={handleDataSolicitadaChange}
                                     slotProps={{
                                         textField: {
                                         helperText: 'DD/MM/AAAA',
@@ -157,11 +175,12 @@ export default function Requisicao(){
                             <DatePicker 
                                 id="data-entrega"
                                 label="Data de Entrega" 
+                                defaultValue={tomorrow}
                                 value={dataEntrega}
                                 onChange={handleDataEntregaChange}
                                 slotProps={{
                                     textField: {
-                                    helperText: 'DD/MM/AAAA',
+                                        helperText: 'DD/MM/AAAA',
                                     },
                                 }}
                             />
@@ -173,7 +192,20 @@ export default function Requisicao(){
                     <InputContainer>
                        
                         <ComboBox 
-                            sx={{ width: 255 }}
+                            sx={{ 
+                                width: 255,
+                                border: erros.includes('Categoria') ? '1px solid red' : preenchidos.includes('Quantidade') ? '1px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                borderRadius: 1,
+
+                               '& .MuiOutlinedInput-root': {
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                    border: erros.includes('Categoria') ? '2px solid red' : preenchidos.includes('Quantidade') ? '2px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                    span: {
+                                        color: erros.includes('Categoria') ? 'red' : preenchidos.includes('Quantidade') ? 'green' : "rgba(0, 0, 0, 0.23)"
+                                    }
+                                },
+                            },
+                            }}
                             label="Categoria"
                             listarItens={testListarItensCategoria} 
                             value={categoria} 
@@ -183,27 +215,47 @@ export default function Requisicao(){
                         />
 
                         <TextField style={{margin: 0+"px"}}
-                            sx={{ width: 378 }}
+                            sx={{ 
+                                width: 378,
+                                border: erros.includes('Categoria') ? '1px solid red' : preenchidos.includes('Quantidade') ? '1px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                borderRadius: 1
+                            }}
+                            value={quantidade}
                             label="Quantidade"
                             type="number"
+                            onChange={handleQuantidadeChange}
                             slotProps={{
                                 input: {
                                 startAdornment: <InputAdornment position="start">kg</InputAdornment>,
                                 },
                             }}
+                            color={erros.includes('Quantidade') ? 'error' : preenchidos.includes('Quantidade') ? 'success' : 'secondary'}
                         />
                     </InputContainer>
                     
                     <InputContainer style={{alignItems: "center"}}>
                         <ComboBox 
-                            sx={{ width: 482}}
+                            sx={{ 
+                                width: 482,
+                                border: erros.includes('Item') ? '1px solid red' : preenchidos.includes('Item') ? '1px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                borderRadius: 1,
+
+                               '& .MuiOutlinedInput-root': {
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                    border: erros.includes('Item') ? '2px solid red' : preenchidos.includes('Item') ? '2px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                    span: {
+                                        color: "green"
+                                    }
+                                },
+                            },
+                            }}
                             label="Itens"
                             listarItens={listarItensComboBox} 
-                            value={produto} 
-                            inputValue={inputProductValue} 
+                            value={item} 
+                            inputValue={inputItemValue} 
                             categoria={categoria}
-                            handleValueChange={handleProductValueChange} 
-                            handleInputValueChange={handleInputProductValueChange}
+                            handleValueChange={handleItemValueChange} 
+                            handleInputValueChange={handleInputItemValueChange}
                         />
 
                         <BotaoPersonalizado type="button" onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
@@ -217,7 +269,7 @@ export default function Requisicao(){
                         onDeleteRow={handleDeleteRow}
                         fontHeader={12}
                         />
-                    <button type="submit">Submit</button>
+                    <BotaoPersonalizado type="submit" text="Enviar" color="amarelo"/>
                 </form>
             </div>
         </div>
