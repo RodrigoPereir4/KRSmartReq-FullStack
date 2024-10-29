@@ -35,72 +35,127 @@ const tableHeader = [
     },
 ];
 
-function createData(id, name, calories, fat, carbs, protein) {
-    return { id, name, calories, fat, carbs, protein };
+function createData(id, nome, dataSolicitada, dataEntrega, categoria, quantidade, item) {
+    return { id, nome, dataSolicitada, dataEntrega, categoria, quantidade, item };
 }
 
 export function useRequisicao(){
     const [rows, setRows] = useState([]);
-    const [name, setName] = useState('');
-    const [calories, setCalories] = useState('');
-    const [fat, setFat] = useState('');
-    const [carbs, setCarbs] = useState('');
-    const [protein, setProtein] = useState('');
+    const [nome, setNome] = useState('');
+    const [dataSolicitada, setDataSolicitada] = useState(null);
+    const [dataEntrega, setDataEntrega] = useState(null);
+    const [quantidade, setQuantidade] = useState('');
+
+    const [categoria, setCategoria] = useState('');
+    const [inputCategoriaValue, setInputCategoriaValue] = useState('');
+    
+    const [item, setItem] = useState('');
+    const [inputItemValue, setInputItemValue] = useState('');
+
+    const [erros, setErros] = useState([]);
+    const [preenchidos, setPreenchidos] = useState([]);
 
     const handleAddRow = () => {
         if(verificarAtributosNullos()){
             const newRow = createData(
                 rows.length + 1,
-                name,
-                Number(calories),
-                Number(fat),
-                Number(carbs),
-                Number(protein)
+                nome,
+                dataSolicitada.format('DD/MM/YYYY'),
+                dataEntrega.format('DD/MM/YYYY'),
+                categoria,
+                Number(quantidade),
+                item
             );
 
             setRows((prevRows) => [...prevRows, newRow]);
+
+            // Limpa os campos após adicionar
+            setDataSolicitada(null);
+            setDataEntrega(null);
+            setCategoria('');
+            setQuantidade('');
+            setItem('');
         }else{
             alert("Preencha os campos necessários!"); //TODO: Adicionar alert personalizado
         }
-
-        // Limpa os campos após adicionar
-        setName('');
-        setCalories('');
-        setFat('');
-        setCarbs('');
-        setProtein('');
     };
 
     const verificarAtributosNullos = () =>{
-        const atributosParaVerificar = [name, calories, fat, carbs, protein];
-        const test = !atributosParaVerificar.some(attr => attr === '');
+        const atributosParaVerificar = [
+            { valor: nome, campo: 'Nome' },
+            { valor: dataSolicitada, campo: 'Data Solicitada' },
+            { valor: dataEntrega, campo: 'Data de Entrega' },
+            { valor: categoria, campo: 'Categoria' },
+            { valor: quantidade, campo: 'Quantidade' },
+            { valor: item, campo: 'Item' },
+        ];
+    
+        const novosErros = [];
+        const camposPreenchidos = [];
+    
+        atributosParaVerificar.forEach(attr => {
+            if (attr.valor === '' || attr.valor === null) {
+                novosErros.push(attr.campo); // Chame a função para setar o erro
+            } else {
+                camposPreenchidos.push(attr.campo);
+            }
+        });
 
-        return test;
+        setErros(novosErros);
+        setPreenchidos(camposPreenchidos);
+        console.log(erros);
+        console.log(camposPreenchidos);
+    
+        return novosErros === 0; // Retorna true se não houver erros
     }
 
     const handleDeleteRow = (selected) => {
         setRows((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
     };
 
-    const handleNameChange = (e) => {
-        setName(e.target.value);
+    const handleNomeChange = (e) => {
+        setNome(e.target.value);
     };
 
-    const handleCaloriesChange = (e) => {
-        setCalories(e.target.value);
+    const handleDataSolicitadaChange = (newValue) => {
+        setDataSolicitada(newValue);
+    }
+
+    const handleDataEntregaChange = (newValue) => {
+        if(newValue.isBefore(dataSolicitada)){
+            setDataSolicitada(newValue);
+            alert("Selecione uma data de entrega válida! Depois ou igual a inicial.")
+        } else{
+            setDataEntrega(newValue);
+        }
+    }
+
+    const handleQuantidadeChange = (e) => {
+        setQuantidade(e.target.value);
     };
 
-    const handleFatChange = (e) => {
-        setFat(e.target.value);
+    const handleCategoriaValueChange = (event, newValue) => { 
+        setCategoria(newValue);
+        if(newValue != null){
+            alert(newValue);
+          }
     };
 
-    const handleCarbsChange = (e) => {
-        setCarbs(e.target.value);
+    const handleInputCategoriaValueChange = (event, newInputValue) => {
+        setInputCategoriaValue(newInputValue);
     };
 
-    const handleProteinChange = (e) => {
-        setProtein(e.target.value);
+    const handleItemValueChange = (event, newValue) => {
+        setItem(newValue);
+        if(newValue != null){
+          alert(newValue);
+        }
     };
+    
+    const handleInputItemValueChange = (event, newInputValue) => {
+        setInputItemValue(newInputValue);
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -118,24 +173,37 @@ export function useRequisicao(){
         tableHeader,
         rows,
         setRows,
-        name,
-        setName,
-        calories,
-        setCalories,
-        fat,
-        setFat,
-        carbs,
-        setCarbs,
-        protein,
-        setProtein,
+        nome,
+        setNome,
+        dataSolicitada,
+        setDataSolicitada,
+        dataEntrega,
+        setDataEntrega,
+        categoria,
+        setCategoria,
+        inputCategoriaValue,
+        setInputCategoriaValue,
+        quantidade,
+        setQuantidade,
+        item,
+        setItem,
+        inputItemValue,
+        setInputItemValue,
         handleAddRow,
         verificarAtributosNullos,
         handleDeleteRow,
-        handleNameChange,
-        handleCaloriesChange,
-        handleFatChange,
-        handleCarbsChange,
-        handleProteinChange,
-        handleSubmit
+        handleNomeChange,
+        handleDataSolicitadaChange,
+        handleDataEntregaChange,
+        handleQuantidadeChange,
+        handleCategoriaValueChange,
+        handleInputCategoriaValueChange,
+        handleItemValueChange,
+        handleInputItemValueChange,
+        handleSubmit,
+        erros, 
+        setErros,
+        preenchidos, 
+        setPreenchidos
     };    
 }

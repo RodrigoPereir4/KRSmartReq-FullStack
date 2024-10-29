@@ -273,12 +273,12 @@ export default function EnhancedTable(props) {
                       scope="row"
                       padding="none"
                     >
-                      {row.name}
+                      {row.item}
                     </TableCell>
-                    <TableCell align="left">{row.calories}</TableCell>
-                    <TableCell align="left">{row.fat}</TableCell>
-                    <TableCell align="left">{row.carbs}</TableCell>
-                    <TableCell align="left">{row.protein}</TableCell>
+                    <TableCell align="left">{row.categoria}</TableCell>
+                    <TableCell align="left">{row.quantidade}</TableCell>
+                    <TableCell align="left">{row.dataSolicitada}</TableCell>
+                    <TableCell align="left">{row.dataEntrega}</TableCell>
                   </TableRow>
                 );
               })}
@@ -306,7 +306,7 @@ export default function EnhancedTable(props) {
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
+        label="Diminuir espaçamento"
       />
     </Box>
   );
