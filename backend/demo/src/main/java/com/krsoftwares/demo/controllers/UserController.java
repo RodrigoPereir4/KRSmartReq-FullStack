@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krsoftwares.demo.models.UserModel;
@@ -40,6 +41,24 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @GetMapping("/listarPorCategoria")
+    public Iterable<String> listarUsuarios(@RequestParam(required = false) Integer setor){
+        if(setor == null){
+            return userRepository.findAllUserEmail();
+        }
+        return userRepository.findBySetor(setor);
+    }
+
+    @GetMapping("/procurarProdutoNome")
+    public UserModel procurarProdutoNome(@RequestParam(required = true) String nome){
+        Optional<UserModel> userOptional = userRepository.findByEmail(nome);
+        if(userOptional.isPresent()){
+            return userOptional.get();
+        } else {
+            return null;
+        }
+    }
+
     @PostMapping("/cadastrar")
     public String cadastrarUsuario(@RequestBody UserModel user){
         String msg = "Erro! Não foi possivel cadastrar o usuário";
@@ -59,5 +78,5 @@ public class UserController {
         
         return msg;
     }
-}
 
+}
