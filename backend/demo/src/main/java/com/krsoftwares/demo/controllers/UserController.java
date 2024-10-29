@@ -49,9 +49,14 @@ public class UserController {
         return userRepository.findBySetor(setor);
     }
 
-    @GetMapping("/listarEmail")
-    public Iterable<String> listarEmailUsuarios(){
-        return userRepository.findAllUserEmail();
+    @GetMapping("/procurarProdutoNome")
+    public UserModel procurarProdutoNome(@RequestParam(required = true) String nome){
+        Optional<UserModel> userOptional = userRepository.findByEmail(nome);
+        if(userOptional.isPresent()){
+            return userOptional.get();
+        } else {
+            return null;
+        }
     }
 
     @PostMapping("/cadastrar")
@@ -73,5 +78,5 @@ public class UserController {
         
         return msg;
     }
-}
 
+}

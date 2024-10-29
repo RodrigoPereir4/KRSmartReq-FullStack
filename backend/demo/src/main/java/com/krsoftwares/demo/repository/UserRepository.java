@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<UserModel, Integer> {
     Optional<UserModel> findByEmail(String userName);
     
     boolean existsByEmail(String email);
-
+    
     @Query("SELECT u.email FROM UserModel u")
     Iterable<String> findAllUserEmail();
 
