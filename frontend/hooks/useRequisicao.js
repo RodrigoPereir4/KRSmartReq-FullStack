@@ -1,5 +1,6 @@
 'use client'
 
+import { procurarProdutoNome } from "@/services/RequisicaoService";
 import dayjs from "dayjs";
 import { useState } from "react";
 
@@ -36,8 +37,8 @@ const tableHeader = [
     },
 ];
 
-function createData(id, nome, categoria, quantidade, dataSolicitada, dataEntrega, item) {
-    return { id, nome, categoria, quantidade, dataSolicitada, dataEntrega, item };
+function createData(id, nome, categoria, quantidade, dataSolicitada, dataEntrega, item, itemObj) {
+    return { id, nome, categoria, quantidade, dataSolicitada, dataEntrega, item, itemObj };
 }
 
 const today = dayjs();
@@ -60,8 +61,9 @@ export function useRequisicao(){
     const [erros, setErros] = useState([]);
     const [visibilityDense, setVisibilityDense] = useState(true);
 
-    const handleAddRow = () => {
+    const handleAddRow = async () => {
         if(verificarAtributosNullos()){
+            const response = await procurarProdutoNome(item);
             const newRow = createData(
                 rows.length + 1,
                 nome,
@@ -69,8 +71,10 @@ export function useRequisicao(){
                 Number(quantidade),
                 dataSolicitada.format('DD/MM/YYYY'),
                 dataEntrega.format('DD/MM/YYYY'),
-                item
+                item,
+                response
             );
+            console.log(newRow);
 
             setRows((prevRows) => [...prevRows, newRow]);
 
