@@ -58,6 +58,10 @@ export default function Requisicao(){
         setItem,
         inputItemValue,
         setInputItemValue,
+        erros, 
+        setErros,
+        visibilityDense,
+        setVisibilityDense,
         handleAddRow,
         verificarAtributosNullos,
         handleDeleteRow,
@@ -69,11 +73,7 @@ export default function Requisicao(){
         handleInputCategoriaValueChange,
         handleItemValueChange,
         handleInputItemValueChange,
-        handleSubmit,
-        erros, 
-        setErros,
-        preenchidos, 
-        setPreenchidos
+        handleSubmit
     } = useRequisicao();
 
     function testListarItensCategoria(){
@@ -137,7 +137,7 @@ export default function Requisicao(){
         <div style={{display:"flex"}}>
             <Navbar/>
             <div style={{padding: 20, margin: "auto"}}>
-                <div style={{display:"flex", justifyContent:"center", gap:25, marginTop: 85, marginBottom:50}}>
+                <div style={{display:"flex", justifyContent:"center", gap:25, marginBottom:30}}>
                     <Image src={userImage}/>
                     <h1>Realizar Requisição</h1>
                 </div>
@@ -263,6 +263,7 @@ export default function Requisicao(){
                         rows={rows} 
                         onDeleteRow={handleDeleteRow}
                         fontHeader={12}
+                        visibilityDense={visibilityDense}
                         />
                     <BotaoPersonalizado type="submit" text="Enviar" color="amarelo"/>
                 </form>

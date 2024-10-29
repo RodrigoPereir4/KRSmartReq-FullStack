@@ -155,7 +155,7 @@ export default function EnhancedTable(props) {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleDeleteRow = () => {
@@ -222,6 +222,9 @@ export default function EnhancedTable(props) {
     [props.rows, order, orderBy, page, rowsPerPage]
   );
 
+  let ids = props.tableHeader.map(element => element.id);
+  ids = ids.filter(element => element !== 'nome'); 
+
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -275,10 +278,20 @@ export default function EnhancedTable(props) {
                     >
                       {row.item}
                     </TableCell>
-                    <TableCell align="left">{row.categoria}</TableCell>
-                    <TableCell align="left">{row.quantidade}</TableCell>
-                    <TableCell align="left">{row.dataSolicitada}</TableCell>
-                    <TableCell align="left">{row.dataEntrega}</TableCell>
+                    {Object.entries(row).map(([key, value], cellIndex) => {
+                      console.log(ids);
+                      console.log(key);
+                         if (ids.includes(key)) {
+                          
+                          return (
+                            <TableCell key={cellIndex} align="left">
+                              {value}
+                            </TableCell>
+                          );
+                        }
+                    })}
+                  
+                    
                   </TableRow>
                 );
               })}
@@ -307,6 +320,7 @@ export default function EnhancedTable(props) {
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Diminuir espaçamento"
+        style={{ display: props.visibilityDense ? 'none' : 'visibility' }}
       />
     </Box>
   );

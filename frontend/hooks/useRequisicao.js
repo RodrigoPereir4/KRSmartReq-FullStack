@@ -36,16 +36,16 @@ const tableHeader = [
     },
 ];
 
-function createData(id, nome, dataSolicitada, dataEntrega, categoria, quantidade, item) {
-    return { id, nome, dataSolicitada, dataEntrega, categoria, quantidade, item };
+function createData(id, nome, categoria, quantidade, dataSolicitada, dataEntrega, item) {
+    return { id, nome, categoria, quantidade, dataSolicitada, dataEntrega, item };
 }
-
 
 const today = dayjs();
 const tomorrow = dayjs().add(1, 'day');
 
 export function useRequisicao(){
     const [rows, setRows] = useState([]);
+
     const [nome, setNome] = useState('');
     const [dataSolicitada, setDataSolicitada] = useState(today);
     const [dataEntrega, setDataEntrega] = useState(tomorrow);
@@ -58,16 +58,17 @@ export function useRequisicao(){
     const [inputItemValue, setInputItemValue] = useState('');
 
     const [erros, setErros] = useState([]);
+    const [visibilityDense, setVisibilityDense] = useState(true);
 
     const handleAddRow = () => {
         if(verificarAtributosNullos()){
             const newRow = createData(
                 rows.length + 1,
                 nome,
-                dataSolicitada.format('DD/MM/YYYY'),
-                dataEntrega.format('DD/MM/YYYY'),
                 categoria,
                 Number(quantidade),
+                dataSolicitada.format('DD/MM/YYYY'),
+                dataEntrega.format('DD/MM/YYYY'),
                 item
             );
 
@@ -191,6 +192,10 @@ export function useRequisicao(){
         setItem,
         inputItemValue,
         setInputItemValue,
+        erros, 
+        setErros,
+        visibilityDense,
+        setVisibilityDense,
         handleAddRow,
         verificarAtributosNullos,
         handleDeleteRow,
@@ -202,8 +207,6 @@ export function useRequisicao(){
         handleInputCategoriaValueChange,
         handleItemValueChange,
         handleInputItemValueChange,
-        handleSubmit,
-        erros, 
-        setErros
+        handleSubmit
     };    
 }
