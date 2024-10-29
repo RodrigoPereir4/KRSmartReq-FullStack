@@ -133,9 +133,6 @@ export default function Requisicao(){
     //TEST MUDANDO TABELA
     const param = ['name', 'calories', 'fat', 'carbs'];
 
-    const today = dayjs();
-    const tomorrow = dayjs().add(1, 'day');
-
     return(
         <div style={{display:"flex"}}>
             <Navbar/>
@@ -153,14 +150,13 @@ export default function Requisicao(){
                             onChange={handleNomeChange}  
                             label="Nome"
 
-                            color={erros.includes('Nome') ? 'error' : preenchidos.includes('Nome') ? 'success' : 'secondary'}
+                            error={erros.includes('Nome')}
                         />
 
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
                                 <DatePicker 
                                     id="data-solicitada"
                                     label="Data Solicitada" 
-                                    defaultValue={today}
                                     value={dataSolicitada}
                                     onChange={handleDataSolicitadaChange}
                                     slotProps={{
@@ -175,7 +171,6 @@ export default function Requisicao(){
                             <DatePicker 
                                 id="data-entrega"
                                 label="Data de Entrega" 
-                                defaultValue={tomorrow}
                                 value={dataEntrega}
                                 onChange={handleDataEntregaChange}
                                 slotProps={{
@@ -194,14 +189,14 @@ export default function Requisicao(){
                         <ComboBox 
                             sx={{ 
                                 width: 255,
-                                border: erros.includes('Categoria') ? '1px solid red' : preenchidos.includes('Quantidade') ? '1px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                border: erros.includes('Categoria') ? '1px solid red' : "1px solid rgba(0, 0, 0, 0.23)",
                                 borderRadius: 1,
 
                                '& .MuiOutlinedInput-root': {
                                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                    border: erros.includes('Categoria') ? '2px solid red' : preenchidos.includes('Quantidade') ? '2px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                    border: erros.includes('Categoria') ? '2px solid red' : "2px solid #9c27b0",
                                     span: {
-                                        color: erros.includes('Categoria') ? 'red' : preenchidos.includes('Quantidade') ? 'green' : "rgba(0, 0, 0, 0.23)"
+                                        color: erros.includes('Categoria') ? 'red' : "#9c27b0"
                                     }
                                 },
                             },
@@ -217,7 +212,7 @@ export default function Requisicao(){
                         <TextField style={{margin: 0+"px"}}
                             sx={{ 
                                 width: 378,
-                                border: erros.includes('Categoria') ? '1px solid red' : preenchidos.includes('Quantidade') ? '1px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                border: erros.includes('Quantidade') ? '1px solid red' : "1px solid rgba(0, 0, 0, 0.23)",
                                 borderRadius: 1
                             }}
                             value={quantidade}
@@ -229,7 +224,7 @@ export default function Requisicao(){
                                 startAdornment: <InputAdornment position="start">kg</InputAdornment>,
                                 },
                             }}
-                            color={erros.includes('Quantidade') ? 'error' : preenchidos.includes('Quantidade') ? 'success' : 'secondary'}
+                            color={erros.includes('Quantidade') ? 'error' : 'secondary'}
                         />
                     </InputContainer>
                     
@@ -237,14 +232,14 @@ export default function Requisicao(){
                         <ComboBox 
                             sx={{ 
                                 width: 482,
-                                border: erros.includes('Item') ? '1px solid red' : preenchidos.includes('Item') ? '1px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                border: erros.includes('Item') ? '1px solid red' : "1px solid rgba(0, 0, 0, 0.23)",
                                 borderRadius: 1,
 
                                '& .MuiOutlinedInput-root': {
                                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                    border: erros.includes('Item') ? '2px solid red' : preenchidos.includes('Item') ? '2px solid green' : "1px solid rgba(0, 0, 0, 0.23)",
+                                    border: erros.includes('Item') ? '2px solid red' : "2px solid #9c27b0",
                                     span: {
-                                        color: "green"
+                                        color: erros.includes('Item') ? 'red' : "#9c27b0"
                                     }
                                 },
                             },

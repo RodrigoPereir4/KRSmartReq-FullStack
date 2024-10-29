@@ -1,5 +1,6 @@
 'use client'
 
+import dayjs from "dayjs";
 import { useState } from "react";
 
 const tableHeader = [
@@ -39,11 +40,15 @@ function createData(id, nome, dataSolicitada, dataEntrega, categoria, quantidade
     return { id, nome, dataSolicitada, dataEntrega, categoria, quantidade, item };
 }
 
+
+const today = dayjs();
+const tomorrow = dayjs().add(1, 'day');
+
 export function useRequisicao(){
     const [rows, setRows] = useState([]);
     const [nome, setNome] = useState('');
-    const [dataSolicitada, setDataSolicitada] = useState(null);
-    const [dataEntrega, setDataEntrega] = useState(null);
+    const [dataSolicitada, setDataSolicitada] = useState(today);
+    const [dataEntrega, setDataEntrega] = useState(tomorrow);
     const [quantidade, setQuantidade] = useState('');
 
     const [categoria, setCategoria] = useState('');
@@ -53,7 +58,6 @@ export function useRequisicao(){
     const [inputItemValue, setInputItemValue] = useState('');
 
     const [erros, setErros] = useState([]);
-    const [preenchidos, setPreenchidos] = useState([]);
 
     const handleAddRow = () => {
         if(verificarAtributosNullos()){
@@ -70,8 +74,8 @@ export function useRequisicao(){
             setRows((prevRows) => [...prevRows, newRow]);
 
             // Limpa os campos após adicionar
-            setDataSolicitada(null);
-            setDataEntrega(null);
+            setDataSolicitada(dataSolicitada);
+            setDataEntrega(dataEntrega);
             setCategoria('');
             setQuantidade('');
             setItem('');
@@ -91,22 +95,17 @@ export function useRequisicao(){
         ];
     
         const novosErros = [];
-        const camposPreenchidos = [];
     
         atributosParaVerificar.forEach(attr => {
             if (attr.valor === '' || attr.valor === null) {
                 novosErros.push(attr.campo); // Chame a função para setar o erro
-            } else {
-                camposPreenchidos.push(attr.campo);
             }
         });
 
         setErros(novosErros);
-        setPreenchidos(camposPreenchidos);
         console.log(erros);
-        console.log(camposPreenchidos);
     
-        return novosErros === 0; // Retorna true se não houver erros
+        return novosErros.length === 0; // Retorna true se não houver erros
     }
 
     const handleDeleteRow = (selected) => {
@@ -119,6 +118,7 @@ export function useRequisicao(){
 
     const handleDataSolicitadaChange = (newValue) => {
         setDataSolicitada(newValue);
+        console.log(newValue);
     }
 
     const handleDataEntregaChange = (newValue) => {
@@ -127,7 +127,9 @@ export function useRequisicao(){
             alert("Selecione uma data de entrega válida! Depois ou igual a inicial.")
         } else{
             setDataEntrega(newValue);
+            console.log(newValue);
         }
+        console.log(newValue);
     }
 
     const handleQuantidadeChange = (e) => {
@@ -202,8 +204,6 @@ export function useRequisicao(){
         handleInputItemValueChange,
         handleSubmit,
         erros, 
-        setErros,
-        preenchidos, 
-        setPreenchidos
+        setErros
     };    
 }
