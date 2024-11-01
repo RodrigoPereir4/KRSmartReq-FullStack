@@ -24,7 +24,10 @@ export async function listarItensComboBox(categoria){
 
 export async function procurarProdutoNome(nome){
 
-    let url = `http://localhost:8080/users/procurarProdutoNome?nome=${nome}`;
+    nome = nome.replace(/%/g, "%25");
+    console.log(nome);
+
+    let url = `http://localhost:8080/produto/procurarNome?nome=${nome}`;
 
     const response = await fetch(url, {
         method: 'GET',
