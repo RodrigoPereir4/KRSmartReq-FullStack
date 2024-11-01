@@ -54,6 +54,8 @@ export function useRequisicao(){
 
     const [categoria, setCategoria] = useState('');
     const [inputCategoriaValue, setInputCategoriaValue] = useState('');
+
+    const [listaCategorias, setListaCategorias] = useState('');
     
     const [item, setItem] = useState('');
     const [inputItemValue, setInputItemValue] = useState('');
@@ -190,6 +192,8 @@ export function useRequisicao(){
         setCategoria,
         inputCategoriaValue,
         setInputCategoriaValue,
+        listaCategorias, 
+        setListaCategorias,
         quantidade,
         setQuantidade,
         item,

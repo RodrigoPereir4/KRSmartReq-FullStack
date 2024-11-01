@@ -1,10 +1,10 @@
 export async function listarItensComboBox(categoria){
 
-    let url = 'http://localhost:8080/users/listarPorCategoria';
+    let url = 'http://localhost:8080/produto/listarNome';
 
-    // Se a categoria estiver definida, adiciona como parâmetro
+    // Se a categoria estiver definida, adiciona como parâmetro 
     if (categoria != undefined && categoria != null) {
-        url += `?setor=${categoria}`;
+        url += `?category=${categoria}`;
     }
 
     const response = await fetch(url, {

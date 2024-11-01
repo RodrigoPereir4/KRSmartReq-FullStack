@@ -52,6 +52,8 @@ export default function Requisicao(){
         setCategoria,
         inputCategoriaValue,
         setInputCategoriaValue,
+        listaCategorias, 
+        setListaCategorias,
         quantidade,
         setQuantidade,
         item,
@@ -76,9 +78,29 @@ export default function Requisicao(){
         handleSubmit
     } = useRequisicao();
 
-    function testListarItensCategoria(){
-        return ['2', '3'];
-    }
+    useEffect(() => {
+        const carregarCategoria = async() => {
+            try{
+                const response = await fetch('http://localhost:8080/produto/listarCategoria', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+    
+                if(!response.ok){
+                    alert("Falha no banco de dados!")
+                    return;
+                } 
+    
+                const result = await response.json();
+                setListaCategorias(result);
+            }catch(error){
+                alert("Erro ao carregar as categorias: " + error.message);
+            }
+        };
+        carregarCategoria();
+    }, []);
 
     /*
     //PRODUTO --------------------------------- 
@@ -202,7 +224,7 @@ export default function Requisicao(){
                             },
                             }}
                             label="Categoria"
-                            listarItens={testListarItensCategoria} 
+                            listarItens={listaCategorias} 
                             value={categoria} 
                             inputValue={inputCategoriaValue} 
                             handleValueChange={handleCategoriaValueChange} 

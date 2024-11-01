@@ -17,7 +17,12 @@ export default function ComboBox(props) {
   const [loading, setLoading] = React.useState(false);
 
   const handleOpen = async () => {
-    const response = await props.listarItens(props.categoria);
+    let response = [];
+    if(props.categoria !== undefined){
+      response = await props.listarItens(props.categoria);
+    } else {
+      response = props.listarItens;
+    }
     
     if(response.length === 0){
       setOpen(false);
