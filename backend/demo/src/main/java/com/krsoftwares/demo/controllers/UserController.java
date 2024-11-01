@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/listarPorCategoria")
     public Iterable<String> listarUsuarios(@RequestParam(required = false) Integer setor){
         if(setor == null){
-            return userRepository.findAllUserEmail();
+            return userRepository.findAllEmail();
         }
         return userRepository.findBySetor(setor);
     }

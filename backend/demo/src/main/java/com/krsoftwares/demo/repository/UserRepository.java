@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<UserModel, Integer> {
     boolean existsByEmail(String email);
     
     @Query("SELECT u.email FROM UserModel u")
-    Iterable<String> findAllUserEmail();
+    Iterable<String> findAllEmail();
 
     @Query("SELECT u.email FROM UserModel u WHERE u.setor.id = :setor")
     Iterable<String> findBySetor(Integer setor);
