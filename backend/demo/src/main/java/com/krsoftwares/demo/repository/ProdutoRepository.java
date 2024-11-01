@@ -11,6 +11,8 @@ public interface ProdutoRepository extends JpaRepository<ProdutoModel, String> {
     
     Optional<ProdutoModel> findBySKU(String sku);
 
+    Optional<ProdutoModel> findByNome(String nome);
+
     boolean existsBySKU(String SKU);
 
     @Query("SELECT p.nome FROM ProdutoModel p")

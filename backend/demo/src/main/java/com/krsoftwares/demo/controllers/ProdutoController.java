@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krsoftwares.demo.models.ProdutoModel;
+import com.krsoftwares.demo.models.UserModel;
 import com.krsoftwares.demo.repository.ProdutoRepository;
 
 import jakarta.validation.Valid;
@@ -79,5 +80,15 @@ public class ProdutoController {
     @GetMapping("/listarCategoria")
     public Iterable<String> listarCategoria() {
         return produtoRepository.findAllCategoria();
+    }
+
+    @GetMapping("/procurarNome")
+    public ProdutoModel procurarNome(@RequestParam (required = true) String nome){
+        Optional<ProdutoModel> produtoOptional = produtoRepository.findByNome(nome);
+        if(produtoOptional.isPresent()){
+            return produtoOptional.get();
+        } else {
+            return null;
+        }
     }
 }
