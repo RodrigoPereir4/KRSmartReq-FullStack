@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styled from "styled-components";
+import "@/app/styles/globals.css";
 
 import userImagem from "../../images/user2.png";
 import logoImage from "../../images/logo.png";
@@ -12,10 +13,13 @@ const Container = styled.div`
   min-width: 230px;
   height: 100vh;
   padding: 20px;
-
+  
   display: flex;
   align-items: center;
   flex-direction: column;
+  
+  position: ${props => props.activateHamburguer ? 'absolute' : 'none'};
+  z-index: ${props => props.activateHamburguer ? 2 : ''};
 
   background-color: #fcaf38;
 
@@ -23,6 +27,7 @@ const Container = styled.div`
     margin: 30px 25px;
   }
 
+  transition: all 0.2s ease-in-out;
 `;
 
 const ListaBotoes = styled.div`
@@ -45,9 +50,12 @@ const LinhaDividir = styled.div`
   border: 0.2px solid black;
 `;
 
-export default function Navbar() {
+export default function Navbar(props) {
+
+  //${props => props.activateHamburguer ? 'flex' : 'none'}
+
   return (
-    <Container>
+    <Container activateHamburguer={props.activateHamburguer}>
       <Image className="logo" alt="Logo da Dengo" src={logoImage}/>
 
       <ListaBotoes>
