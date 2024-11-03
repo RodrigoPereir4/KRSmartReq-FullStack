@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import "@/app/styles/globals.css";
+import "@/app/styles/hamburguer.css";
 
 import userImagem from "../../images/user2.png";
 import logoImage from "../../images/logo.png";
@@ -14,7 +16,7 @@ const Container = styled.div`
   height: 100vh;
   padding: 20px;
   
-  display: flex;
+  display:  ${props => !props.activateHamburguer ? 'none' : 'flex'};
   align-items: center;
   flex-direction: column;
   
@@ -50,29 +52,42 @@ const LinhaDividir = styled.div`
   border: 0.2px solid black;
 `;
 
-export default function Navbar(props) {
 
-  //${props => props.activateHamburguer ? 'flex' : 'none'}
+export default function Navbar() {
+
+  //HAMBURGER
+  const [activateHamburguer, setActivateHamburguer] = useState(false);
+    
+  const handleActivateHamburger = () => {
+      setActivateHamburguer((prev) => !prev);
+  };
 
   return (
-    <Container activateHamburguer={props.activateHamburguer}>
-      <Image className="logo" alt="Logo da Dengo" src={logoImage}/>
+    <>
+      <ul onClick={handleActivateHamburger} className={activateHamburguer ? 'activate' : ''}>
+        <li className="hamburguer"> </li>
+        <li className="hamburguer"></li>
+        <li className="hamburguer"></li>
+      </ul>
+      <Container activateHamburguer={activateHamburguer}>
+        <Image className="logo" alt="Logo da Dengo" src={logoImage}/>
 
-      <ListaBotoes>
-        <ButtonBar imageSrc={userImagem} text="Realizar Requisição"/>
+        <ListaBotoes>
+          <ButtonBar imageSrc={userImagem} text="Realizar Requisição"/>
 
-        <LinhaDividir />
+          <LinhaDividir />
 
-        <ButtonBar imageSrc={userImagem} text="Botão 01"/>
-        <ButtonBar imageSrc={userImagem} text="Botão 02"/>
-        <ButtonBar imageSrc={userImagem} text="Botão 03"/>
-        <ButtonBar imageSrc={userImagem} text="Botão 04"/>
-        <ButtonBar imageSrc={userImagem} text="Botão 05"/>
-        <LinhaDividir />
-      
+          <ButtonBar imageSrc={userImagem} text="Botão 01"/>
+          <ButtonBar imageSrc={userImagem} text="Botão 02"/>
+          <ButtonBar imageSrc={userImagem} text="Botão 03"/>
+          <ButtonBar imageSrc={userImagem} text="Botão 04"/>
+          <ButtonBar imageSrc={userImagem} text="Botão 05"/>
+          <LinhaDividir />
+        
 
-        <ButtonBar imageSrc={userImagem} text="Botão para sair"/>
-      </ListaBotoes>
-    </Container>
+          <ButtonBar imageSrc={userImagem} text="Botão para sair"/>
+        </ListaBotoes>
+      </Container>
+    </>
   );
 }

@@ -19,7 +19,14 @@ import { TextField, InputAdornment } from "@mui/material";
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
 
 const Container = styled.div`
+    height: 100vh;
+    margin: auto;
 
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `
 
 const InputContainer = styled.div`
@@ -158,7 +165,7 @@ export default function Requisicao(){
     return(
         <div style={{display:"flex"}}>
             <Navbar/>
-            <div style={{padding: 20, margin: "auto"}}>
+            <Container>
                 <div style={{display:"flex", justifyContent:"center", gap:25, marginBottom:30}}>
                     <Image src={userImage}/>
                     <h1>Realizar Requisição</h1>
@@ -289,7 +296,7 @@ export default function Requisicao(){
                         />
                     <BotaoPersonalizado type="submit" text="Enviar" color="amarelo"/>
                 </form>
-            </div>
+            </Container>
         </div>
     );
 }

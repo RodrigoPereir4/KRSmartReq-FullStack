@@ -3,34 +3,3 @@ body{
     height: 100vh;
     display: flex;
 }
-
-ul {
-    list-style: none;
-    cursor: pointer;
-
-    position: absolute;
-    top: 20px;
-    z-index: 3;
-}
-
-.hamburguer {
-    margin-top: 5px;
-    height: 10px;
-    width: 50px;
-    background: #000;
-    border-radius: 20% / 90%;
-    transition: 1s;
-    position: relative;
-}
-
-ul.activate li:nth-child(1){
-    transform: translateY(15px) rotate(45deg);
-}
-
-ul.activate li:nth-child(2){
-    transform: rotate(-45deg);
-}
-
-ul.activate li:nth-child(3){
-    transform: translateY(-15px) rotate(-45deg);
-}
