@@ -226,14 +226,14 @@ export default function EnhancedTable(props) {
   ids = ids.filter(element => element !== 'nome'); 
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+    <Box sx={{ width: '100%'}}>
+      <Paper sx={{ width: '100%', mb: 2}}>
         <EnhancedTableToolbar title={props.title} numSelected={selected.length} handleDeleteRow={handleDeleteRow} />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
+        <Table
+            sx={{ minWidth: 750}}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size={'small'}
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -317,11 +317,6 @@ export default function EnhancedTable(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Diminuir espaçamento"
-        style={{ display: props.visibilityDense ? 'none' : 'visibility' }}
-      />
     </Box>
   );
 }

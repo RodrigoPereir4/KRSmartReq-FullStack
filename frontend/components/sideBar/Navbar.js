@@ -25,11 +25,16 @@ const Container = styled.div`
 
   background-color: #fcaf38;
 
+  transition: all 0.3s ease-out;
+
   .logo{
     margin: 30px 25px;
   }
 
-  transition: all 0.2s ease-in-out;
+  @media (min-width: 920px){
+    display: flex;
+  }
+
 `;
 
 const ListaBotoes = styled.div`

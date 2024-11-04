@@ -27,21 +27,82 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .inputNome{
+        width: 60%;
+    }
+
+    .inputQuantidade{
+        width: 50%;
+    }
+        
+
+    @media (max-width: 1250px){
+        margin: 4rem auto;
+    }
+
+    @media (max-width: 690px) {
+        .inputNome{
+            width: 100%;
+        }
+
+        .inputQuantidade{
+            width: 50%;
+        }
+    }
+
 `
 
 const InputContainer = styled.div`
-    display: flex;
-    gap: 18px;
+    width: 100%;
     margin-bottom: 20px;
 
-    &:first-child {
-        margin-bottom: 10px;
-    }
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
 
     #nome-input{
         width: 320px;
     }
+
+    @media(min-width: )
+
+    &:first-child {
+        margin-bottom: 10px;
+
+        @media (max-width: 690px) {
+            flex-wrap: wrap;
+        }
+    }
+
+    @media (max-width: 500px){
+        flex-wrap: wrap;
+    }
+    
 `
+
+const FormInput = styled.form`
+    display: flex;
+    flex-wrap: wrap; 
+    max-width: 1000px;
+
+    @media (max-width: 1200px){
+        max-width: 850px;
+    } 
+
+    @media (max-width: 800px){
+        max-width: 450px;
+    } 
+
+    @media (max-width: 500px){
+        max-width: 350px;
+
+        .inputQuantidade{
+            width: 100%;
+        }
+    }
+`
+
 
 export default function Requisicao(){
 
@@ -170,10 +231,10 @@ export default function Requisicao(){
                     <Image src={userImage}/>
                     <h1>Realizar Requisição</h1>
                 </div>
-                <form onSubmit={handleSubmit} style={{display:"flex", flexWrap:"wrap", maxWidth:650}}>
+                <FormInput onSubmit={handleSubmit}>
  
                     <InputContainer>
-                        <TextField style={{margin: 0+"px"}}
+                        <TextField className="inputNome" style={{margin: 0+"px"}}
                             id="nome-input"
                             value={nome} 
                             onChange={handleNomeChange}  
@@ -182,7 +243,10 @@ export default function Requisicao(){
                             error={erros.includes('Nome')}
                         />
 
-                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
+                        <LocalizationProvider 
+                            dateAdapter={AdapterDayjs} 
+                            adapterLocale="en-gb"
+                            className="inputData">
                                 <DatePicker 
                                     id="data-solicitada"
                                     label="Data Solicitada" 
@@ -193,21 +257,30 @@ export default function Requisicao(){
                                         helperText: 'DD/MM/AAAA',
                                         },
                                     }}
+                                    sx={{
+                                        width: { xs: '100%', sm: '48%', md: '20%' }
+                                    }}
                                 />
                         </LocalizationProvider>
 
-                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
-                            <DatePicker 
-                                id="data-entrega"
-                                label="Data de Entrega" 
-                                value={dataEntrega}
-                                onChange={handleDataEntregaChange}
-                                slotProps={{
-                                    textField: {
-                                        helperText: 'DD/MM/AAAA',
-                                    },
-                                }}
-                            />
+                        <LocalizationProvider 
+                            dateAdapter={AdapterDayjs} 
+                            adapterLocale="en-gb"
+                            className="inputData">
+                                <DatePicker 
+                                    id="data-entrega"
+                                    label="Data de Entrega" 
+                                    value={dataEntrega}
+                                    onChange={handleDataEntregaChange}
+                                    slotProps={{
+                                        textField: {
+                                            helperText: 'DD/MM/AAAA',
+                                        },
+                                    }}
+                                    sx={{
+                                        width: { xs: '100%', sm: '48%', md: '20%' }
+                                    }}
+                                />
                         </LocalizationProvider>
         
                     </InputContainer>
@@ -217,7 +290,7 @@ export default function Requisicao(){
                        
                         <ComboBox 
                             sx={{ 
-                                width: 255,
+                                width: { xs: '100%', sm: '50%', md: '57.5%' },
                                 border: erros.includes('Categoria') ? '1px solid red' : "1px solid rgba(0, 0, 0, 0.23)",
                                 borderRadius: 1,
 
@@ -231,6 +304,7 @@ export default function Requisicao(){
                             },
                             }}
                             label="Categoria"
+                            className="inputCategoria"
                             listarItens={listaCategorias} 
                             value={categoria} 
                             inputValue={inputCategoriaValue} 
@@ -238,7 +312,7 @@ export default function Requisicao(){
                             handleInputValueChange={handleInputCategoriaValueChange} 
                         />
 
-                        <TextField style={{margin: 0+"px"}}
+                        <TextField className="inputQuantidade" style={{margin: 0+"px"}}
                             sx={{ 
                                 width: 378,
                                 border: erros.includes('Quantidade') ? '1px solid red' : "1px solid rgba(0, 0, 0, 0.23)",
@@ -260,7 +334,7 @@ export default function Requisicao(){
                     <InputContainer style={{alignItems: "center"}}>
                         <ComboBox 
                             sx={{ 
-                                width: 482,
+                                width: { xs: '100%', sm: '75%', md: '85%' },
                                 border: erros.includes('Item') ? '1px solid red' : "1px solid rgba(0, 0, 0, 0.23)",
                                 borderRadius: 1,
 
@@ -274,6 +348,7 @@ export default function Requisicao(){
                             },
                             }}
                             label="Itens"
+                            className="inputData"
                             listarItens={listarItensComboBox} 
                             value={item} 
                             inputValue={inputItemValue} 
@@ -285,17 +360,17 @@ export default function Requisicao(){
                         <BotaoPersonalizado type="button" onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
                     </InputContainer>
 
-                    <EnhancedTable 
-                        title="Produtos Requisitados" 
-                        parameters={param} 
-                        tableHeader={tableHeader} 
-                        rows={rows} 
-                        onDeleteRow={handleDeleteRow}
-                        fontHeader={12}
-                        visibilityDense={visibilityDense}
-                        />
+                        <EnhancedTable 
+                            title="Produtos Requisitados" 
+                            parameters={param} 
+                            tableHeader={tableHeader} 
+                            rows={rows} 
+                            onDeleteRow={handleDeleteRow}
+                            fontHeader={12}
+                            visibilityDense={visibilityDense}
+                            />
                     <BotaoPersonalizado type="submit" text="Enviar" color="amarelo"/>
-                </form>
+                </FormInput>
             </Container>
         </div>
     );
