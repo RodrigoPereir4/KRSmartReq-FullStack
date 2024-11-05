@@ -227,7 +227,7 @@ export default function EnhancedTable(props) {
 
   return (
     <Box sx={{ width: '100%'}}>
-      <Paper sx={{ width: '100%', mb: 2}}>
+      <Paper sx={{ width: '100%', mb: 2, background: props.activateBodyHamburguer ? '0' : '#ffffff'}}>
         <EnhancedTableToolbar title={props.title} numSelected={selected.length} handleDeleteRow={handleDeleteRow} />
         <TableContainer>
         <Table

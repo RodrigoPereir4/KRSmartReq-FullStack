@@ -28,6 +28,8 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
 
+    pointer-events: ${(props) => (props.activateBodyHamburguer ? 'none' : 'auto')};
+
     .inputNome{
         width: 60%;
     }
@@ -49,6 +51,10 @@ const Container = styled.div`
         .inputQuantidade{
             width: 50%;
         }
+    }
+
+    @media (max-width: 400px){
+        margin: 4.5rem auto;
     }
 
 `
@@ -220,13 +226,20 @@ export default function Requisicao(){
     }
     */
 
+    //HAMBURGUER
+    const [activateBodyHamburguer, setActivateBodyHamburguer] = useState(false);
+    
+    const handleActivateBodyHamburguer = () => {
+        setActivateBodyHamburguer((prev) => !prev);
+    };
+
     //TEST MUDANDO TABELA
     const param = ['name', 'calories', 'fat', 'carbs'];
 
     return(
-        <div style={{display:"flex"}}>
-            <Navbar/>
-            <Container>
+        <div style={{display:"flex", background: activateBodyHamburguer ? 'rgba(0,0,0,0.7)' : '#ffffff'}}>
+            <Navbar onToggleBody={handleActivateBodyHamburguer}/>
+            <Container activateBodyHamburguer={activateBodyHamburguer}>
                 <div style={{display:"flex", justifyContent:"center", gap:25, marginBottom:30}}>
                     <Image src={userImage}/>
                     <h1>Realizar Requisição</h1>
@@ -368,6 +381,7 @@ export default function Requisicao(){
                             onDeleteRow={handleDeleteRow}
                             fontHeader={12}
                             visibilityDense={visibilityDense}
+                            activateBodyHamburguer = {activateBodyHamburguer}
                             />
                     <BotaoPersonalizado type="submit" text="Enviar" color="amarelo"/>
                 </FormInput>

@@ -31,8 +31,16 @@ const Container = styled.div`
     margin: 30px 25px;
   }
 
+  @media (max-width: 1250px){
+    height: 114.1vh;
+  }
+
   @media (min-width: 920px){
     display: flex;
+  }
+
+  @media (max-width: 400px){
+    height: 100vh;
   }
 
 `;
@@ -58,13 +66,14 @@ const LinhaDividir = styled.div`
 `;
 
 
-export default function Navbar() {
+export default function Navbar(props) {
 
   //HAMBURGER
   const [activateHamburguer, setActivateHamburguer] = useState(false);
     
   const handleActivateHamburger = () => {
       setActivateHamburguer((prev) => !prev);
+      props.onToggleBody();
   };
 
   return (
