@@ -17,6 +17,7 @@ import Image from "next/image";
 import userImage from "@/images/user2.png";
 import { TextField, InputAdornment } from "@mui/material";
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
+import Tabela from "@/components/MUI/Tabela";
 
 const Container = styled.div`
     height: 100vh;
@@ -373,7 +374,7 @@ export default function Requisicao(){
                         <BotaoPersonalizado type="button" onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
                     </InputContainer>
 
-                        <EnhancedTable 
+                        <Tabela 
                             title="Produtos Requisitados" 
                             parameters={param} 
                             tableHeader={tableHeader} 

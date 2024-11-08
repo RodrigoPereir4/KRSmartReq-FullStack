@@ -98,7 +98,7 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
   return (
-    <Toolbar
+    <Toolbar style={props.disableHead ? {display: "none"}:{display: 'flex'}}
       sx={[
         {
           pl: { sm: 2 },
@@ -150,7 +150,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable(props) {
+export default function Tabela(props) {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -195,6 +195,9 @@ export default function EnhancedTable(props) {
       );
     }
     setSelected(newSelected);
+    if(props.updateSelect !== undefined){
+      props.updateSelect(newSelected);
+    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -228,7 +231,12 @@ export default function EnhancedTable(props) {
   return (
     <Box sx={{ width: '100%'}}>
       <Paper sx={{ width: '100%', mb: 2, background: props.activateBodyHamburguer ? '0' : '#ffffff'}}>
-        <EnhancedTableToolbar title={props.title} numSelected={selected.length} handleDeleteRow={handleDeleteRow} />
+        <EnhancedTableToolbar 
+          title={props.title} 
+          numSelected={selected.length} 
+          handleDeleteRow={handleDeleteRow}
+          disableHead={props.disableHead}
+          />
         <TableContainer>
         <Table
             sx={{ minWidth: 750}}
@@ -282,7 +290,7 @@ export default function EnhancedTable(props) {
                       console.log(ids);
                       console.log(key);
                          if (ids.includes(key)) {
-                          
+                          console.log("VALOOOR: " + value)
                           return (
                             <TableCell key={cellIndex} align="left">
                               {value}
