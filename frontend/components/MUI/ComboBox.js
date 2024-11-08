@@ -24,19 +24,24 @@ export default function ComboBox(props) {
       response = props.listarItens;
     }
     
-    if(response.length === 0){
-      setOpen(false);
-      alert("Não existe nenhum item nessa categoria!");
-    } else {
-        setOpen(true);
-      (async () => {
-        setLoading(true);
-        await sleep(1e3); // For demo purposes.
-        setLoading(false);
-
-        setOptions([...response]);
-      })();
+    if(response !== undefined){
+      if(response.length === 0){
+        setOpen(false);
+        alert("Não existe nenhum item nessa categoria!");
+      } else {
+          setOpen(true);
+        (async () => {
+          setLoading(true);
+          await sleep(1e3); // For demo purposes.
+          setLoading(false);
+  
+          setOptions([...response]);
+        })();
+      }
+    } else{
+      alert("ERRO! Falha no Sistema");
     }
+    
   };
 
   const handleClose = () => {
