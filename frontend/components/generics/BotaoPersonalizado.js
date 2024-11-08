@@ -3,8 +3,8 @@ import styled from "styled-components";
 const Botao = styled.button`
     width: 150px;
     height: 45px;
-    background-color:${(props) => (props.color === "amarelo" ? "#F8AE27" : "#FF2600")};
-    color: ${(props) => (props.color !== "amarelo" ? "#ffffff" : "#584439")};
+    background-color:${(props) => (props.color === "amarelo" ? "#F8AE27" : props.color === "marrom" ? "#583939" : "#FF2600")};
+    color: ${(props) => (props.color !== "amarelo" ? "#ffffff" : props.color === "marrom" ? "#F8AE27" : "#584439")};
 
     border-radius: 8px;
     border: none;
@@ -15,7 +15,7 @@ const Botao = styled.button`
     cursor: pointer;
 
     &:hover{
-        background-color:${(props) => (props.color === "amarelo" ? "#D2922A" : "#911600")};
+        background-color:${(props) => (props.color === "amarelo" ? "#D2922A" : props.color === "marrom" ? "#0F3434" : "#911600")};
     }
 `
 
