@@ -1,5 +1,7 @@
 package com.krsoftwares.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,16 +18,17 @@ import lombok.Data;
 public class ItemRequisicaoModel {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemRequisitadoID;
 
     @ManyToOne
-    @JoinColumn(name = "requisicao_id", nullable = false)
+    @JoinColumn(name = "requisicao_id", referencedColumnName = "requisicaoId")
+    @JsonIgnore
     private RequisicaoModel requisicaoId;
 
     @ManyToOne
-    @JoinColumn(name = "produto_id", nullable = false)
-    private ProdutoModel SKU;
+    @JoinColumn(name = "produto_id", referencedColumnName = "SKU")
+    private ProdutoModel produto;
 
     @Column(nullable = false)
     private Integer quantidade;
