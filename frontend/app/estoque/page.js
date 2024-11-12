@@ -5,6 +5,7 @@
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
 import ComboBox from "@/components/MUI/ComboBox";
 import Tabela from "@/components/MUI/Tabela";
+import Navbar from "@/components/sideBar/Navbar";
 import { TextField } from "@mui/material";
 import { useState } from "react";
 import styled from "styled-components";
@@ -96,14 +97,19 @@ const tableHeaderItensEnviar = [
     },
 ];
 
-const Container = styled.div`
+const ContainerTabelas = styled.div`
+    width: 100%;
+    margin: 25px 40px 20px 40px;
+
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr 60px;
+    grid-template-rows: 1fr;
+    gap: 20px;
 `
 
 const ContainerSetores = styled.div`
-
+    display: flex;
+    flex-direction: column;
 `
 
 const ContainerItens = styled.div`
@@ -112,7 +118,10 @@ const ContainerItens = styled.div`
 
 const ContainerItensEnviados = styled.div`
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+
+    margin-top: 20px;
 `
 
 export default function Estoque(){
@@ -157,6 +166,18 @@ export default function Estoque(){
             medida: 'caixas',
             quantidade: 20
         },
+        {
+            id: '33VV33333KS',
+            produto: 'Barra de chocolate Branco',
+            medida: 'kg',
+            quantidade: 20
+        },
+        {
+            id: 'VVVADAWDWADAW',
+            produto: 'Barra de chocolate Crocante',
+            medida: 'kg',
+            quantidade: 20
+        },
     ];
 
     const [rowsItensEnviar, setRowsItensEnviar] = useState([
@@ -165,21 +186,35 @@ export default function Estoque(){
             produto: 'Barra de chocolate ao leite',
             medida: 'kg',
             quantidade: 20,
-            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn olweufhnoliçeuwhnfçoquhnçoqhwdçoiuqwhçoiwqhdqioçwh'
+            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
         },
         {
             id: '333VVVV33KS',
             produto: 'Sorvete cream and Mulcream Dengo',
             medida: 'kg',
             quantidade: 10,
-            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn olweufhnoliçeuwhnfçoquhnçoqhwdçoiuqwhçoiwqhdqioçwh'
+            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
         },
         {
             id: '333VVV3333KS',
             produto: 'Copos de 300ml',
             medida: 'caixas',
             quantidade: 20,
-            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn olweufhnoliçeuwhnfçoquhnçoqhwdçoiuqwhçoiwqhdqioçwh'
+            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
+        },
+        {
+            id: '33VV33333KS',
+            produto: 'Barra de chocolate Branco',
+            medida: 'kg',
+            quantidade: 20,
+             observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
+        },
+        {
+            id: 'VVVADAWDWADAW',
+            produto: 'Barra de chocolate Crocante',
+            medida: 'kg',
+            quantidade: 20,
+            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
         },
     ]);
 
@@ -208,57 +243,69 @@ export default function Estoque(){
     const [activateBodyHamburguer, setActivateBodyHamburguer] = useState(false);
 
     return(
-        <Container>
-            <ContainerSetores>
-                <TextField label="Pesquisar"></TextField>
-                <Tabela
-                    title="Requisições de Cada Setor" 
-                    tableHeader={tableHeaderSetores} 
-                    rows={rowsSetores} 
-                    onDeleteRow={handleDeleteRow}
-                    fontHeader={12}
-                    visibilityDense={false}
-                    activateBodyHamburguer = {activateBodyHamburguer}
-                />
-            </ContainerSetores>
-
-            <ContainerItens>
-                <h3>Requisição do Setor: .....</h3>
-                <ComboBox    
-                    label="Nº Requisição"
-                />
-                <Tabela
-                    tableHeader={tableHeaderItens} 
-                    rows={rowsItens} 
-                    onDeleteRow={handleDeleteRow}
-                    fontHeader={12}
-                    visibilityDense={false}
-                    activateBodyHamburguer = {activateBodyHamburguer}
-                    disableHead={true}
-                    updateSelect={handleSelected}
-                />
-                <Tabela
-                    title="Itens para enviar" 
-                    tableHeader={tableHeaderItensEnviar} 
-                    rows={rowsItensEnviar} 
-                    onDeleteRow={handleDeleteRow}
-                    fontHeader={12}
-                    visibilityDense={false}
-                    activateBodyHamburguer = {activateBodyHamburguer}
-                />
-            </ContainerItens>
-
-            <ContainerItensEnviados>
-                <div>
-                    <TextField 
-                        label="Quantidade"
-                        value={quantidade}
-                        onChange={handleQuantidadeChange}
+        <div style={{display:'flex'}}>
+            <Navbar/>
+            <ContainerTabelas>
+                <ContainerSetores>
+                    <TextField style={{width:'50%', margin:'40px 0px 20px 0px'}} label="Pesquisar"></TextField>
+                    <Tabela
+                        title="Requisições de Cada Setor" 
+                        tableHeader={tableHeaderSetores} 
+                        rows={rowsSetores} 
+                        onDeleteRow={handleDeleteRow}
+                        fontHeader={12}
+                        visibilityDense={false}
+                        activateBodyHamburguer = {activateBodyHamburguer}
                     />
-                    <BotaoPersonalizado type="button" text="Enviar" color="amarelo" onClick={handleSendItem}/>
-                </div>
-            </ContainerItensEnviados>
-            <BotaoPersonalizado width="100%" text="Confirmar" color="marrom"/>
-        </Container>
+                    <ContainerItensEnviados>
+                        <TextField 
+                            label="Quantidade"
+                            value={quantidade}
+                            onChange={handleQuantidadeChange}
+                        />
+                        <BotaoPersonalizado type="button" text="Enviar" color="amarelo" onClick={handleSendItem}/>
+                    </ContainerItensEnviados>
+                </ContainerSetores>
+
+                <ContainerItens>
+                    <h3>Requisição do Setor: .....</h3>
+                    <ComboBox    
+                        label="Nº Requisição"
+                        sx={{
+                            margin: '20px 0px 42px 0px'
+                        }}
+                    />
+                    <div style={{maxWidth: '794px'}}>
+                        <Tabela
+                            tableHeader={tableHeaderItens} 
+                            rows={rowsItens} 
+                            onDeleteRow={handleDeleteRow}
+                            fontHeader={12}
+                            visibilityDense={false}
+                            activateBodyHamburguer = {activateBodyHamburguer}
+                            disableHead={true}
+                            updateSelect={handleSelected}
+                        />
+
+                        <Tabela
+                            title="Itens para enviar" 
+                            tableHeader={tableHeaderItensEnviar} 
+                            rows={rowsItensEnviar} 
+                            onDeleteRow={handleDeleteRow}
+                            fontHeader={12}
+                            visibilityDense={false}
+                            disableHead={true}
+                            activateBodyHamburguer = {activateBodyHamburguer}
+                        />
+                        <BotaoPersonalizado width="100%" text="Confirmar" color="marrom"/>  
+                    </div>
+                    
+                    
+                </ContainerItens>
+
+                
+                
+            </ContainerTabelas>
+        </div>
     );
 }
