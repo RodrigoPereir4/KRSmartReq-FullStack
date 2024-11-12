@@ -10,17 +10,17 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const tableHeaderSetores = [
-    {
-        id: 'id',
+      {
+        id: 'idSetor',
         numeric: true,
-        disablePadding: true,
-        label: 'ID da Requisição',
+        disablePadding: false,
+        label: 'ID Setor',
       },
       {
-          id: 'setor',
-          numeric: true,
-          disablePadding: false,
-          label: 'Setor',
+        id: 'setor',
+        numeric: false,
+        disablePadding: false,
+        label: 'Setor',
       },
       {
         id: 'requisicoes',
@@ -38,13 +38,13 @@ const tableHeaderSetores = [
 
 const tableHeaderItens = [
       {
-          id: 'sku',
-          numeric: false,
-          disablePadding: false,
-          label: 'SKU',
+        id: 'sku',
+        numeric: false,
+        disablePadding: false,
+        label: 'SKU',
       },
       {
-        id: 'nome',
+        id: 'produto',
         numeric: false,
         disablePadding: false,
         label: 'Nome',
@@ -64,6 +64,12 @@ const tableHeaderItens = [
 ];
 
 const tableHeaderItensEnviar = [
+    {
+        id: 'sku',
+        numeric: false,
+        disablePadding: false,
+        label: 'SKU',
+    },
     {
         id: 'produto',
         numeric: false,
@@ -113,22 +119,19 @@ export default function Estoque(){
    
     const rowsSetores = [
         {
-            id: 1,
-            item: 1,
+            id: 3,
             setor: 'cozinha',
             requisicoes: 3,
             situacao: 'Pendente'
         },
         {
-            id: 2,
-            item: 2,
+            id: 6,
             setor: 'café',
             requisicoes: 5,
             situacao: 'Pendente'
         },
         {
-            id: 3,
-            item: 3,
+            id: 1,
             setor: 'bar',
             requisicoes: 4,
             situacao: 'Normal'
@@ -137,23 +140,20 @@ export default function Estoque(){
 
     const rowsItens = [
         {
-            id: 1,
-            item: '3333333KS',
-            nome: 'Barra de chocolate ao leite',
+            id: '3333333KS',
+            produto: 'Barra de chocolate ao leite',
             medida: 'kg',
             quantidade: 20
         },
         {
-            id: 2,
-            item: '333VVVV33KS',
-            nome: 'Sorvete cream and Mulcream Dengo',
+            id: '333VVVV33KS',
+            produto: 'Sorvete cream and Mulcream Dengo',
             medida: 'kg',
             quantidade: 10
         },
         {
-            id: 3,
-            item: '333VVV3333KS',
-            nome: 'Copos de 300ml',
+            id: '333VVV3333KS',
+            produto: 'Copos de 300ml',
             medida: 'caixas',
             quantidade: 20
         },
@@ -161,25 +161,22 @@ export default function Estoque(){
 
     const [rowsItensEnviar, setRowsItensEnviar] = useState([
         {
-            id: 1,
-            item: '3333333KS',
-            nome: 'Barra de chocolate ao leite',
+            id: '3333333KS',
+            produto: 'Barra de chocolate ao leite',
             medida: 'kg',
             quantidade: 20,
             observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn olweufhnoliçeuwhnfçoquhnçoqhwdçoiuqwhçoiwqhdqioçwh'
         },
         {
-            id: 2,
-            item: '333VVVV33KS',
-            nome: 'Sorvete cream and Mulcream Dengo',
+            id: '333VVVV33KS',
+            produto: 'Sorvete cream and Mulcream Dengo',
             medida: 'kg',
             quantidade: 10,
             observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn olweufhnoliçeuwhnfçoquhnçoqhwdçoiuqwhçoiwqhdqioçwh'
         },
         {
-            id: 3,
-            item: '333VVV3333KS',
-            nome: 'Copos de 300ml',
+            id: '333VVV3333KS',
+            produto: 'Copos de 300ml',
             medida: 'caixas',
             quantidade: 20,
             observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn olweufhnoliçeuwhnfçoquhnçoqhwdçoiuqwhçoiwqhdqioçwh'
