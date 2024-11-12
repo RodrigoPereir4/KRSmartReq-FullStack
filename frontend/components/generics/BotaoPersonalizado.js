@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 const Botao = styled.button`
-    width: 150px;
-    height: 45px;
+    width: ${(props) => props.width || '150px'}; 
+    height: ${(props) => props.height || '45px'};
     background-color:${(props) => (props.color === "amarelo" ? "#F8AE27" : props.color === "marrom" ? "#583939" : "#FF2600")};
     color: ${(props) => (props.color !== "amarelo" ? "#ffffff" : props.color === "marrom" ? "#F8AE27" : "#584439")};
 
@@ -20,7 +20,8 @@ const Botao = styled.button`
 `
 
 export default function BotaoPersonalizado(props){
+    console.log(props.width);
     return(
-        <Botao type={props.type} onClick={props.onClick} color={props.color}>{props.text}</Botao>
+        <Botao width={props.width} height={props.height} type={props.type} onClick={props.onClick} color={props.color}>{props.text}</Botao>
     );
 }

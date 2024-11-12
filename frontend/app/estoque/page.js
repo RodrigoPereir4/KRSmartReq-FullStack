@@ -1,10 +1,13 @@
 'use client'
 
+
+
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
 import ComboBox from "@/components/MUI/ComboBox";
 import Tabela from "@/components/MUI/Tabela";
 import { TextField } from "@mui/material";
 import { useState } from "react";
+import styled from "styled-components";
 
 const tableHeaderSetores = [
     {
@@ -15,7 +18,7 @@ const tableHeaderSetores = [
       },
       {
           id: 'setor',
-          numeric: false,
+          numeric: true,
           disablePadding: false,
           label: 'Setor',
       },
@@ -35,10 +38,16 @@ const tableHeaderSetores = [
 
 const tableHeaderItens = [
       {
-          id: 'produto',
+          id: 'sku',
           numeric: false,
           disablePadding: false,
-          label: 'Nome',
+          label: 'SKU',
+      },
+      {
+        id: 'nome',
+        numeric: false,
+        disablePadding: false,
+        label: 'Nome',
       },
       {
         id: 'medida',
@@ -80,6 +89,25 @@ const tableHeaderItensEnviar = [
       label: 'Observação',
     },
 ];
+
+const Container = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr 60px;
+`
+
+const ContainerSetores = styled.div`
+
+`
+
+const ContainerItens = styled.div`
+    
+`
+
+const ContainerItensEnviados = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
 
 export default function Estoque(){
    
@@ -158,6 +186,7 @@ export default function Estoque(){
         },
     ]);
 
+    console.log(rowsItens);
     const [selectedRows, setSelectedRows] = useState([]);
     const [quantidade, setQuantidade] = useState(0);
 
@@ -182,8 +211,8 @@ export default function Estoque(){
     const [activateBodyHamburguer, setActivateBodyHamburguer] = useState(false);
 
     return(
-        <>
-            <div>
+        <Container>
+            <ContainerSetores>
                 <TextField label="Pesquisar"></TextField>
                 <Tabela
                     title="Requisições de Cada Setor" 
@@ -194,9 +223,9 @@ export default function Estoque(){
                     visibilityDense={false}
                     activateBodyHamburguer = {activateBodyHamburguer}
                 />
-            </div>
+            </ContainerSetores>
 
-            <div>
+            <ContainerItens>
                 <h3>Requisição do Setor: .....</h3>
                 <ComboBox    
                     label="Nº Requisição"
@@ -220,17 +249,19 @@ export default function Estoque(){
                     visibilityDense={false}
                     activateBodyHamburguer = {activateBodyHamburguer}
                 />
-                <BotaoPersonalizado text="Confirmar" color="marrom"/>
-            </div>
+            </ContainerItens>
 
-            <div>
-                <TextField 
-                    label="Quantidade"
-                    value={quantidade}
-                    onChange={handleQuantidadeChange}
-                />
-                <BotaoPersonalizado type="button" text="Enviar" color="amarelo" onClick={handleSendItem}/>
-            </div>
-        </>
+            <ContainerItensEnviados>
+                <div>
+                    <TextField 
+                        label="Quantidade"
+                        value={quantidade}
+                        onChange={handleQuantidadeChange}
+                    />
+                    <BotaoPersonalizado type="button" text="Enviar" color="amarelo" onClick={handleSendItem}/>
+                </div>
+            </ContainerItensEnviados>
+            <BotaoPersonalizado width="100%" text="Confirmar" color="marrom"/>
+        </Container>
     );
 }
