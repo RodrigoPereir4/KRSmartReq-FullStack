@@ -7,7 +7,7 @@ import ComboBox from "@/components/MUI/ComboBox";
 import Tabela from "@/components/MUI/Tabela";
 import Navbar from "@/components/sideBar/Navbar";
 import { TextField } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const tableHeaderSetores = [
@@ -104,6 +104,7 @@ const ContainerTabelas = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
+    align-items: center;
     gap: 20px;
 `
 
@@ -126,99 +127,70 @@ const ContainerItensEnviados = styled.div`
 
 export default function Estoque(){
    
-    const rowsSetores = [
+    const [rowsSetores, setRowsSetores] = useState([
         {
+            id: 1,
             idItem: 3,
             setor: 'cozinha',
             requisicoes: 3,
             situacao: 'Pendente'
         },
         {
+            id: 2,
             idItem: 6,
             setor: 'café',
             requisicoes: 5,
             situacao: 'Pendente'
         },
         {
+            id: 3,
             idItem: 1,
             setor: 'bar',
             requisicoes: 4,
             situacao: 'Normal'
         },
-    ];
+    ]);
 
-    const rowsItens = [
+    const [rowsItens, setRowsItens] = useState([
         {
+            id: 1,
             idItem: '3333333KS',
             produto: 'Barra de chocolate ao leite',
             medida: 'kg',
             quantidade: 20
         },
         {
+            id: 2,
             idItem: '333VVVV33KS',
             produto: 'Sorvete cream and Mulcream Dengo',
             medida: 'kg',
             quantidade: 10
         },
         {
+            id: 3,
             idItem: '333VVV3333KS',
             produto: 'Copos de 300ml',
             medida: 'caixas',
             quantidade: 20
         },
         {
+            id: 4,
             idItem: '33VV33333KS',
             produto: 'Barra de chocolate Branco',
             medida: 'kg',
             quantidade: 20
         },
         {
+            id: 5,
             idItem: 'VVVADAWDWADAW',
             produto: 'Barra de chocolate Crocante',
             medida: 'kg',
             quantidade: 20
-        },
-    ];
-
-    const [rowsItensEnviar, setRowsItensEnviar] = useState([
-        {
-            idItem: '3333333KS',
-            produto: 'Barra de chocolate ao leite',
-            medida: 'kg',
-            quantidade: 20,
-            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
-        },
-        {
-            idItem: '333VVVV33KS',
-            produto: 'Sorvete cream and Mulcream Dengo',
-            medida: 'kg',
-            quantidade: 10,
-            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
-        },
-        {
-            idItem: '333VVV3333KS',
-            produto: 'Copos de 300ml',
-            medida: 'caixas',
-            quantidade: 20,
-            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
-        },
-        {
-            idItem: '33VV33333KS',
-            produto: 'Barra de chocolate Branco',
-            medida: 'kg',
-            quantidade: 20,
-             observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
-        },
-        {
-            idItem: 'VVVADAWDWADAW',
-            produto: 'Barra de chocolate Crocante',
-            medida: 'kg',
-            quantidade: 20,
-            observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
         },
     ]);
 
-    console.log(rowsItens);
+    const [rowsItensEnviar, setRowsItensEnviar] = useState([]);
+    
     const [selectedRows, setSelectedRows] = useState([]);
     const [quantidade, setQuantidade] = useState(0);
 
@@ -226,18 +198,54 @@ export default function Estoque(){
         setQuantidade(e.target.value);
     };
 
-    const handleDeleteRow = () =>{
-        console.log('aa');
-    }
+    const handleDeleteRowSetor = (selected) => {
+        setRowsSetores((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
+    };
+    const handleDeleteRowItem = (selected) => {
+        setRowsItens((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
+    };
+    const handleDeleteRowItemEnviar = (selected) => {
+        setRowsItensEnviar((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
+    };
 
     const handleSelected = (selected) =>{
-        setSelectedRows(selected);
-        console.log(selectedRows);
+        const newRow = Array.isArray(selected)
+        ? rowsItens.filter((row) => selected.includes(row.id))  // Seleção múltipla
+        : rowsItens.filter((row) => row.id === selected);  // Seleção única
+
+        setSelectedRows(newRow);
     }
 
+    useEffect(() => {
+        console.log("selectedRows atualizado:", selectedRows);
+    }, [selectedRows]);
+
     const handleSendItem = () => {
+        if (selectedRows.length > 0) {
+            const updatedRows = selectedRows.map(row => ({
+                ...row,
+                quantidade,
+                observacao: ''
+            }));
         
-        console.log(rowsItensEnviar);
+            updatedRows.forEach(updatedRow => {
+                const index = rowsItensEnviar.findIndex(row => row.id === updatedRow.id);
+        
+                if (index !== -1) {
+                    setRowsItensEnviar(prevRows => 
+                        prevRows.map(row =>
+                            row.id === updatedRow.id ? { ...row, quantidade, observacao: '' } : row
+                        )
+                    );
+                } else {
+                    // Se o item não existir, adiciona ele com os campos quantidade e observacao
+                    setRowsItensEnviar(prevRows => [...prevRows, { ...updatedRow, quantidade, observacao: '' }]);
+                }
+            });
+        
+        } else {
+            alert("Selecione um item requisitado para enviar");
+        }
     }
 
     const [activateBodyHamburguer, setActivateBodyHamburguer] = useState(false);
@@ -252,10 +260,28 @@ export default function Estoque(){
                         title="Requisições de Cada Setor" 
                         tableHeader={tableHeaderSetores} 
                         rows={rowsSetores} 
-                        onDeleteRow={handleDeleteRow}
+                        onDeleteRow={handleDeleteRowSetor}
                         fontHeader={12}
                         visibilityDense={false}
+                        disableDelete={true}
                         activateBodyHamburguer = {activateBodyHamburguer}
+                    />
+                    <ComboBox    
+                        label="Selecione o Nº da Requisição"
+                        sx={{
+                            margin: '20px 0px 42px 0px'
+                        }}
+                    />
+                    <Tabela
+                            title="Itens Requisitados"
+                            tableHeader={tableHeaderItens} 
+                            rows={rowsItens} 
+                            onDeleteRow={handleDeleteRowItem}
+                            fontHeader={12}
+                            visibilityDense={false}
+                            disableDelete={true}
+                            activateBodyHamburguer = {activateBodyHamburguer}
+                            updateSelect={handleSelected}
                     />
                     <ContainerItensEnviados>
                         <TextField 
@@ -268,36 +294,18 @@ export default function Estoque(){
                 </ContainerSetores>
 
                 <ContainerItens>
-                    <h3>Requisição do Setor: .....</h3>
-                    <ComboBox    
-                        label="Nº Requisição"
-                        sx={{
-                            margin: '20px 0px 42px 0px'
-                        }}
-                    />
+                    
                     <div style={{maxWidth: '794px'}}>
-                        <Tabela
-                            tableHeader={tableHeaderItens} 
-                            rows={rowsItens} 
-                            onDeleteRow={handleDeleteRow}
-                            fontHeader={12}
-                            visibilityDense={false}
-                            activateBodyHamburguer = {activateBodyHamburguer}
-                            disableHead={true}
-                            updateSelect={handleSelected}
-                        />
-
                         <Tabela
                             title="Itens para enviar" 
                             tableHeader={tableHeaderItensEnviar} 
                             rows={rowsItensEnviar} 
-                            onDeleteRow={handleDeleteRow}
+                            onDeleteRow={handleDeleteRowItemEnviar}
                             fontHeader={12}
                             visibilityDense={false}
-                            disableHead={true}
                             activateBodyHamburguer = {activateBodyHamburguer}
                         />
-                        <BotaoPersonalizado width="100%" text="Confirmar" color="marrom"/>  
+                        <BotaoPersonalizado width="100%" text="Confirmar Entrega" color="marrom"/>  
                     </div>
                     
                     

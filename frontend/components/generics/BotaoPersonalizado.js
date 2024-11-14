@@ -20,7 +20,6 @@ const Botao = styled.button`
 `
 
 export default function BotaoPersonalizado(props){
-    console.log(props.width);
     return(
         <Botao width={props.width} height={props.height} type={props.type} onClick={props.onClick} color={props.color}>{props.text}</Botao>
     );
