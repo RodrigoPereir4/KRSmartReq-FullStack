@@ -1,5 +1,5 @@
 
-ul {
+.menu {
     list-style: none;
     cursor: pointer;
 
@@ -19,20 +19,20 @@ ul {
     position: relative;
 }
 
-ul.activate li:nth-child(1){
+.menu.activate li:nth-child(1){
     transform: translateY(15px) rotate(45deg);
 }
 
-ul.activate li:nth-child(2){
+.menu.activate li:nth-child(2){
     transform: rotate(-45deg);
 }
 
-ul.activate li:nth-child(3){
+.menu.activate li:nth-child(3){
     transform: translateY(-15px) rotate(-45deg);
 }
 
 @media (min-width: 920px){
-    ul{
-        display: none;
+    .menu{
+        opacity: 0;
     }
 }

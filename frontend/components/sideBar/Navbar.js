@@ -1,17 +1,17 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
-import "@/app/styles/globals.css";
-import "@/app/styles/hamburguer.css";
 
 import userImagem from "../../images/user2.png";
 import logoImage from "../../images/logo.png";
 
 import ButtonBar from "./ButtonBar";
+import styles from "@/app/styles/hamburguer.css";
 
-const Container = styled.div`
+const Container = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'activateHamburguer' // Não passar a prop 'activateBodyHamburguer' para o DOM
+})`
   min-width: 230px;
   height: 100vh;
   padding: 20px;
@@ -32,7 +32,7 @@ const Container = styled.div`
   }
 
   @media (max-width: 1250px){
-    height: 114.1vh;
+    height: 114.3vh;
   }
 
   @media (min-width: 920px){
@@ -78,8 +78,8 @@ export default function Navbar(props) {
 
   return (
     <>
-      <ul onClick={handleActivateHamburger} className={activateHamburguer ? 'activate' : ''}>
-        <li className="hamburguer"> </li>
+      <ul onClick={handleActivateHamburger} className='menu' {...activateHamburguer ? 'activate' : ''}>
+        <li className="hamburguer"></li>
         <li className="hamburguer"></li>
         <li className="hamburguer"></li>
       </ul>

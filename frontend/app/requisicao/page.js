@@ -19,7 +19,9 @@ import { TextField, InputAdornment } from "@mui/material";
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
 import Tabela from "@/components/MUI/Tabela";
 
-const Container = styled.div`
+const Container = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'activateBodyHamburguer' // Não passar a prop 'activateBodyHamburguer' para o DOM
+})`
     height: 100vh;
     margin: auto;
 
@@ -109,7 +111,6 @@ const FormInput = styled.form`
         }
     }
 `
-
 
 export default function Requisicao(){
 
