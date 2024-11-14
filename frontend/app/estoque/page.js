@@ -128,19 +128,19 @@ export default function Estoque(){
    
     const rowsSetores = [
         {
-            id: 3,
+            idItem: 3,
             setor: 'cozinha',
             requisicoes: 3,
             situacao: 'Pendente'
         },
         {
-            id: 6,
+            idItem: 6,
             setor: 'café',
             requisicoes: 5,
             situacao: 'Pendente'
         },
         {
-            id: 1,
+            idItem: 1,
             setor: 'bar',
             requisicoes: 4,
             situacao: 'Normal'
@@ -149,31 +149,31 @@ export default function Estoque(){
 
     const rowsItens = [
         {
-            id: '3333333KS',
+            idItem: '3333333KS',
             produto: 'Barra de chocolate ao leite',
             medida: 'kg',
             quantidade: 20
         },
         {
-            id: '333VVVV33KS',
+            idItem: '333VVVV33KS',
             produto: 'Sorvete cream and Mulcream Dengo',
             medida: 'kg',
             quantidade: 10
         },
         {
-            id: '333VVV3333KS',
+            idItem: '333VVV3333KS',
             produto: 'Copos de 300ml',
             medida: 'caixas',
             quantidade: 20
         },
         {
-            id: '33VV33333KS',
+            idItem: '33VV33333KS',
             produto: 'Barra de chocolate Branco',
             medida: 'kg',
             quantidade: 20
         },
         {
-            id: 'VVVADAWDWADAW',
+            idItem: 'VVVADAWDWADAW',
             produto: 'Barra de chocolate Crocante',
             medida: 'kg',
             quantidade: 20
@@ -182,35 +182,35 @@ export default function Estoque(){
 
     const [rowsItensEnviar, setRowsItensEnviar] = useState([
         {
-            id: '3333333KS',
+            idItem: '3333333KS',
             produto: 'Barra de chocolate ao leite',
             medida: 'kg',
             quantidade: 20,
             observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
         },
         {
-            id: '333VVVV33KS',
+            idItem: '333VVVV33KS',
             produto: 'Sorvete cream and Mulcream Dengo',
             medida: 'kg',
             quantidade: 10,
             observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
         },
         {
-            id: '333VVV3333KS',
+            idItem: '333VVV3333KS',
             produto: 'Copos de 300ml',
             medida: 'caixas',
             quantidade: 20,
             observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
         },
         {
-            id: '33VV33333KS',
+            idItem: '33VV33333KS',
             produto: 'Barra de chocolate Branco',
             medida: 'kg',
             quantidade: 20,
              observacao: 'aaaaaawd8ipçhon iujçn hfceuljoçkw newçolijufhn wioeuçjfhn'
         },
         {
-            id: 'VVVADAWDWADAW',
+            idItem: 'VVVADAWDWADAW',
             produto: 'Barra de chocolate Crocante',
             medida: 'kg',
             quantidade: 20,

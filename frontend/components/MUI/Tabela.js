@@ -284,7 +284,7 @@ export default function Tabela(props) {
                       scope="row"
                       padding="none"
                     >
-                      {row.id}
+                      {row.idItem}
                     </TableCell>
                     {Object.entries(row).map(([key, value], cellIndex) => {
                       console.log(ids);

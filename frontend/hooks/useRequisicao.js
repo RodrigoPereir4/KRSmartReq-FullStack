@@ -37,8 +37,8 @@ const tableHeader = [
     },
 ];
 
-function createData(id, nome, categoria, quantidade, dataSolicitada, dataEntrega, item, itemObj) {
-    return { id, nome, categoria, quantidade, dataSolicitada, dataEntrega, item, itemObj };
+function createData(idItensRequisitados, nome, categoria, quantidade, dataSolicitada, dataEntrega, idItem, itemObj) {
+    return { idItensRequisitados, nome, categoria, quantidade, dataSolicitada, dataEntrega, idItem, itemObj };
 }
 
 const today = dayjs();
