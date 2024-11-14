@@ -18,7 +18,9 @@ import userImage from "@/images/user2.png";
 import { TextField, InputAdornment } from "@mui/material";
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
 
-const Container = styled.div`
+const Container = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'activateBodyHamburguer' // Não passar a prop 'activateBodyHamburguer' para o DOM
+})`
     height: 100vh;
     margin: auto;
 
@@ -108,7 +110,6 @@ const FormInput = styled.form`
         }
     }
 `
-
 
 export default function Requisicao(){
 
