@@ -37,8 +37,8 @@ const tableHeader = [
     },
 ];
 
-function createData(idItensRequisitados, nome, categoria, quantidade, dataSolicitada, dataEntrega, idItem, itemObj) {
-    return { idItensRequisitados, nome, categoria, quantidade, dataSolicitada, dataEntrega, idItem, itemObj };
+function createData(id, nome, categoria, quantidade, dataSolicitada, dataEntrega, idItem, itemObj) {
+    return { id, nome, categoria, quantidade, dataSolicitada, dataEntrega, idItem, itemObj };
 }
 
 const today = dayjs();
@@ -173,6 +173,19 @@ export function useRequisicao(){
             alert("ERRO! Insira algum item para realizar a requisição"); //TODO: Adicionar alert personalizado
         } else {
             console.log('Submitting data:', rows);
+            const produto = rows.flatMap(({ itemObj, quantidade }) => 
+                [{sku: itemObj.sku, quantidade}]
+            );
+            
+            const rowsFiltados = {
+                nome,
+                dataSolicitada,
+                dataEntrega, 
+                itens: {produto}
+            };
+            
+            console.log(rowsFiltados);
+            //'nome, dataS, dataE, SKU, quantidade'
         }
         // Aqui você pode enviar os dados para um servidor ou fazer outra ação
     };
