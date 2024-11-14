@@ -4,6 +4,7 @@
 
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
 import ComboBox from "@/components/MUI/ComboBox";
+import ObservacaoDialog from "@/components/MUI/ObservacaoDialog";
 import Tabela from "@/components/MUI/Tabela";
 import Navbar from "@/components/sideBar/Navbar";
 import { TextField } from "@mui/material";
@@ -193,6 +194,7 @@ export default function Estoque(){
     
     const [selectedRows, setSelectedRows] = useState([]);
     const [quantidade, setQuantidade] = useState(0);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleQuantidadeChange = (e) => {
         setQuantidade(e.target.value);
@@ -222,27 +224,40 @@ export default function Estoque(){
 
     const handleSendItem = () => {
         if (selectedRows.length > 0) {
-            const updatedRows = selectedRows.map(row => ({
-                ...row,
-                quantidade,
-                observacao: ''
-            }));
-        
-            updatedRows.forEach(updatedRow => {
-                const index = rowsItensEnviar.findIndex(row => row.id === updatedRow.id);
-        
-                if (index !== -1) {
-                    setRowsItensEnviar(prevRows => 
-                        prevRows.map(row =>
-                            row.id === updatedRow.id ? { ...row, quantidade, observacao: '' } : row
-                        )
-                    );
-                } else {
-                    // Se o item não existir, adiciona ele com os campos quantidade e observacao
-                    setRowsItensEnviar(prevRows => [...prevRows, { ...updatedRow, quantidade, observacao: '' }]);
-                }
+            let testQtd = false;
+            selectedRows.forEach((row) =>{
+                testQtd = quantidade == row.quantidade;
+                console.log(row.quantidade);
+                console.log(testQtd);
+                console.log(quantidade);
             });
+            if(testQtd){
+                const updatedRows = selectedRows.map(row => ({
+                    ...row,
+                    quantidade,
+                    observacao: ''
+                }));
+            
+                updatedRows.forEach(updatedRow => {
+                    const index = rowsItensEnviar.findIndex(row => row.id === updatedRow.id);
+            
+                    if (index !== -1) {
+                        setRowsItensEnviar(prevRows => 
+                            prevRows.map(row =>
+                                row.id === updatedRow.id ? { ...row, quantidade, observacao: '' } : row
+                            )
+                        );
+                    } else {
+                        // Se o item não existir, adiciona ele com os campos quantidade e observacao
+                        setRowsItensEnviar(prevRows => [...prevRows, { ...updatedRow, quantidade, observacao: '' }]);
+                    }
+                });
+            } else {
+                setOpenDialog(true);
+            }
         
+
+
         } else {
             alert("Selecione um item requisitado para enviar");
         }
@@ -290,6 +305,7 @@ export default function Estoque(){
                             onChange={handleQuantidadeChange}
                         />
                         <BotaoPersonalizado type="button" text="Enviar" color="amarelo" onClick={handleSendItem}/>
+                        <ObservacaoDialog open={openDialog} setOpen={setOpenDialog}/>
                     </ContainerItensEnviados>
                 </ContainerSetores>
 
