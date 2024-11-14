@@ -194,21 +194,16 @@ export default function Estoque(){
     
     const [selectedRows, setSelectedRows] = useState([]);
     const [quantidade, setQuantidade] = useState(0);
+    const [observacao, setObservacao] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleQuantidadeChange = (e) => {
         setQuantidade(e.target.value);
     };
 
-    const handleDeleteRowSetor = (selected) => {
-        setRowsSetores((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
-    };
-    const handleDeleteRowItem = (selected) => {
-        setRowsItens((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
-    };
-    const handleDeleteRowItemEnviar = (selected) => {
-        setRowsItensEnviar((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));
-    };
+    const handleDeleteRowSetor = (selected) => {setRowsSetores((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
+    const handleDeleteRowItem = (selected) => {setRowsItens((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
+    const handleDeleteRowItemEnviar = (selected) => {setRowsItensEnviar((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
 
     const handleSelected = (selected) =>{
         const newRow = Array.isArray(selected)
@@ -221,6 +216,35 @@ export default function Estoque(){
     useEffect(() => {
         console.log("selectedRows atualizado:", selectedRows);
     }, [selectedRows]);
+    
+    useEffect(() => {
+        console.log("Observacao atualizado:", observacao);
+    }, [observacao]);
+
+    const handleCloseDialog = (text) => {  
+        setObservacao(text);
+        const updatedRows = selectedRows.map(row => ({
+            ...row,
+            quantidade,
+            observacao: text,
+        }));
+    
+        updatedRows.forEach(updatedRow => {
+            const index = rowsItensEnviar.findIndex(row => row.id === updatedRow.id);
+    
+            if (index !== -1) {
+                setRowsItensEnviar(prevRows => 
+                    prevRows.map(row =>
+                        row.id === updatedRow.id ? { ...row, quantidade, observacao: text } : row
+                    )
+                );
+            } else {
+                // Se o item não existir, adiciona ele com os campos quantidade e observacao
+                setRowsItensEnviar(prevRows => [...prevRows, { ...updatedRow, quantidade, observacao: text}]);
+            }
+        });
+        setOpenDialog(false);
+    }
 
     const handleSendItem = () => {
         if (selectedRows.length > 0) {
@@ -235,7 +259,7 @@ export default function Estoque(){
                 const updatedRows = selectedRows.map(row => ({
                     ...row,
                     quantidade,
-                    observacao: ''
+                    observacao: observacao
                 }));
             
                 updatedRows.forEach(updatedRow => {
@@ -244,16 +268,17 @@ export default function Estoque(){
                     if (index !== -1) {
                         setRowsItensEnviar(prevRows => 
                             prevRows.map(row =>
-                                row.id === updatedRow.id ? { ...row, quantidade, observacao: '' } : row
+                                row.id === updatedRow.id ? { ...row, quantidade, observacao } : row
                             )
                         );
                     } else {
                         // Se o item não existir, adiciona ele com os campos quantidade e observacao
-                        setRowsItensEnviar(prevRows => [...prevRows, { ...updatedRow, quantidade, observacao: '' }]);
+                        setRowsItensEnviar(prevRows => [...prevRows, { ...updatedRow, quantidade, observacao}]);
                     }
                 });
             } else {
                 setOpenDialog(true);
+                
             }
         
 
@@ -301,11 +326,17 @@ export default function Estoque(){
                     <ContainerItensEnviados>
                         <TextField 
                             label="Quantidade"
+                            type="number"
                             value={quantidade}
                             onChange={handleQuantidadeChange}
                         />
                         <BotaoPersonalizado type="button" text="Enviar" color="amarelo" onClick={handleSendItem}/>
-                        <ObservacaoDialog open={openDialog} setOpen={setOpenDialog}/>
+                        <ObservacaoDialog 
+                            open={openDialog} 
+                            setOpen={setOpenDialog} 
+                            setObservacao={setObservacao}
+                            handleCloseDialog={handleCloseDialog}
+                        />
                     </ContainerItensEnviados>
                 </ContainerSetores>
 

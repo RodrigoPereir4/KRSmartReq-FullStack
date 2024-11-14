@@ -24,9 +24,8 @@ export default function ObservacaoDialog(props) {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
+            const observacao = formJson.observacao;
+            props.handleCloseDialog(observacao);
           },
         }}
       >
@@ -42,8 +41,8 @@ export default function ObservacaoDialog(props) {
             autoFocus
             required
             margin="dense"
-            id="name"
-            name="email"
+            id="text"
+            name="observacao"
             label="Descreva o motivo"
             multiline
             fullWidth
