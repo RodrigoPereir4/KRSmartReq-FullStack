@@ -98,7 +98,7 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
   return (
-    <Toolbar style={props.disableHead ? {display: "none"}:{display: 'flex'}}
+    <Toolbar style={{display: props.disableHead ? 'none' : 'flex'}}
       sx={[
         {
           pl: { sm: 2 },
@@ -132,7 +132,7 @@ function EnhancedTableToolbar(props) {
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton onClick={props.handleDeleteRow}>
-            <DeleteIcon />
+            <DeleteIcon style={{display: props.disableDelete ? 'none' : 'flex'}}/>
           </IconButton>
         </Tooltip>
       ) : (
@@ -156,7 +156,7 @@ export default function Tabela(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(props.rowsPerPage || 5);
 
   const handleDeleteRow = () => {
     props.onDeleteRow(selected); // Chama a função passada do pai
@@ -236,6 +236,7 @@ export default function Tabela(props) {
           numSelected={selected.length} 
           handleDeleteRow={handleDeleteRow}
           disableHead={props.disableHead}
+          disableDelete={props.disableDelete}
           />
         <TableContainer>
         <Table
@@ -287,10 +288,7 @@ export default function Tabela(props) {
                       {row.idItem}
                     </TableCell>
                     {Object.entries(row).map(([key, value], cellIndex) => {
-                      console.log(ids);
-                      console.log(key);
                          if (ids.includes(key)) {
-                          console.log("VALOOOR: " + value)
                           return (
                             <TableCell key={cellIndex} align="left">
                               {value}
