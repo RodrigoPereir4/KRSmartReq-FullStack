@@ -1,6 +1,6 @@
 'use client'
 
-import { procurarProdutoNome } from "@/services/RequisicaoService";
+import { enviarRequisicao, procurarProdutoNome } from "@/services/RequisicaoService";
 import dayjs from "dayjs";
 import { useState } from "react";
 
@@ -166,7 +166,7 @@ export function useRequisicao(){
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if(rows.length==0){
@@ -185,6 +185,21 @@ export function useRequisicao(){
             };
             
             console.log(rowsFiltados);
+
+            try{
+                const response = await enviarRequisicao(rowsFiltados);
+                const msg = "Requisição enviada!";
+                if(response === msg){
+                    alert(msg);
+                } else {
+                    alert("Problema no envio!");
+                }
+                
+            }catch(error){
+                alert("Erro de comunicação com o servidor!");
+            }
+
+            
             //'nome, dataS, dataE, SKU, quantidade'
         }
         // Aqui você pode enviar os dados para um servidor ou fazer outra ação

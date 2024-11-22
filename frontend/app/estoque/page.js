@@ -288,6 +288,12 @@ export default function Estoque(){
         }
     }
 
+    const handleConfirm = () => {
+        if(rowsItensEnviar.length !== 0){
+            
+        }
+    }
+
     const [activateBodyHamburguer, setActivateBodyHamburguer] = useState(false);
 
     return(

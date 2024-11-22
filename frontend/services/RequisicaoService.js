@@ -43,3 +43,21 @@ export async function procurarProdutoNome(nome){
     return response.json();
 
 }
+
+export async function enviarRequisicao({dados}){
+    let url = "http://localhost:8080/requisicao/requisitar";
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body: json.stringfy(dados)
+    });
+
+    if(!response.ok){
+        alert("Falha na requisição!");
+    }
+
+    return "Requisição enviada!";
+}
