@@ -238,8 +238,8 @@ export default function Tabela(props) {
           disableHead={props.disableHead}
           disableDelete={props.disableDelete}
           />
-        <TableContainer>
-        <Table
+        <TableContainer style={{height: props.height}}>
+          <Table
             sx={{ minWidth: 750}}
             aria-labelledby="tableTitle"
             size={'small'}
@@ -279,14 +279,7 @@ export default function Tabela(props) {
                         }}
                       />
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.idItem}
-                    </TableCell>
+                    
                     {Object.entries(row).map(([key, value], cellIndex) => {
                          if (ids.includes(key)) {
                           return (

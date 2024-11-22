@@ -37,8 +37,8 @@ const tableHeader = [
     },
 ];
 
-function createData(id, nome, categoria, quantidade, dataSolicitada, dataEntrega, idItem, itemObj) {
-    return { id, nome, categoria, quantidade, dataSolicitada, dataEntrega, idItem, itemObj };
+function createData(id, nome, categoria, quantidade, dataSolicitada, dataEntrega, nomeProduto, itemObj) {
+    return { id, nome, categoria, quantidade, dataSolicitada, dataEntrega, nomeProduto, itemObj };
 }
 
 const today = dayjs();
@@ -57,15 +57,15 @@ export function useRequisicao(){
 
     const [listaCategorias, setListaCategorias] = useState('');
     
-    const [item, setItem] = useState('');
-    const [inputItemValue, setInputItemValue] = useState('');
+    const [nomeProduto, setNomeProduto] = useState('');
+    const [inputNomeProdutoValue, setInputNomeProdutoValue] = useState('');
 
     const [erros, setErros] = useState([]);
     const [visibilityDense, setVisibilityDense] = useState(true);
 
     const handleAddRow = async () => {
         if(verificarAtributosNullos()){
-            const response = await procurarProdutoNome(item);
+            const response = await procurarProdutoNome(nomeProduto);
             const newRow = createData(
                 rows.length + 1,
                 nome,
@@ -73,7 +73,7 @@ export function useRequisicao(){
                 Number(quantidade),
                 dataSolicitada.format('DD/MM/YYYY'),
                 dataEntrega.format('DD/MM/YYYY'),
-                item,
+                nomeProduto,
                 response
             );
             console.log(newRow);
@@ -85,7 +85,7 @@ export function useRequisicao(){
             setDataEntrega(dataEntrega);
             setCategoria('');
             setQuantidade('');
-            setItem('');
+            setNomeProduto('');
         }else{
             alert("Preencha os campos necessários!"); //TODO: Adicionar alert personalizado
         }
@@ -98,7 +98,7 @@ export function useRequisicao(){
             { valor: dataEntrega, campo: 'Data de Entrega' },
             { valor: categoria, campo: 'Categoria' },
             { valor: quantidade, campo: 'Quantidade' },
-            { valor: item, campo: 'Item' },
+            { valor: nomeProduto, campo: 'Nome Produto' },
         ];
     
         const novosErros = [];
@@ -154,15 +154,15 @@ export function useRequisicao(){
         setInputCategoriaValue(newInputValue);
     };
 
-    const handleItemValueChange = (event, newValue) => {
-        setItem(newValue);
+    const handleNomeProdutoValueChange = (event, newValue) => {
+        setNomeProduto(newValue);
         if(newValue != null){
           alert(newValue);
         }
     };
     
-    const handleInputItemValueChange = (event, newInputValue) => {
-        setInputItemValue(newInputValue);
+    const handleInputNomeProdutoValueChange = (event, newInputValue) => {
+        setInputNomeProdutoValue(newInputValue);
     };
 
 
@@ -170,7 +170,7 @@ export function useRequisicao(){
         e.preventDefault();
 
         if(rows.length==0){
-            alert("ERRO! Insira algum item para realizar a requisição"); //TODO: Adicionar alert personalizado
+            alert("ERRO! Insira algum nomeProduto para realizar a requisição"); //TODO: Adicionar alert personalizado
         } else {
             console.log('Submitting data:', rows);
             const produto = rows.flatMap(({ itemObj, quantidade }) => 
@@ -224,10 +224,10 @@ export function useRequisicao(){
         setListaCategorias,
         quantidade,
         setQuantidade,
-        item,
-        setItem,
-        inputItemValue,
-        setInputItemValue,
+        nomeProduto,
+        setNomeProduto,
+        inputNomeProdutoValue,
+        setInputNomeProdutoValue,
         erros, 
         setErros,
         visibilityDense,
@@ -241,8 +241,8 @@ export function useRequisicao(){
         handleQuantidadeChange,
         handleCategoriaValueChange,
         handleInputCategoriaValueChange,
-        handleItemValueChange,
-        handleInputItemValueChange,
+        handleNomeProdutoValueChange,
+        handleInputNomeProdutoValueChange,
         handleSubmit
     };    
 }

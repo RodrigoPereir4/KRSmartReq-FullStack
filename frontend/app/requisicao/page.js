@@ -132,10 +132,10 @@ export default function Requisicao(){
         setListaCategorias,
         quantidade,
         setQuantidade,
-        item,
-        setItem,
-        inputItemValue,
-        setInputItemValue,
+        nomeProduto,
+        setNomeProduto,
+        inputNomeProdutoValue,
+        setInputNomeProdutoValue,
         erros, 
         setErros,
         visibilityDense,
@@ -149,8 +149,8 @@ export default function Requisicao(){
         handleQuantidadeChange,
         handleCategoriaValueChange,
         handleInputCategoriaValueChange,
-        handleItemValueChange,
-        handleInputItemValueChange,
+        handleNomeProdutoValueChange,
+        handleInputNomeProdutoValueChange,
         handleSubmit
     } = useRequisicao();
 
@@ -365,11 +365,11 @@ export default function Requisicao(){
                             label="Itens"
                             className="inputData"
                             listarItens={listarItensComboBox} 
-                            value={item} 
-                            inputValue={inputItemValue} 
+                            value={nomeProduto} 
+                            inputValue={inputNomeProdutoValue} 
                             categoria={categoria}
-                            handleValueChange={handleItemValueChange} 
-                            handleInputValueChange={handleInputItemValueChange}
+                            handleValueChange={handleNomeProdutoValueChange} 
+                            handleInputValueChange={handleInputNomeProdutoValueChange}
                         />
 
                         <BotaoPersonalizado type="button" onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
