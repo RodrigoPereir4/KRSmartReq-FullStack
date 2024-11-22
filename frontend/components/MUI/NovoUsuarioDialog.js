@@ -16,6 +16,12 @@ export default function NovoUsuarioDialog(props) {
   const [setorNome, setSetorNome] = useState('');
   const [listaSetores, setListaSetores] = useState([]);
   const [listaSetoresNome, setListaSetoresNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [emailView, setEmailView] = useState('');
+  const [passwordView, setPasswordView] = useState('');
+  const [setorNomeView, setSetorNomeView] = useState('');
 
   const [inputSetorNomeValue, setInputSetorNomeValue] = useState('');
 
@@ -40,8 +46,15 @@ export default function NovoUsuarioDialog(props) {
     console.log(erros);
 
     return novosErros.length === 0; // Retorna true se não houver erros
-}
+  }
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const handleSetorNomeValueChange = (event, newValue) => {
     setSetorNome(newValue);
@@ -57,6 +70,18 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
   const handleClose = () => {
     props.setOpen(false);
   }
+  console.log(props.view);
+
+  useEffect(() => {
+    // Verifique se props.view é um array e não está vazio
+    if (Array.isArray(props.view) && props.view.length > 0) {
+      setEmailView(props.view[0].email);  // Acessa o email do primeiro item
+      setPasswordView(props.view[0].password);  // Acessa a senha do primeiro item
+      setSetorNomeView(props.view[0].setorNome);  // Acessa o primeiro item do array
+    } else {
+      console.log("props.view não é um array válido ou está vazio");
+    }
+  }, [props.view]);
 
   useEffect(() => {
     const carregarSetores = async() => {
@@ -109,15 +134,19 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
           },
         }}
       >
-        <DialogTitle>Inserir Novo usuário</DialogTitle>
+        {props.view ? <DialogTitle>Visualizar usuário</DialogTitle> : <DialogTitle>Inserir Novo usuário</DialogTitle>}
+        
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
             id="emailText"
+            value={emailView ? emailView : email}
+            onChange={handleEmailChange}
             name="email"
             label="Email"
+            disabled={props.view ? true : false}
             fullWidth
             rows={4}
           />
@@ -130,9 +159,12 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
             required
             margin="dense"
             id="passwordText"
+            value={passwordView ? passwordView : password}
+            onChange={handlePasswordChange}
             name="password"
             type="password"
             label="Senha"
+            disabled={props.view ? true : false}
             fullWidth
             rows={4}
           />
@@ -143,9 +175,10 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
             }}
             name="setorNome"
             label="Selecione o Setor do usuário!"
-            value={setorNome}
+            value={setorNomeView ? setorNomeView : setorNome}
             listarItens={listaSetoresNome}
             inputValue={inputSetorNomeValue} 
+            disabled={props.view ? true : false}
             handleValueChange={handleSetorNomeValueChange} 
             handleInputValueChange={handleInputSetorNomeValueChange}
           />
@@ -153,7 +186,7 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button type="submit">Enviar</Button>
+          <Button type="submit" style={{display: props.view ? 'none' : 'flex'}}>Enviar</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

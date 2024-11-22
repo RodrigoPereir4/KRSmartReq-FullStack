@@ -52,29 +52,26 @@ export default function Usuarios(){
     const [rowsUsuarios, setRowsUsuarios] = useState([
         {
             id: 1,
-            idSetor: 3,
-            setor: 'cozinha',
-            requisicoes: 3,
-            situacao: 'Pendente'
+            email: 'aaaa@wdaawdwa',
+            password: 3,
+            setorNome: 'Cozinha'
         },
         {
             id: 2,
-            idSetor: 6,
-            setor: 'café',
-            requisicoes: 5,
-            situacao: 'Pendente'
+            email: 'bbbbb@bbdwa',
+            password: 5,
+            setorNome: 'Café'
         },
         {
             id: 3,
-            idSetor: 1,
-            setor: 'bar',
-            requisicoes: 4,
-            situacao: 'Normal'
+            email: 'ccccc@ccccdwa',
+            password: '233232fad@',
+            setorNome: 'Bar'
         },
     ]);
 
     const [openInsertDialog, setOpenInsertDialog] = useState(false);
-
+    const [openViewDialog, setOpenViewDialog] = useState(false);
     
 
     const [email, setEmail] = useState('');
@@ -91,6 +88,11 @@ export default function Usuarios(){
         setSelectedRows(newRow);
     }
 
+    useEffect(() => {
+        if (selectedRows.length > 0) {
+          console.log('Linhas selecionadas:', selectedRows);
+        }
+      }, [selectedRows]); 
 
     const handleAddUsuario = () =>{
         setOpenInsertDialog(true);
@@ -100,8 +102,6 @@ export default function Usuarios(){
         setEmail(email);
         setPassword(password);
         setSetorNome(setorNome);
-        
-
         
         // Se o item não existir, adiciona ele com os campos quantidade e observacao
             
@@ -140,6 +140,42 @@ export default function Usuarios(){
         })
     }
 
+    const handleViewUsuario = () => {
+        if(selectedRows.length == 0){
+            alert("Selecione uma linha da tabela para visualizar!");
+        } else if(selectedRows.length > 1){
+            alert("Selecione apenas uma linha da tabela!")
+        } else {
+            setOpenViewDialog(true)
+        }
+    }
+
+    const handleCloseViewDialog = ({email, password, setorNome}) => {  
+        setEmail(email);
+        setPassword(password);
+        setSetorNome(setorNome);
+        
+        // Se o item não existir, adiciona ele com os campos quantidade e observacao
+            
+            if (!rowsUsuarios.some(user => user.email === email)) {
+                setRowsUsuarios(prevRows => {
+    
+                    const maxId = prevRows.length > 0 ? Math.max(...prevRows.map(user => user.id)) : 0;
+                    const newId = maxId + 1;
+                    
+                    return [...prevRows, {id: newId, email, password, setorNome}]
+                }
+                );
+                setOpenInsertDialog(false);
+            } else {
+                alert("Esse email já existe no sistema!");
+            }
+       
+        console.log(rowsUsuarios);
+        
+    }
+
+
     return(
         <div style={{display:'flex'}}>
             <Navbar/>
@@ -165,7 +201,7 @@ export default function Usuarios(){
                 />
                 <div style={{display: 'flex', width: '100%', height: 120 , gap: 50}}>
                     <BotaoPersonalizado onClick={handleAddUsuario} width="100%" height="100%" text="+ Novo Usuário" color="marrom"/> 
-                    <BotaoPersonalizado width="100%" height="100%" text="Visualizar" color="amarelo"/> 
+                    <BotaoPersonalizado onClick={handleViewUsuario} width="100%" height="100%" text="Visualizar" color="amarelo"/> 
                     <BotaoPersonalizado width="100%" height="100%" text="Editar" color="amarelo"/> 
                     <BotaoPersonalizado width="100%" height="100%" text="Excluir" color="vermelho"/> 
                 </div>
@@ -173,6 +209,12 @@ export default function Usuarios(){
                     open={openInsertDialog} 
                     setOpen={setOpenInsertDialog} 
                     handleCloseDialog={handleCloseInsertDialog}
+                />
+                <NovoUsuarioDialog
+                    open={openViewDialog} 
+                    setOpen={setOpenViewDialog} 
+                    handleCloseDialog={handleCloseViewDialog}
+                    view={selectedRows}
                 />
             </ContainerTabela>
            
