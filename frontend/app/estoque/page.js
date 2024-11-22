@@ -363,9 +363,6 @@ export default function Estoque(){
                     
                     
                 </ContainerItens>
-
-                
-                
             </ContainerTabelas>
         </div>
     );
