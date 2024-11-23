@@ -1,6 +1,7 @@
 package com.krsoftwares.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,13 +20,15 @@ public class SetorController {
     @Autowired
     private SetorRepository setorRepository;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/cadastrar")
     public String registrarSetor(@RequestBody SetorModel setor){    
         setorRepository.save(setor);
         return "Setor registrado com sucesso!";
     }
 
-    @GetMapping("listar")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/listar")
     public Iterable<SetorModel> listarSetores(){
         return setorRepository.findAll();
     }
