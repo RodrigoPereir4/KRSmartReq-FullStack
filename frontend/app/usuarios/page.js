@@ -50,28 +50,41 @@ const ContainerTabela = styled.div`
 export default function Usuarios(){
 
     const [rowsUsuarios, setRowsUsuarios] = useState([
-        {
-            id: 1,
-            email: 'aaaa@wdaawdwa',
-            password: 3,
-            setorNome: 'Cozinha'
-        },
-        {
-            id: 2,
-            email: 'bbbbb@bbdwa',
-            password: 5,
-            setorNome: 'Café'
-        },
-        {
-            id: 3,
-            email: 'ccccc@ccccdwa',
-            password: '233232fad@',
-            setorNome: 'Bar'
-        },
+        { id: 1, email: 'aaaa@wdaawdwa', password: 3, setorNome: 'Cozinha' },
+        { id: 2, email: 'bbbbb@bbdwa', password: 5, setorNome: 'Café' },
+        { id: 3, email: 'ccccc@ccccdwa', password: '233232fad@', setorNome: 'Bar' },
+        { id: 4, email: 'ddddd@ddwa', password: 12, setorNome: 'Cozinha' },
+        { id: 5, email: 'eeeee@eeewda', password: 7, setorNome: 'Café' },
+        { id: 6, email: 'fffff@fffwdwa', password: 'secreta123', setorNome: 'Bar' },
+        { id: 7, email: 'ggggg@ggggdwa', password: 9, setorNome: 'Cozinha' },
+        { id: 8, email: 'hhhhh@hhaawda', password: 'senha456', setorNome: 'Café' },
+        { id: 9, email: 'iiiii@iiiwda', password: 8, setorNome: 'Bar' },
+        { id: 10, email: 'jjjjj@jjjwdwa', password: 15, setorNome: 'Cozinha' },
+        { id: 11, email: 'kkkkk@kkkwda', password: 'chave1234', setorNome: 'Café' },
+        { id: 12, email: 'lllll@lllwdwa', password: 2, setorNome: 'Bar' },
+        { id: 13, email: 'mmmmm@mmmwda', password: 'qwerty678', setorNome: 'Cozinha' },
+        { id: 14, email: 'nnnnn@nnnwda', password: 11, setorNome: 'Café' },
+        { id: 15, email: 'ooooo@ooowda', password: 'pass1234', setorNome: 'Bar' },
+        { id: 16, email: 'ppppp@pppwda', password: 10, setorNome: 'Cozinha' },
+        { id: 17, email: 'qqqqq@qqqwda', password: 6, setorNome: 'Café' },
+        { id: 18, email: 'rrrrr@rrrwda', password: 'senha999', setorNome: 'Bar' },
+        { id: 19, email: 'sssss@ssswda', password: 13, setorNome: 'Cozinha' },
+        { id: 20, email: 'ttttt@tttwda', password: 4, setorNome: 'Café' },
+        { id: 21, email: 'uuuuu@uuuwda', password: 'abcd1234', setorNome: 'Bar' },
+        { id: 22, email: 'vvvvv@vvvwda', password: 16, setorNome: 'Cozinha' },
+        { id: 23, email: 'wwwww@wwwwda', password: 'mypassword', setorNome: 'Café' },
+        { id: 24, email: 'xxxxx@xxxwda', password: 14, setorNome: 'Bar' },
+        { id: 25, email: 'yyyyy@yyyywda', password: 18, setorNome: 'Cozinha' },
+        { id: 26, email: 'zzzzz@zzzzwda', password: '1234pass', setorNome: 'Café' },
+        { id: 27, email: 'aaaaa@aaaaawd', password: 19, setorNome: 'Bar' },
+        { id: 28, email: 'bbbbb@bbbwadf', password: 'test1234', setorNome: 'Cozinha' },
+        { id: 29, email: 'ccccc@ccccwdf', password: 20, setorNome: 'Café' },
+        { id: 30, email: 'ddddd@dddwda', password: 'securepass1', setorNome: 'Bar' }
     ]);
 
     const [openInsertDialog, setOpenInsertDialog] = useState(false);
     const [openViewDialog, setOpenViewDialog] = useState(false);
+    const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
     
 
     const [email, setEmail] = useState('');
@@ -124,27 +137,51 @@ export default function Usuarios(){
     }
 
     const handleUpdateUsuario = () =>{
-        selectedRows.forEach(updatedRow => {
-            const index = rowsUsuarios.findIndex(row => row.email === updatedRow.email);
+
+        if(selectedRows.length == 0){
+            alert("Selecione um usuário da tabela para editar!");
+        } else if(selectedRows.length > 1){
+            alert("Selecione apenas uma linha da tabela!")
+        } else {
+            setOpenUpdateDialog(true);
+        }
+    }
+
+    const handleCloseUpdateUsuario = ({email, password, setorNome}) => {
+
+            setEmail(email);
+            setPassword(password);
+            setSetorNome(setorNome);
             
-            if (index !== -1) {
-                setRowsUsuarios(prevRows => 
-                    prevRows.map(row =>
-                        row.id === updatedRow.id ? row : row
-                    )
-                );
-            } else {
-                // Se o item não existir, adiciona ele com os campos quantidade e observacao
-                setRowsUsuarios(prevRows => [...prevRows, updatedRow]);
-            }
-        })
+            const updatedRow = {
+                id: selectedRows[0].id,
+                email: email,
+                password: password,
+                setorNome: setorNome
+            };
+            
+            console.log(selectedRows);
+            console.log(updatedRow);
+
+
+            setRowsUsuarios(prevRows => 
+                prevRows.map(row =>
+                    row.id === updatedRow.id
+                        ? { ...row, email: updatedRow.email, password: updatedRow.password, setorNome: updatedRow.setorNome }
+                        : row
+                )
+            );
+            
+                setOpenUpdateDialog(false);
+       
+            console.log(rowsUsuarios);
     }
 
     const handleViewUsuario = () => {
         if(selectedRows.length == 0){
-            alert("Selecione uma linha da tabela para visualizar!");
+            alert("Selecione um usuário da tabela para visualizar!");
         } else if(selectedRows.length > 1){
-            alert("Selecione apenas uma linha da tabela!")
+            alert("Selecione apenas um usuário da tabela!")
         } else {
             setOpenViewDialog(true)
         }
@@ -198,11 +235,12 @@ export default function Usuarios(){
                     disableDelete={true}
                     height={580}
                     updateSelect={handleSelected}
+                    rowsPerPage={25}
                 />
                 <div style={{display: 'flex', width: '100%', height: 120 , gap: 50}}>
                     <BotaoPersonalizado onClick={handleAddUsuario} width="100%" height="100%" text="+ Novo Usuário" color="marrom"/> 
                     <BotaoPersonalizado onClick={handleViewUsuario} width="100%" height="100%" text="Visualizar" color="amarelo"/> 
-                    <BotaoPersonalizado width="100%" height="100%" text="Editar" color="amarelo"/> 
+                    <BotaoPersonalizado onClick={handleUpdateUsuario} width="100%" height="100%" text="Editar" color="amarelo"/> 
                     <BotaoPersonalizado width="100%" height="100%" text="Excluir" color="vermelho"/> 
                 </div>
                 <NovoUsuarioDialog
@@ -215,6 +253,12 @@ export default function Usuarios(){
                     setOpen={setOpenViewDialog} 
                     handleCloseDialog={handleCloseViewDialog}
                     view={selectedRows}
+                />
+                <NovoUsuarioDialog
+                    open={openUpdateDialog} 
+                    setOpen={setOpenUpdateDialog} 
+                    handleCloseDialog={handleCloseUpdateUsuario}
+                    update={selectedRows}
                 />
             </ContainerTabela>
            

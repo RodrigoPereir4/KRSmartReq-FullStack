@@ -13,21 +13,30 @@ import { useState, useEffect } from 'react';
 
 export default function NovoUsuarioDialog(props) {
 
-  const [setorNome, setSetorNome] = useState('');
   const [listaSetores, setListaSetores] = useState([]);
   const [listaSetoresNome, setListaSetoresNome] = useState('');
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [setorNome, setSetorNome] = useState('');
 
   const [emailView, setEmailView] = useState('');
   const [passwordView, setPasswordView] = useState('');
   const [setorNomeView, setSetorNomeView] = useState('');
 
+  const [emailUpdate, setEmailUpdate] = useState('');
+  const [passwordUpdate, setPasswordUpdate] = useState('');
+  const [setorNomeUpdate, setSetorNomeUpdate] = useState('');
+
   const [inputSetorNomeValue, setInputSetorNomeValue] = useState('');
+  const [inputSetorNomeUpdateValue, setInputSetorNomeUpdateValue] = useState('');
 
   const [erros, setErros] = useState([]);
 
   const verificarAtributosNullos = (email, password, setor) =>{
+    console.log(email);
+    console.log(password);
+    console.log(setor);
     const atributosParaVerificar = [
       { valor: email, campo: 'Email' },
       { valor: password, campo: 'Senha' },
@@ -61,16 +70,39 @@ export default function NovoUsuarioDialog(props) {
     if(newValue != null){
       alert(newValue);
     }
-};
+  };
 
-const handleInputSetorNomeValueChange = (event, newInputValue) => {
+  const handleInputSetorNomeValueChange = (event, newInputValue) => {
     setInputSetorNomeValue(newInputValue);
-};
+  };
+
+  //UPDATE
+  const handleEmailUpdateChange = (e) => {
+    setEmailUpdate(e.target.value);
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordUpdateChange = (e) => {
+    setPasswordUpdate(e.target.value);
+    setPassword(e.target.value);
+  };
+
+  const handleSetorNomeUpdateValueChange = (event, newValue) => {
+    setSetorNomeUpdate(newValue);
+    setSetorNome(newValue);
+    if(newValue != null){
+      alert(newValue);
+    }
+  };
+
+  const handleInputSetorNomeUpdateValueChange = (event, newInputValue) => {
+    setInputSetorNomeUpdateValue(newInputValue);
+    setInputSetorNomeValue(newInputValue);
+  };
 
   const handleClose = () => {
     props.setOpen(false);
   }
-  console.log(props.view);
 
   useEffect(() => {
     // Verifique se props.view é um array e não está vazio
@@ -82,6 +114,23 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
       console.log("props.view não é um array válido ou está vazio");
     }
   }, [props.view]);
+
+  useEffect(() => {
+    // Verifique se props.view é um array e não está vazio
+    if (Array.isArray(props.update) && props.update.length > 0) {
+      setEmailUpdate(props.update[0].email);  // Acessa o email do primeiro item
+      setPasswordUpdate(props.update[0].password);  // Acessa a senha do primeiro item
+      setSetorNomeUpdate(props.update[0].setorNome);  // Acessa o primeiro item do array]
+
+      //Padrões se não preencher
+      setEmail(props.update[0].email);
+      setPassword(props.update[0].password);
+      setSetorNome(props.update[0].setorNome);
+    } else {
+      console.log("props.update não é um array válido ou está vazio");
+    }
+  }, [props.update]);
+
 
   useEffect(() => {
     const carregarSetores = async() => {
@@ -120,21 +169,21 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
           component: 'form',
           onSubmit: (event) => {
             event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            const password = formJson.password;
 
             if(!verificarAtributosNullos(email, password, setorNome)){
               alert("Preencha os campos corretamente!")
             }else {
-              console.log(listaSetoresNome);
               props.handleCloseDialog({email, password, setorNome});
+              if(!props.update){
+                setEmail('');
+                setPassword('');
+                setSetorNome('');
+              }
             }
           },
         }}
       >
-        {props.view ? <DialogTitle>Visualizar usuário</DialogTitle> : <DialogTitle>Inserir Novo usuário</DialogTitle>}
+        {props.view ? <DialogTitle>Visualizar usuário</DialogTitle> : props.update? <DialogTitle>Editar usuário</DialogTitle> : <DialogTitle>Inserir Novo usuário</DialogTitle>}
         
         <DialogContent>
           <TextField
@@ -142,8 +191,8 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
             required
             margin="dense"
             id="emailText"
-            value={emailView ? emailView : email}
-            onChange={handleEmailChange}
+            value={emailView !== '' ? emailView : emailUpdate !== '' ? emailUpdate : email}
+            onChange={props.update ? handleEmailUpdateChange : handleEmailChange}
             name="email"
             label="Email"
             disabled={props.view ? true : false}
@@ -159,8 +208,8 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
             required
             margin="dense"
             id="passwordText"
-            value={passwordView ? passwordView : password}
-            onChange={handlePasswordChange}
+            value={passwordView !== '' ? passwordView : passwordUpdate !== '' ? passwordUpdate : password}
+            onChange={props.update ? handlePasswordUpdateChange: handlePasswordChange}
             name="password"
             type="password"
             label="Senha"
@@ -175,12 +224,11 @@ const handleInputSetorNomeValueChange = (event, newInputValue) => {
             }}
             name="setorNome"
             label="Selecione o Setor do usuário!"
-            value={setorNomeView ? setorNomeView : setorNome}
+            value={setorNomeView !== '' ? setorNomeView : setorNomeUpdate !== '' ? setorNomeUpdate: setorNome}
             listarItens={listaSetoresNome}
-            inputValue={inputSetorNomeValue} 
-            disabled={props.view ? true : false}
-            handleValueChange={handleSetorNomeValueChange} 
-            handleInputValueChange={handleInputSetorNomeValueChange}
+            inputValue={props.update ? inputSetorNomeUpdateValue : inputSetorNomeValue} 
+            handleValueChange={props.update ? handleSetorNomeUpdateValueChange: handleSetorNomeValueChange} 
+            handleInputValueChange={props.update ? handleInputSetorNomeUpdateValueChange: handleInputSetorNomeValueChange}
           />
           
         </DialogContent>
