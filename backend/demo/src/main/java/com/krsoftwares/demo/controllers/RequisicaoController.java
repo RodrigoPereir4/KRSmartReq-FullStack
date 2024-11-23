@@ -3,6 +3,9 @@ package com.krsoftwares.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import com.krsoftwares.demo.models.UserModel;
 import com.krsoftwares.demo.repository.ProdutoRepository;
 import com.krsoftwares.demo.repository.RequisicaoRepository;
 import com.krsoftwares.demo.repository.UserRepository;
+import com.krsoftwares.demo.security.UserPrincipal;
 
 @RestController
 @RequestMapping("/requisicao")
@@ -29,49 +33,53 @@ public class RequisicaoController {
     private RequisicaoRepository requisicaoRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private ProdutoRepository produtoRepository;
 
-    @PostMapping("/requisitar")
-    public RequisicaoModel gerar(@RequestBody RequisicaoModel objeto) {
+    @Autowired
+    private UserRepository userRepository;
 
-        //Futuramente, trocar o método para um método com Spring Security...
-        UserModel user = userRepository.findByEmail(objeto.getNome().getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PostMapping("/requisitar")
+    public ResponseEntity gerar(@RequestBody RequisicaoModel objeto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("Usuário não autenticado");
+        }
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        UserModel user = userPrincipal.getUserModel();
 
         objeto.setNome(user);
-        
 
         if (objeto.getItens() != null) {
             for (ItemRequisicaoModel item : objeto.getItens()) {
-                // Encontra o produto pelo SKU
                 ProdutoModel produto = produtoRepository.findBySKU(item.getProduto().getSKU())
                         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-                item.setProduto(produto);//associa o item ao produto encontrado...
-                item.setRequisicaoId(objeto);//associa a requisição ao item...
+                item.setProduto(produto);// associa o item ao produto encontrado...
+                item.setRequisicaoId(objeto);// associa a requisição ao item...
             }
         }
 
         objeto.setItemRequisicao(objeto.getItens());
+        requisicaoRepository.save(objeto);
 
-        RequisicaoModel requisicao = requisicaoRepository.save(objeto);
-
-        return requisicao;
+        return ResponseEntity.ok("Requisição gerada com sucesso!");
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> excluir(@PathVariable("id") Long id){
+    public ResponseEntity<String> excluir(@PathVariable("id") Long id) {
 
         RequisicaoModel requisicao = requisicaoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Requisição não encontrada"));
-        
+                .orElseThrow(() -> new RuntimeException("Requisição não encontrada"));
+
         requisicaoRepository.delete(requisicao);
         return ResponseEntity.ok("Requisição do ID " + id + " excluída com sucesso");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','ALMOXARIFE')")
     @GetMapping("/listar")
     public ResponseEntity listar() {
         Iterable<RequisicaoModel> requisicoes = requisicaoRepository.findAll();
