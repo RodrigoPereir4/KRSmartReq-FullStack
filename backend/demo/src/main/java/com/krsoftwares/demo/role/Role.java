@@ -2,6 +2,7 @@ package com.krsoftwares.demo.role;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.krsoftwares.demo.models.UserModel;
 
 import jakarta.persistence.Entity;
@@ -29,5 +30,6 @@ public class Role {
     private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<UserModel> users;
 }

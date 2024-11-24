@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -28,13 +29,17 @@ public class RequisicaoModel {
     private long requisicaoId;
 
     @ManyToOne
-    @JoinColumn(name = "Setor", referencedColumnName = "id")
-    private UserModel nome;//alterar posteriormente para "usuarioSetor"
+    @JoinColumn(name = "usuario_setor", referencedColumnName = "id")
+    private UserModel usuario_setor;//alterar posteriormente para "usuarioSetor"
     
     @Column(nullable = false)
     private String solicitante;//NOME DO COLABORADOR QUE REQUISITOU OS PRODUTOS
 
     private boolean status;
+
+    @OneToOne(mappedBy = "requisicaoId", cascade = CascadeType.ALL, optional = true,
+    fetch = FetchType.LAZY)
+    private RequisicaoEntregueModel entregaId;
 
     @Column(nullable = false)
     private Date dataSolicitada;
