@@ -35,7 +35,7 @@ public class WebSecurityConfig {
         .requestMatchers(HttpMethod.PUT, "/produto/**").hasAnyRole("ADMIN","ALMOXARIFE")
 
         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
-        .requestMatchers(HttpMethod.POST, "/users/cadastrar").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.POST, "/users/cadastrar").permitAll()
         .requestMatchers(HttpMethod.GET, "/users/listar").hasRole("ADMIN")
 
         .requestMatchers(HttpMethod.POST, "/setor/cadastrar").hasRole("ADMIN")

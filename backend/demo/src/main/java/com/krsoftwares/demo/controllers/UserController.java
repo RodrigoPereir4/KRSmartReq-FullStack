@@ -2,7 +2,7 @@ package com.krsoftwares.demo.controllers;
 
 import java.util.Optional;
 
-import org.hibernate.PropertyValueException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,7 +57,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    
     @PostMapping("/cadastrar")
     public ResponseEntity create(@RequestBody UserModel user) {
          userService.create(user);
