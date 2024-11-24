@@ -9,6 +9,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import user2 from "@/images/user2.png";
 import NovoUsuarioDialog from "@/components/MUI/NovoUsuarioDialog";
+import listarUsuarios from "@/services/UsuarioService";
 
 const tableHeaderSetores = [
     {
@@ -82,6 +83,12 @@ export default function Usuarios(){
         { id: 30, email: 'ddddd@dddwda', password: 'securepass1', setorNome: 'Bar' }
     ]);
 
+    //Pesquisa, manter alterações
+    const [rowsPadroes, setRowsPadroes] = useState([]);
+
+    //Rows para enviar para banco
+    const [rowsBanco, setRowsBanco] = useState([]);
+
     const [openInsertDialog, setOpenInsertDialog] = useState(false);
     const [openViewDialog, setOpenViewDialog] = useState(false);
     const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
@@ -91,7 +98,10 @@ export default function Usuarios(){
     const [password, setPassword] = useState('');
     const [setorNome, setSetorNome] = useState('');
 
+    const [pesquisa, setPesquisa] = useState('');
+
     const [selectedRows, setSelectedRows] = useState([]);
+    const [updateTable, setUpdateTable] = useState(false);
 
     const handleSelected = (selected) =>{
         const newRow = Array.isArray(selected)
@@ -212,6 +222,65 @@ export default function Usuarios(){
         
     }
 
+    useEffect(() => {
+        const rowsPadroes = [...rowsUsuarios];
+
+        if(pesquisa.length>0){
+            setRowsUsuarios(rowsUsuarios.filter(row => row.email.includes(pesquisa)));
+        } else {
+            setRowsUsuarios(rowsPadroes);
+        }
+    }, [pesquisa])
+
+    const handleSearchChange = (e) => {
+        setPesquisa(e.target.value);
+
+        
+    };
+
+    const handleUpdateTable = () => {
+        setUpdateTable(!updateTable);
+    }
+
+    useEffect(() => {
+        const fetchData = async() =>{
+            const response = await listarUsuarios();
+            console.log(response);
+            
+            setRowsUsuarios([]);
+            setRowsBanco([]);
+            response.forEach(row => {
+                setRowsBanco(prevRows => [
+                    ...prevRows,
+                    {
+                        ...row,
+                        setor: {
+                            setorId: row.setor.setorId // Mantém apenas setorId
+                        }
+                    }
+                ]);
+        
+                // Filtrando para a resposta da Tabela (com setorNome)
+
+                setRowsUsuarios(prevRows => [
+                    ...prevRows,
+                    {
+                        ...row,
+                        setorNome: row.setor.setorNome // Mantém apenas setorNome
+                    }
+                ]);
+            });
+
+            console.log(updateTable);
+            
+        }
+        fetchData();
+    }, [updateTable])
+
+    useEffect(() => {
+        console.log(rowsBanco);
+        console.log(rowsUsuarios);
+    }, [rowsBanco, rowsUsuarios]);
 
     return(
         <div style={{display:'flex'}}>
@@ -219,8 +288,9 @@ export default function Usuarios(){
             <ContainerTabela>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                     <h1>Lista de Usuários</h1>
+                    <button onClick={handleUpdateTable}>Atualizar Tabela</button>
                     <div style={{display: 'flex', alignItems:'center', gap: 10, marginBottom: 10}}>
-                        <TextField style={{width: 500}} label={'Pesquisar'}/>
+                        <TextField style={{width: 500}} label={'Pesquisar'} onChange={handleSearchChange}/>
                         <button style={{border: 'none', borderRadius: 6, padding: '10px 15px', background: '#584438'}}><Image src={user2}/></button>
                     </div>
                 </div>
