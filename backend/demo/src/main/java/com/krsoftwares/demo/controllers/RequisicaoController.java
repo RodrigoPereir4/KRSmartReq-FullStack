@@ -48,7 +48,7 @@ public class RequisicaoController {
 
         UserModel user = userPrincipal.getUserModel();
 
-        objeto.setNome(user);
+        objeto.setUsuario_setor(user);
 
         if (objeto.getItens() != null) {
             for (ItemRequisicaoModel item : objeto.getItens()) {
@@ -61,6 +61,7 @@ public class RequisicaoController {
         }
 
         objeto.setItemRequisicao(objeto.getItens());
+        objeto.setStatus(true);//toda requisição gerada automaticamente fica pendente
         requisicaoRepository.save(objeto);
 
         return ResponseEntity.ok("Requisição gerada com sucesso!");
