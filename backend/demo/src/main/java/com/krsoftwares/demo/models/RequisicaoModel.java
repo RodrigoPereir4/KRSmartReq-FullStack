@@ -15,7 +15,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Setter;
 
@@ -29,8 +28,11 @@ public class RequisicaoModel {
     private long requisicaoId;
 
     @ManyToOne
-    @JoinColumn(name = "solicitante", referencedColumnName = "id" ,nullable = false)
-    private UserModel nome;
+    @JoinColumn(name = "Setor", referencedColumnName = "id")
+    private UserModel nome;//alterar posteriormente para "usuarioSetor"
+    
+    @Column(nullable = false)
+    private String solicitante;//NOME DO COLABORADOR QUE REQUISITOU OS PRODUTOS
 
     private boolean status;
 
