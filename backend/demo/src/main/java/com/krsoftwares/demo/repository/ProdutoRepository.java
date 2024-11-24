@@ -12,5 +12,7 @@ public interface ProdutoRepository extends JpaRepository<ProdutoModel, String> {
     
     Optional<ProdutoModel> findBySKU(String sku);
 
+    ProdutoModel deleteBySKU(String SKU);
+    
     boolean existsBySKU(String SKU);
 }
