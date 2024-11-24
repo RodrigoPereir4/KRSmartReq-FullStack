@@ -21,7 +21,6 @@ import com.krsoftwares.demo.models.RequisicaoModel;
 import com.krsoftwares.demo.models.UserModel;
 import com.krsoftwares.demo.repository.ProdutoRepository;
 import com.krsoftwares.demo.repository.RequisicaoRepository;
-import com.krsoftwares.demo.repository.UserRepository;
 import com.krsoftwares.demo.security.UserPrincipal;
 
 @RestController
@@ -35,8 +34,7 @@ public class RequisicaoController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping("/requisitar")
