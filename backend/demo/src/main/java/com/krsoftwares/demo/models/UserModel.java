@@ -3,7 +3,6 @@ package com.krsoftwares.demo.models;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.krsoftwares.demo.role.Role;
 
 import jakarta.persistence.Column;

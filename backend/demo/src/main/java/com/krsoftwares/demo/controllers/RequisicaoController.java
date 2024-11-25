@@ -38,7 +38,7 @@ public class RequisicaoController {
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping("/requisitar")
-    public ResponseEntity gerar(@RequestBody RequisicaoModel objeto) {
+    public ResponseEntity<String> gerar(@RequestBody RequisicaoModel objeto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {

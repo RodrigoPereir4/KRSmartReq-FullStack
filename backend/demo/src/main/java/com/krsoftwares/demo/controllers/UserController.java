@@ -59,7 +59,7 @@ public class UserController {
 
     
     @PostMapping("/cadastrar")
-    public ResponseEntity create(@RequestBody UserModel user) {
+    public ResponseEntity<String> create(@RequestBody UserModel user) {
          userService.create(user);
          return ResponseEntity.ok("Usuário cadastrado!");
     }

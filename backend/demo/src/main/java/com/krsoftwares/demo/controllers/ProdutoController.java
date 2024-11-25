@@ -25,7 +25,7 @@ public class ProdutoController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ALMOXARIFE')")
     @PostMapping("/cadastrar")
-    public ResponseEntity create(@RequestBody ProdutoModel produto){
+    public ResponseEntity<String> create(@RequestBody ProdutoModel produto){
          produtoService.create(produto);
          return ResponseEntity.ok("Produto cadastrado!");
     }
@@ -39,7 +39,7 @@ public class ProdutoController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ALMOXARIFE')")
     @PutMapping("/{SKU}")
-    public ResponseEntity editar2(@PathVariable String SKU, @RequestBody ProdutoModel produto){
+    public ResponseEntity<String> editar2(@PathVariable String SKU, @RequestBody ProdutoModel produto){
         produtoService.update(produto, SKU);
         return ResponseEntity.ok("Produto editado com sucesso!");
     }
