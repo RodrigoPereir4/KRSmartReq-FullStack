@@ -249,18 +249,30 @@ export default function Produtos(){
         
     }
 
+    /*
     useEffect(() => {
         const rowsPadroes = [...rowsProdutos];
-
-        if(pesquisa.length>0){
+        console.log(rowsProdutos);
+        if(pesquisa !== ''){
             setRowsProdutos(rowsProdutos.filter(row => row.nome.includes(pesquisa)));
         } else {
             setRowsProdutos(rowsPadroes);
         }
-    }, [pesquisa])
+    }, [pesquisa])*/
 
     const handleSearchChange = (e) => {
-        setPesquisa(e.target.value);
+        const searchTerm = e.target.value.toLowerCase();
+        console.log(searchTerm);
+
+        setPesquisa(searchTerm);
+
+        if(searchTerm !== ''){
+            setRowsProdutos(rowsPadroes.filter(row => row.nome.toLowerCase().includes(searchTerm)));
+        } else {
+            console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            console.log(rowsProdutos);
+            handleUpdateTable();
+        }
     };
 
     const handleUpdateTable = () => {
@@ -272,6 +284,7 @@ export default function Produtos(){
             const response = await listarProdutos();
             
             setRowsProdutos([]);
+            setRowsPadroes([]);
             setRowsBanco([]);
 
             response.forEach(row => {
@@ -285,6 +298,14 @@ export default function Produtos(){
                 // Filtrando para a resposta da Tabela (com unMedida)
 
                 setRowsProdutos(prevRows => [
+                    ...prevRows,
+                    {
+                        id: prevRows.length,
+                        ...row,
+                    }
+                ]);
+
+                setRowsPadroes(prevRows => [
                     ...prevRows,
                     {
                         id: prevRows.length,
@@ -309,7 +330,7 @@ export default function Produtos(){
                     <h1>Lista de Produtos</h1>
                     <button onClick={handleUpdateTable}>Atualizar Tabela</button>
                     <div style={{display: 'flex', alignItems:'center', gap: 10, marginBottom: 10}}>
-                        <TextField style={{width: 500}} label={'Pesquisar'} onChange={handleSearchChange}/>
+                        <TextField style={{width: 500}} label={'Pesquisar'} value={pesquisa} onChange={handleSearchChange}/>
                         <button style={{border: 'none', borderRadius: 6, padding: '10px 15px', background: '#584438'}}><Image src={user2}/></button>
                     </div>
                 </div>
