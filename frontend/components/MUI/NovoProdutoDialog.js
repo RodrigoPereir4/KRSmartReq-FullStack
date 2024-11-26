@@ -170,7 +170,6 @@ export default function NovoProdutoDialog(props) {
       setNomeUpdate(props.update[0].nome);  // Acessa a senha do primeiro item
       setCategoriaUpdate(props.update[0].categoria);  // Acessa o primeiro item do array
       setUnidadeMedidaUpdate(props.update[0].unMedida);  // Acessa o primeiro item do array
-      setStatusUpdate(props.update[0].status);  // Acessa o primeiro item do array
 
       //Padrões se não preencher
       setSku(props.update[0].sku);

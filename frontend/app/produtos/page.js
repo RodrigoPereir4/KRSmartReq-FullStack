@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import user2 from "@/images/user2.png";
 import NovoProdutoDialog from "@/components/MUI/NovoProdutoDialog";
-import { listarProdutos,  procurarProdutoNome, atualizarProduto, cadastrarProdutos } from "@/services/ProdutoService";
+import { listarProdutos, cadastrarProdutos, atualizarProdutos } from "@/services/ProdutoService";
 
 const tableHeaderSetores = [
     {
@@ -178,15 +178,11 @@ export default function Produtos(){
             setUnMedida(unMedida);
             setStatus(status);
 
-            const setorObj = await procurarProdutoNome(unMedida);
-            const idSetor = selectedRows[0].id;
-
             const updatedRow = {
                 nome: nome,
+                status: status,
                 categoria: categoria,
-                setor: {
-                    setorId: setorObj.setorId
-                }
+                unMedida: unMedida
             };
             
            /*
@@ -204,7 +200,7 @@ export default function Produtos(){
            */
 
             console.log(updatedRow);
-            const result = await atualizarProduto(idSetor, updatedRow);
+            const result = await atualizarProdutos(sku, updatedRow);
             console.log(result);
             if(result !== "Produto Atualizado com sucesso!"){
                 alert(result);
@@ -265,8 +261,6 @@ export default function Produtos(){
 
     const handleSearchChange = (e) => {
         setPesquisa(e.target.value);
-
-        
     };
 
     const handleUpdateTable = () => {
@@ -279,7 +273,7 @@ export default function Produtos(){
             
             setRowsProdutos([]);
             setRowsBanco([]);
-            let valor = idRows;
+
             response.forEach(row => {
                 setRowsBanco(prevRows => [
                     ...prevRows,

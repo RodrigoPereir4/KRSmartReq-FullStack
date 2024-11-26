@@ -35,9 +35,9 @@ export async function cadastrarProdutos(dadosProdutos){
     return response.text();
 }
 
-export async function atualizarProdutos(id, dadosProdutos){
+export async function atualizarProdutos(sku, dadosProdutos){
 
-    const url = 'http://localhost:8080/users/atualizar/' + id;
+    const url = 'http://localhost:8080/produto/atualizar/' + sku;
 
     const response = await fetch(url, {
         method: 'PUT',
@@ -52,23 +52,4 @@ export async function atualizarProdutos(id, dadosProdutos){
     }
 
     return response.text();
-}
-
-export async function procurarProdutoNome(nome){
-
-    const url = `http://localhost:8080/setor/procurarSetor?setorNome=${nome}`;
-
-    const response = await fetch(url, {
-        method: 'GET',
-        headers:{
-            'Content-Type': 'application/json'
-        }
-    })
-
-    if(!response.ok){
-        alert("Falha no banco de dados!");
-    }
-
-    return response.json();
-
 }

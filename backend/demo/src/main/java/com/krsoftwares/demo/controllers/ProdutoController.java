@@ -50,12 +50,14 @@ public class ProdutoController {
         }
     }
 
-    @PutMapping("/{SKU}")
-    public ResponseEntity<ProdutoModel> editar(@PathVariable String SKU, 
-    @RequestBody ProdutoModel produtoAtt){ //PathVariable captura o SKU pela URL
-      Optional<ProdutoModel> produto = produtoRepository.findBySKU(SKU);  
+    @PutMapping("/atualizar/{SKU}")
+    public String editar(@PathVariable String SKU, @RequestBody ProdutoModel produtoAtt){
+        Optional<ProdutoModel> produto = produtoRepository.findBySKU(SKU);  
 
-      if(produto.isPresent()){
+        if(!produto.isPresent()){
+            return "Esse Usuario não foi encontrado!";
+        }
+
         ProdutoModel produtoExistente = produto.get();
         
         produtoExistente.setNome(produtoAtt.getNome());
@@ -63,10 +65,9 @@ public class ProdutoController {
         produtoExistente.setStatus(produtoAtt.isStatus());
         produtoExistente.setUnMedida(produtoAtt.getUnMedida());
 
-        return ResponseEntity.ok(produtoRepository.save(produtoExistente));
-      } else {
-        return ResponseEntity.notFound().build();
-      }
+        produtoRepository.save(produtoExistente);
+
+        return "Produto Atualizado com sucesso!";
     }
 
     @GetMapping("/listarNome")
