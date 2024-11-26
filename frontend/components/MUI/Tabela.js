@@ -232,7 +232,7 @@ export default function Tabela(props) {
   );
 
   let ids = props.tableHeader.map(element => element.id);
-  ids = ids.filter(element => element !== 'nome'); 
+  ids = ids.filter(element => element !== 'nomeS'); 
 
   return (
     <Box sx={{ width: '100%'}}>
