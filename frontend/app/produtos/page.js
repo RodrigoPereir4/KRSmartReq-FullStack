@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import user2 from "@/images/user2.png";
-import NovoUsuarioDialog from "@/components/MUI/NovoUsuarioDialog";
+import NovoProdutoDialog from "@/components/MUI/NovoProdutoDialog";
 import { listarProdutos,  procurarProdutoNome, cadastrarProduto, atualizarProduto } from "@/services/ProdutoService";
 
 const tableHeaderSetores = [
@@ -338,18 +338,18 @@ export default function Produtos(){
                     <BotaoPersonalizado onClick={handleUpdateProduto} width="100%" height="100%" text="Editar" color="amarelo"/> 
                     <BotaoPersonalizado width="100%" height="100%" text="Inativar" color="vermelho"/> 
                 </div>
-                <NovoUsuarioDialog
+                <NovoProdutoDialog
                     open={openInsertDialog} 
                     setOpen={setOpenInsertDialog} 
                     handleCloseDialog={handleCloseInsertDialog}
                 />
-                <NovoUsuarioDialog
+                <NovoProdutoDialog
                     open={openViewDialog} 
                     setOpen={setOpenViewDialog} 
                     handleCloseDialog={handleCloseViewDialog}
                     view={selectedRows}
                 />
-                <NovoUsuarioDialog
+                <NovoProdutoDialog
                     open={openUpdateDialog} 
                     setOpen={setOpenUpdateDialog} 
                     handleCloseDialog={handleCloseUpdateProduto}
