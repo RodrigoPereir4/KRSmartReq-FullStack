@@ -11,6 +11,7 @@ const IOSSwitch = styled((props) => (
     checked={props.checked}
     onChange={props.handleChange}
     focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} 
+    disabled={props.disabled}
   />
 ))(({ theme }) => ({
   width: 42,
@@ -56,6 +57,7 @@ const IOSSwitch = styled((props) => (
     boxSizing: 'border-box',
     width: 22,
     height: 22,
+    color: '#ffffff'
   },
   '& .MuiSwitch-track': {
     borderRadius: 26 / 2,
@@ -79,6 +81,7 @@ export default function RadiusButton(props) {
             sx={{ m: 1 }} 
             checked={props.checked}
             onChange={props.handleChange}
+            disabled={props.disabled}
         />}
         label={props.checked ? "Em estoque" : "Sem estoque"}
       />

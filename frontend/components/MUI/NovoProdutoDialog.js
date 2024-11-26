@@ -24,27 +24,25 @@ export default function NovoProdutoDialog(props) {
 
   const [sku, setSku] = useState('');
   const [nome, setNome] = useState('');
-  const [categoriaNome, setCategoriaNome] = useState('');
+  const [categoria, setCategoria] = useState('');
   const [unMedida, setUnMedida] = useState('');
 
   const [status, setStatus] = useState(false);
 
   const [skuView, setSkuView] = useState('');
   const [nomeView, setNomeView] = useState('');
-  const [categoriaNomeView, setCategoriaNomeView] = useState('');
+  const [categoriaView, setCategoriaView] = useState('');
   const [unidadeMedidaView, setUnidadeMedidaView] = useState('');
-
-  const [statusView, setStatusView] = useState(status);
 
   const [skuUpdate, setSkuUpdate] = useState('');
   const [nomeUpdate, setNomeUpdate] = useState('');
-  const [categoriaNomeUpdate, setCategoriaNomeUpdate] = useState('');
+  const [categoriaUpdate, setCategoriaUpdate] = useState('');
   const [unidadeMedidaUpdate, setUnidadeMedidaUpdate] = useState('');
 
   const [statusUpdate, setStatusUpdate] = useState(status);
 
-  const [inputCategoriaNomeValue, setInputCategoriaNomeValue] = useState('');
-  const [inputCategoriaNomeUpdateValue, setInputCategoriaNomeUpdateValue] = useState('');
+  const [inputCategoriaValue, setInputCategoriaValue] = useState('');
+  const [inputCategoriaUpdateValue, setInputCategoriaUpdateValue] = useState('');
   
   const [inputUnidadeMedidaValue, setInputUnidadeMedidaValue] = useState('');
   const [inputUnidadeMedidaUpdateValue, setInputUnidadeMedidaUpdateValue] = useState('');
@@ -85,15 +83,15 @@ export default function NovoProdutoDialog(props) {
     setNome(e.target.value);
   };
 
-  const handleCategoriaNomeValueChange = (event, newValue) => {
-    setCategoriaNome(newValue);
+  const handleCategoriaValueChange = (event, newValue) => {
+    setCategoria(newValue);
     if(newValue != null){
       alert(newValue);
     }
   };
 
-  const handleInputCategoriaNomeValueChange = (event, newInputValue) => {
-    setInputCategoriaNomeValue(newInputValue);
+  const handleInputCategoriaValueChange = (event, newInputValue) => {
+    setInputCategoriaValue(newInputValue);
   };
 
   const handleUnidadeMedidaValueChange = (event, newValue) => {
@@ -122,17 +120,17 @@ export default function NovoProdutoDialog(props) {
     setNome(e.target.value);
   };
 
-  const handleCategoriaNomeUpdateValueChange = (event, newValue) => {
-    setCategoriaNomeUpdate(newValue);
-    setCategoriaNome(newValue);
+  const handleCategoriaUpdateValueChange = (event, newValue) => {
+    setCategoriaUpdate(newValue);
+    setCategoria(newValue);
     if(newValue != null){
       alert(newValue);
     }
   };
 
-  const handleInputCategoriaNomeUpdateValueChange = (event, newInputValue) => {
-    setInputCategoriaNomeUpdateValue(newInputValue);
-    setInputCategoriaNomeValue(newInputValue);
+  const handleInputCategoriaUpdateValueChange = (event, newInputValue) => {
+    setInputCategoriaUpdateValue(newInputValue);
+    setInputCategoriaValue(newInputValue);
   };
 
   const handleUnidadeMedidaUpdateValueChange = (event, newValue) => {
@@ -157,9 +155,9 @@ export default function NovoProdutoDialog(props) {
     if (Array.isArray(props.view) && props.view.length > 0) {
       setSkuView(props.view[0].sku);  // Acessa o sku do primeiro item
       setNomeView(props.view[0].nome);  // Acessa a senha do primeiro item
-      setCategoriaNomeView(props.view[0].categoriaNome);  // Acessa o primeiro item do array
+      setCategoriaView(props.view[0].categoria);  // Acessa o primeiro item do array
       setUnidadeMedidaView(props.view[0].unMedida);  // Acessa o primeiro item do array
-      setStatusView(props.view[0].status);  // Acessa o primeiro item do array
+      setStatus(props.view[0].status);  // Acessa o primeiro item do array
     } else {
       console.log("props.view não é um array válido ou está vazio");
     }
@@ -170,14 +168,14 @@ export default function NovoProdutoDialog(props) {
     if (Array.isArray(props.update) && props.update.length > 0) {
       setSkuUpdate(props.update[0].sku);  // Acessa o sku do primeiro item
       setNomeUpdate(props.update[0].nome);  // Acessa a senha do primeiro item
-      setCategoriaNomeUpdate(props.update[0].categoriaNome);  // Acessa o primeiro item do array
+      setCategoriaUpdate(props.update[0].categoria);  // Acessa o primeiro item do array
       setUnidadeMedidaUpdate(props.update[0].unMedida);  // Acessa o primeiro item do array
       setStatusUpdate(props.update[0].status);  // Acessa o primeiro item do array
 
       //Padrões se não preencher
       setSku(props.update[0].sku);
       setNome(props.update[0].nome);
-      setCategoriaNome(props.update[0].categoriaNome);
+      setCategoria(props.update[0].categoria);
       setUnMedida(props.update[0].unMedida);
       setStatus(props.update[0].status);
     } else {
@@ -250,14 +248,14 @@ export default function NovoProdutoDialog(props) {
           onSubmit: (event) => {
             event.preventDefault();
 
-            if(!verificarAtributosNullos(sku, nome, categoriaNome, unMedida)){
+            if(!verificarAtributosNullos(sku, nome, categoria, unMedida)){
               alert("Preencha os campos corretamente!")
             }else {
-              props.handleCloseDialog({sku, nome, categoriaNome, unMedida, status});
+              props.handleCloseDialog({sku, nome, categoria, unMedida, status});
               if(!props.update){
                 setSku('');
                 setNome('');
-                setCategoriaNome('');
+                setCategoria('');
                 setUnMedida('');
                 setStatus(false);
               }
@@ -303,13 +301,13 @@ export default function NovoProdutoDialog(props) {
             sx={{
               marginTop: 2, 
             }}
-            name="categoriaNome"
+            name="categoria"
             label="Selecione a categoria do Produto!"
-            value={categoriaNomeView !== '' ? categoriaNomeView : categoriaNomeUpdate !== '' ? categoriaNomeUpdate: categoriaNome}
+            value={categoriaView !== '' ? categoriaView : categoriaUpdate !== '' ? categoriaUpdate: categoria}
             listarItens={listaCategoriasNome}
-            inputValue={props.update ? inputCategoriaNomeUpdateValue : inputCategoriaNomeValue} 
-            handleValueChange={props.update ? handleCategoriaNomeUpdateValueChange: handleCategoriaNomeValueChange} 
-            handleInputValueChange={props.update ? handleInputCategoriaNomeUpdateValueChange: handleInputCategoriaNomeValueChange}
+            inputValue={props.update ? inputCategoriaUpdateValue : inputCategoriaValue} 
+            handleValueChange={props.update ? handleCategoriaUpdateValueChange: handleCategoriaValueChange} 
+            handleInputValueChange={props.update ? handleInputCategoriaUpdateValueChange: handleInputCategoriaValueChange}
           />
 
           <ComboBox
@@ -325,7 +323,11 @@ export default function NovoProdutoDialog(props) {
             handleInputValueChange={props.update ? handleInputUnidadeMedidaUpdateValueChange: handleInputUnidadeMedidaValueChange}
           />
 
-          <RadiusButton checked={status} handleChange={handleStatusChange}/>
+          <RadiusButton 
+            checked={status} 
+            handleChange={handleStatusChange}
+            disabled={props.view ? true : false}
+          />
 
         </DialogContent>
         <DialogActions>

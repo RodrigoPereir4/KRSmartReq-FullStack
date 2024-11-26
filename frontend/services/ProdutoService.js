@@ -18,7 +18,7 @@ export async function listarProdutos(){
 
 export async function cadastrarProdutos(dadosProdutos){
 
-    const url = 'http://localhost:8080/users/cadastrar';
+    const url = 'http://localhost:8080/produto/cadastrar';
 
     const response = await fetch(url, {
         method: 'POST',

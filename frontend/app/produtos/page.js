@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import user2 from "@/images/user2.png";
 import NovoProdutoDialog from "@/components/MUI/NovoProdutoDialog";
-import { listarProdutos,  procurarProdutoNome, cadastrarProduto, atualizarProduto } from "@/services/ProdutoService";
+import { listarProdutos,  procurarProdutoNome, atualizarProduto, cadastrarProdutos } from "@/services/ProdutoService";
 
 const tableHeaderSetores = [
     {
@@ -51,36 +51,36 @@ const ContainerTabela = styled.div`
 export default function Produtos(){
 
     const [rowsProdutos, setRowsProdutos] = useState([
-        { sku: "5", nome: 'aaaa@wdaawdwa', categoria:"frutas", unMedida: 'Cozinha' },
-        { sku: "5", nome: 'bbbbb@bbdwa',   categoria:"frutas", unMedida: 'Café' },
-        { sku: "5", nome: 'ccccc@ccccdwa', categoria: '233232fad@', unMedida: 'Bar' },
-        { sku: "5", nome: 'ddddd@ddwa',    categoria: "frutas", unMedida: 'Cozinha' },
-        { sku: "5", nome: 'eeeee@eeewda',  categoria:"frutas", unMedida: 'Café' },
-        { sku: "5", nome: 'fffff@fffwdwa', categoria: 'secreta123', unMedida: 'Bar' },
-        { sku: "5", nome: 'ggggg@ggggdwa', categoria:"frutas", unMedida: 'Cozinha' },
-        { sku: "5", nome: 'hhhhh@hhaawda', categoria: 'senha456', unMedida: 'Café' },
-        { sku: "5", nome: 'iiiii@iiiwda',  categoria:"frutas", unMedida: 'Bar' },
-        { sku: "", nome: 'jjjjj@jjjwdwa', categoria: "frutas", unMedida: 'Cozinha' },
-        { sku: "", nome: 'kkkkk@kkkwda', categoria: 'chave1234', unMedida: 'Café' },
-        { sku: "", nome: 'lllll@lllwdwa', categoria:"frutas", unMedida: 'Bar' },
-        { sku: "", nome: 'mmmmm@mmmwda', categoria: 'qwerty678', unMedida: 'Cozinha' },
-        { sku: "", nome: 'nnnnn@nnnwda', categoria: "frutas", unMedida: 'Café' },
-        { sku: "", nome: 'ooooo@ooowda', categoria: 'pass1234', unMedida: 'Bar' },
-        { sku: "", nome: 'ppppp@pppwda', categoria: "frutas", unMedida: 'Cozinha' },
-        { sku: "", nome: 'qqqqq@qqqwda', categoria:"frutas", unMedida: 'Café' },
-        { sku: "", nome: 'rrrrr@rrrwda', categoria: 'senha999', unMedida: 'Bar' },
-        { sku: "", nome: 'sssss@ssswda', categoria: "frutas", unMedida: 'Cozinha' },
-        { sku: "", nome: 'ttttt@tttwda', categoria:"frutas", unMedida: 'Café' },
-        { sku: "", nome: 'uuuuu@uuuwda', categoria: 'abcd1234', unMedida: 'Bar' },
-        { sku: "", nome: 'vvvvv@vvvwda', categoria: "frutas", unMedida: 'Cozinha' },
-        { sku: "", nome: 'wwwww@wwwwda', categoria: 'mypassword', unMedida: 'Café' },
-        { sku: "", nome: 'xxxxx@xxxwda', categoria: "frutas", unMedida: 'Bar' },
-        { sku: "", nome: 'yyyyy@yyyywda', categoria: "frutas", unMedida: 'Cozinha' },
-        { sku: "", nome: 'zzzzz@zzzzwda', categoria: '1234pass', unMedida: 'Café' },
-        { sku: "", nome: 'aaaaa@aaaaawd', categoria: "frutas", unMedida: 'Bar' },
-        { sku: "", nome: 'bbbbb@bbbwadf', categoria: 'test1234', unMedida: 'Cozinha' },
-        { sku: "", nome: 'ccccc@ccccwdf', categoria: "frutas", unMedida: 'Café' },
-        { sku: "", nome: 'ddddd@dddwda', categoria: 'securepass1', unMedida: 'Bar' }
+        { sku: "5", nome: 'aaaa@wdaawdwa', categoria:"frutas",      unMedida: 'Cozinha', status: true },
+        { sku: "5", nome: 'bbbbb@bbdwa',   categoria:"frutas",      unMedida: 'Café'   , status: true },
+        { sku: "5", nome: 'ccccc@ccccdwa', categoria: '233232fad@', unMedida: 'Bar'    , status: true },
+        { sku: "5", nome: 'ddddd@ddwa',    categoria: "frutas",     unMedida: 'Cozinha', status: true },
+        { sku: "5", nome: 'eeeee@eeewda',  categoria:"frutas",      unMedida: 'Café'   , status: true },
+        { sku: "5", nome: 'fffff@fffwdwa', categoria: 'secreta123', unMedida: 'Bar'    , status: true },
+        { sku: "5", nome: 'ggggg@ggggdwa', categoria:"frutas",      unMedida: 'Cozinha', status: true },
+        { sku: "5", nome: 'hhhhh@hhaawda', categoria: 'senha456',   unMedida: 'Café'   , status: true },
+        { sku: "5", nome: 'iiiii@iiiwda',  categoria:"frutas",      unMedida: 'Bar'    , status: true },
+        { sku: "",  nome: 'jjjjj@jjjwdwa', categoria: "frutas",     unMedida: 'Cozinha', status: true },
+        { sku: "",  nome: 'kkkkk@kkkwda',  categoria: 'chave1234',  unMedida: 'Café'   , status: true },
+        { sku: "",  nome: 'lllll@lllwdwa', categoria:"frutas",      unMedida: 'Bar'    , status: true },
+        { sku: "",  nome: 'mmmmm@mmmwda',  categoria: 'qwerty678',  unMedida: 'Cozinha', status: true },
+        { sku: "",  nome: 'nnnnn@nnnwda',  categoria: "frutas",     unMedida: 'Café'   , status: true },
+        { sku: "",  nome: 'ooooo@ooowda',  categoria: 'pass1234',   unMedida: 'Bar'    , status: true },
+        { sku: "",  nome: 'ppppp@pppwda',  categoria: "frutas",     unMedida: 'Cozinha', status: true },
+        { sku: "",  nome: 'qqqqq@qqqwda',  categoria:"frutas",      unMedida: 'Café'   , status: true },
+        { sku: "",  nome: 'rrrrr@rrrwda',  categoria: 'senha999',   unMedida: 'Bar'    , status: true },
+        { sku: "",  nome: 'sssss@ssswda',  categoria: "frutas",     unMedida: 'Cozinha', status: true },
+        { sku: "",  nome: 'ttttt@tttwda',  categoria:"frutas",      unMedida: 'Café'   , status: true },
+        { sku: "",  nome: 'uuuuu@uuuwda',  categoria: 'abcd1234',   unMedida: 'Bar'    , status: true },
+        { sku: "",  nome: 'vvvvv@vvvwda',  categoria: "frutas",     unMedida: 'Cozinha', status: true },
+        { sku: "",  nome: 'wwwww@wwwwda',  categoria: 'mypassword', unMedida: 'Café'   , status: true },
+        { sku: "",  nome: 'xxxxx@xxxwda',  categoria: "frutas",     unMedida: 'Bar'    , status: true },
+        { sku: "",  nome: 'yyyyy@yyyywda', categoria: "frutas",     unMedida: 'Cozinha', status: true },
+        { sku: "",  nome: 'zzzzz@zzzzwda', categoria: '1234pass',   unMedida: 'Café'   , status: true },
+        { sku: "",  nome: 'aaaaa@aaaaawd', categoria: "frutas",     unMedida: 'Bar'    , status: true },
+        { sku: "",  nome: 'bbbbb@bbbwadf', categoria: 'test1234',   unMedida: 'Cozinha', status: true },
+        { sku: "",  nome: 'ccccc@ccccwdf', categoria: "frutas",     unMedida: 'Café'   , status: true },
+        { sku: "",  nome: 'ddddd@dddwda',  categoria: 'securepass1',unMedida: 'Bar'    , status: true }
     ]);
 
     //Pesquisa, manter alterações
@@ -132,7 +132,6 @@ export default function Produtos(){
     }
 
     const handleCloseInsertDialog = async ({nome, sku, categoria, unMedida, status}) => {  
-        console.log(unMedida);
         setNome(nome);
         setSku(sku);
         setCategoria(categoria);
@@ -141,17 +140,12 @@ export default function Produtos(){
         
         // Se o item não existir, adiciona ele com os campos quantidade e observacao
             
-            if (!rowsProdutos.some(user => user.nome === nome)) {
-
-                const setorObj = await procurarProdutoNome(unMedida);
-                const setor = {
-                    setorId: setorObj.setorId
-                };
+            if (!rowsProdutos.some(produto => produto.sku === sku)) {
                 
-                console.log({nome, categoria, setor});
-                const result = await cadastrarProduto({nome, categoria, setor});
+                console.log({nome, sku, categoria, unMedida, status});
+                const result = await cadastrarProdutos({nome, sku, categoria, unMedida, status});
                 console.log(result);
-                if(result !== "Produto Cadastrado com sucesso!"){
+                if(result !== "Produto cadastrado!"){
                     alert("Não foi possível cadastrar esse usuário!");
                 } else {
                     alert(result);
@@ -160,7 +154,7 @@ export default function Produtos(){
                 }
 
             } else {
-                alert("Esse nome já existe no sistema!");
+                alert("Esse SKU já existe no sistema!");
             }
         
     }
