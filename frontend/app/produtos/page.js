@@ -97,6 +97,7 @@ export default function Produtos(){
     const [nome, setNome] = useState('');
     const [categoria, setCategoria] = useState('');
     const [unMedida, setUnMedida] = useState('');
+    const [status, setStatus] = useState(false);
 
     const [pesquisa, setPesquisa] = useState('');
 
@@ -130,11 +131,13 @@ export default function Produtos(){
         setOpenInsertDialog(true);
     }
 
-    const handleCloseInsertDialog = async ({nome, categoria, unMedida}) => {  
+    const handleCloseInsertDialog = async ({nome, sku, categoria, unMedida, status}) => {  
         console.log(unMedida);
         setNome(nome);
+        setSku(sku);
         setCategoria(categoria);
         setUnMedida(unMedida);
+        setStatus(status);
         
         // Se o item não existir, adiciona ele com os campos quantidade e observacao
             
@@ -173,11 +176,13 @@ export default function Produtos(){
         }
     }
 
-    const handleCloseUpdateProduto = async ({nome, categoria, unMedida}) => {
+    const handleCloseUpdateProduto = async ({nome, sku, categoria, unMedida, status}) => {
 
             setNome(nome);
+            setSku(sku);
             setCategoria(categoria);
             setUnMedida(unMedida);
+            setStatus(status);
 
             const setorObj = await procurarProdutoNome(unMedida);
             const idSetor = selectedRows[0].id;
@@ -227,10 +232,12 @@ export default function Produtos(){
         }
     }
 
-    const handleCloseViewDialog = ({nome, categoria, unMedida}) => {  
+    const handleCloseViewDialog = ({nome, sku, categoria, unidadeMedida, status}) => {  
         setNome(nome);
+        setSku(sku);
         setCategoria(categoria);
         setUnMedida(unMedida);
+        setStatus(status);
         
         // Se o item não existir, adiciona ele com os campos quantidade e observacao
             

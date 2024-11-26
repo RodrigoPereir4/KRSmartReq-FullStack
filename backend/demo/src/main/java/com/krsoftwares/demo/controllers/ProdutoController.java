@@ -82,6 +82,11 @@ public class ProdutoController {
         return produtoRepository.findAllCategoria();
     }
 
+    @GetMapping("/listarUnidadeMedida")
+    public Iterable<String> listarUnidadeMedida() {
+        return produtoRepository.findAllUnidadeMedida();
+    }
+
     @GetMapping("/procurarNome")
     public ProdutoModel procurarNome(@RequestParam (required = true) String nome){
         Optional<ProdutoModel> produtoOptional = produtoRepository.findByNome(nome);

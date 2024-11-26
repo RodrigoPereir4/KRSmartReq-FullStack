@@ -23,6 +23,9 @@ public interface ProdutoRepository extends JpaRepository<ProdutoModel, String> {
     @Query("SELECT p.categoria FROM ProdutoModel p GROUP BY p.categoria")
     Iterable<String> findAllCategoria();
 
+    @Query("SELECT p.unMedida FROM ProdutoModel p GROUP BY p.unMedida")
+    Iterable<String> findAllUnidadeMedida();
+
     @Query("SELECT p.nome FROM ProdutoModel p WHERE p.categoria = :categoria")
     Iterable<String> filterCategory(String categoria);
 }
