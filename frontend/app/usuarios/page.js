@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import user2 from "@/images/user2.png";
 import NovoUsuarioDialog from "@/components/MUI/NovoUsuarioDialog";
-import { listarUsuarios,  procurarSetorNome, cadastrarUsuario } from "@/services/UsuarioService";
+import { listarUsuarios,  procurarSetorNome, cadastrarUsuario, atualizarUsuario } from "@/services/UsuarioService";
 
 const tableHeaderSetores = [
     {
@@ -103,6 +103,9 @@ export default function Usuarios(){
     const [selectedRows, setSelectedRows] = useState([]);
     const [updateTable, setUpdateTable] = useState(false);
 
+
+    const [resetSelect, setResetSelect] = useState(false);
+
     const handleSelected = (selected) =>{
         const newRow = Array.isArray(selected)
         ? rowsUsuarios.filter((row) => selected.includes(row.id))  // Seleção múltipla
@@ -116,6 +119,10 @@ export default function Usuarios(){
           console.log('Linhas selecionadas:', selectedRows);
         }
       }, [selectedRows]); 
+
+      useEffect(() => {
+        console.log('ResetSelected:', resetSelect);
+      }, [resetSelect]); 
 
     const handleAddUsuario = () =>{
         setOpenInsertDialog(true);
@@ -142,7 +149,7 @@ export default function Usuarios(){
                 if(result !== "Usuario Cadastrado com sucesso!"){
                     alert("Não foi possível cadastrar esse usuário!");
                 } else {
-                    alert("Usuário cadastrado com Sucesso!");
+                    alert(result);
                     setOpenInsertDialog(false);      
                     handleUpdateTable();
                 }
@@ -164,19 +171,24 @@ export default function Usuarios(){
         }
     }
 
-    const handleCloseUpdateUsuario = ({email, password, setorNome}) => {
+    const handleCloseUpdateUsuario = async ({email, password, setorNome}) => {
 
             setEmail(email);
             setPassword(password);
             setSetorNome(setorNome);
-            
+
+            const setorObj = await procurarSetorNome(setorNome);
+            const idSetor = selectedRows[0].id;
+
             const updatedRow = {
-                id: selectedRows[0].id,
                 email: email,
                 password: password,
-                setorNome: setorNome
+                setor: {
+                    setorId: setorObj.setorId
+                }
             };
             
+           /*
             console.log(selectedRows);
             console.log(updatedRow);
 
@@ -188,10 +200,19 @@ export default function Usuarios(){
                         : row
                 )
             );
-            
-                setOpenUpdateDialog(false);
-       
-            console.log(rowsUsuarios);
+           */
+
+            console.log(updatedRow);
+            const result = await atualizarUsuario(idSetor, updatedRow);
+            console.log(result);
+            if(result !== "Usuario Atualizado com sucesso!"){
+                alert(result);
+            } else {
+                alert(result);
+                setOpenUpdateDialog(false); 
+                setResetSelect(!resetSelect);     
+                handleUpdateTable();
+            }
     }
 
     const handleViewUsuario = () => {
@@ -308,6 +329,7 @@ export default function Usuarios(){
                     disableDelete={true}
                     height={580}
                     updateSelect={handleSelected}
+                    resetSelect={resetSelect}
                     rowsPerPage={25}
                 />
                 <div style={{display: 'flex', width: '100%', height: 120 , gap: 50}}>

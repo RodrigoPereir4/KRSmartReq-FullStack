@@ -158,6 +158,12 @@ export default function Tabela(props) {
   const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(props.rowsPerPage || 5);
 
+      
+  React.useEffect(() => {
+      setSelected([]);
+      props.updateSelect([]); 
+  }, [props.resetSelect]);
+
   const handleDeleteRow = () => {
     props.onDeleteRow(selected); // Chama a função passada do pai
     setSelected([]);
