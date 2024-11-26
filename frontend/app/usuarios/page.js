@@ -9,7 +9,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import user2 from "@/images/user2.png";
 import NovoUsuarioDialog from "@/components/MUI/NovoUsuarioDialog";
-import listarUsuarios from "@/services/UsuarioService";
+import { listarUsuarios,  procurarSetorNome, cadastrarUsuario } from "@/services/UsuarioService";
 
 const tableHeaderSetores = [
     {
@@ -121,7 +121,8 @@ export default function Usuarios(){
         setOpenInsertDialog(true);
     }
 
-    const handleCloseInsertDialog = ({email, password, setorNome}) => {  
+    const handleCloseInsertDialog = async ({email, password, setorNome}) => {  
+        console.log(setorNome);
         setEmail(email);
         setPassword(password);
         setSetorNome(setorNome);
@@ -129,20 +130,26 @@ export default function Usuarios(){
         // Se o item não existir, adiciona ele com os campos quantidade e observacao
             
             if (!rowsUsuarios.some(user => user.email === email)) {
-                setRowsUsuarios(prevRows => {
-    
-                    const maxId = prevRows.length > 0 ? Math.max(...prevRows.map(user => user.id)) : 0;
-                    const newId = maxId + 1;
-                    
-                    return [...prevRows, {id: newId, email, password, setorNome}]
+
+                const setorObj = await procurarSetorNome(setorNome);
+                const setor = {
+                    setorId: setorObj.setorId
+                };
+                
+                console.log({email, password, setor});
+                const result = await cadastrarUsuario({email, password, setor});
+                console.log(result);
+                if(result !== "Usuario Cadastrado com sucesso!"){
+                    alert("Não foi possível cadastrar esse usuário!");
+                } else {
+                    alert("Usuário cadastrado com Sucesso!");
+                    setOpenInsertDialog(false);      
+                    handleUpdateTable();
                 }
-                );
-                setOpenInsertDialog(false);
+
             } else {
                 alert("Esse email já existe no sistema!");
             }
-       
-        console.log(rowsUsuarios);
         
     }
 
@@ -245,7 +252,6 @@ export default function Usuarios(){
     useEffect(() => {
         const fetchData = async() =>{
             const response = await listarUsuarios();
-            console.log(response);
             
             setRowsUsuarios([]);
             setRowsBanco([]);
@@ -270,9 +276,6 @@ export default function Usuarios(){
                     }
                 ]);
             });
-
-            console.log(updateTable);
-            
         }
         fetchData();
     }, [updateTable])
