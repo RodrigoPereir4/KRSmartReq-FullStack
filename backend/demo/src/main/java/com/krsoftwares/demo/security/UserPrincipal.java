@@ -37,5 +37,9 @@ public class UserPrincipal {
         public UserModel getUserModel(){
             return this.user;
         }
+
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return authorities;
+        }
     }
 
