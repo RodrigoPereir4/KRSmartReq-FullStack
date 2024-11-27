@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krsoftwares.demo.models.UserModel;
@@ -76,7 +76,7 @@ public class UserController {
         return ResponseEntity.ok("Usuário cadastrado!");
     }
 
-    @PutMapping("editar/{id}")
+    @PutMapping("/editar/{id}")
     public ResponseEntity<String> editar(@RequestBody UserModel user, @PathVariable int id) {
         if (userService.update(user, id)) {
             return ResponseEntity.ok("Usuário editado!");
@@ -84,10 +84,10 @@ public class UserController {
         return ResponseEntity.ok("Usuário não encontrado!");
     }
 
-    @PutMapping("inativar/{id}")
+    @PutMapping("/inativar/{id}")
     public ResponseEntity<String> inativar(@PathVariable int id) {
         userService.inativar(id);
-        return ResponseEntity.ok("Usuário inativado");
+        return ResponseEntity.ok("Usuário inativado!");
     }
 
     @PutMapping("/atualizar/{idUsuario}")

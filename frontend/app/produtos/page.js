@@ -11,7 +11,7 @@ import user2 from "@/images/user2.png";
 import reload from "@/images/reload.svg";
 import reloadStatic from "@/images/reloadStatic.svg";
 import NovoProdutoDialog from "@/components/MUI/NovoProdutoDialog";
-import { listarProdutos, cadastrarProdutos, atualizarProdutos } from "@/services/ProdutoService";
+import { listarProdutos, cadastrarProdutos, atualizarProdutos, inativarProdutos } from "@/services/ProdutoService";
 
 const tableHeaderSetores = [
     {
@@ -249,16 +249,21 @@ export default function Produtos(){
         
     }
 
-    /*
-    useEffect(() => {
-        const rowsPadroes = [...rowsProdutos];
-        console.log(rowsProdutos);
-        if(pesquisa !== ''){
-            setRowsProdutos(rowsProdutos.filter(row => row.nome.includes(pesquisa)));
+    const handleInativarProduto = async () => {
+        if(selectedRows.length == 0){
+            alert("Selecione um produto da tabela para inativar!");
+        } else if(selectedRows.length > 1){
+            alert("Selecione apenas um produto da tabela!")
         } else {
-            setRowsProdutos(rowsPadroes);
+            const response = await inativarProdutos(selectedRows[0].sku);
+
+            if(response !== "Produto inativado!"){
+                alert("Não foi possivel inativar esse produto!");
+            }else {
+                alert(response);
+            }
         }
-    }, [pesquisa])*/
+    }
 
     const handleSearchChange = (e) => {
         const searchTerm = e.target.value.toLowerCase();
@@ -365,7 +370,7 @@ export default function Produtos(){
                     <BotaoPersonalizado onClick={handleAddProduto} width="100%" height="100%" text="+ Novo Produto" color="marrom"/> 
                     <BotaoPersonalizado onClick={handleViewProduto} width="100%" height="100%" text="Visualizar" color="amarelo"/> 
                     <BotaoPersonalizado onClick={handleUpdateProduto} width="100%" height="100%" text="Editar" color="amarelo"/> 
-                    <BotaoPersonalizado width="100%" height="100%" text="Inativar" color="vermelho"/> 
+                    <BotaoPersonalizado onClick={handleInativarProduto} width="100%" height="100%" text="Inativar" color="vermelho"/> 
                 </div>
                 <NovoProdutoDialog
                     open={openInsertDialog} 

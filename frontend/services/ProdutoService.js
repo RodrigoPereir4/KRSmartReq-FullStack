@@ -53,3 +53,21 @@ export async function atualizarProdutos(sku, dadosProdutos){
 
     return response.text();
 }
+
+export async function inativarProdutos(sku){
+
+    const url = 'http://localhost:8080/produto/inativar/' + sku;
+
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    
+    if(!response.ok){
+        alert("Falha no banco de dados!");
+    }
+
+    return response.text();
+}

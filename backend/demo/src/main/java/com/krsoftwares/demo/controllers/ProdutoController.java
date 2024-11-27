@@ -1,5 +1,7 @@
 package com.krsoftwares.demo.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -14,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krsoftwares.demo.models.ProdutoModel;
-import com.krsoftwares.demo.models.UserModel;
 import com.krsoftwares.demo.repository.ProdutoRepository;
 
-import jakarta.validation.Valid;
 import com.krsoftwares.demo.services.ProdutoService;
 
 @RestController
@@ -27,6 +27,9 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoService produtoService;
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<String> create(@RequestBody ProdutoModel produto) {
@@ -39,18 +42,10 @@ public class ProdutoController {
         return produtoService.listAll();
     }
 
-    @PutMapping("/editar/{SKU}")
-    public ResponseEntity<String> editar(@PathVariable String SKU, @RequestBody ProdutoModel produto) {
-        if (produtoService.update(produto, SKU)) {
-            return ResponseEntity.ok("Produto editado com sucesso!");
-        }
-        return ResponseEntity.ok("Produto não encontrado!");
-    }
-
     @PutMapping("/inativar/{SKU}")
     public ResponseEntity<String> intivar(@PathVariable String sku) {
         produtoService.inativar(sku);
-        return ResponseEntity.ok("Produto inativado");
+        return ResponseEntity.ok("Produto inativado!");
     }
 
     @PutMapping("/atualizar/{SKU}")
