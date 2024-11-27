@@ -2,6 +2,8 @@ package com.krsoftwares.demo.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,5 +26,6 @@ public class SetorModel {
     private String setorNome;
     
     @OneToMany
+    @JsonIgnore
     private List<UserModel> usuarios;    
 }

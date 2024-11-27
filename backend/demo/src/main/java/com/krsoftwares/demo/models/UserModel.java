@@ -8,12 +8,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+
 @Entity
-@Table(name = "Usuario")
-public class UserModel {
+@Table(name = "usuario")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class UserModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +36,6 @@ public class UserModel {
     @JoinColumn(name = "setor_id", nullable = false)
     private SetorModel setor;
 
+    @Column(name = "status")
+    private boolean status;
 } 

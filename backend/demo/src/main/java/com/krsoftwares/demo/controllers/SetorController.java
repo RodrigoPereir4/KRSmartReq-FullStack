@@ -29,7 +29,7 @@ public class SetorController {
         return "Setor registrado com sucesso!";
     }
 
-    @GetMapping("listar")
+    @GetMapping("/listar")
     public Iterable<SetorModel> listarSetores(){
         return setorRepository.findAll();
     }

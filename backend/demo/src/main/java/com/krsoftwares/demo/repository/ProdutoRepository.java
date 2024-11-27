@@ -15,6 +15,8 @@ public interface ProdutoRepository extends JpaRepository<ProdutoModel, String> {
 
     Optional<ProdutoModel> findByNome(String nome);
 
+    ProdutoModel deleteBySKU(String SKU);
+
     boolean existsBySKU(String SKU);
 
     @Query("SELECT p.nome FROM ProdutoModel p")

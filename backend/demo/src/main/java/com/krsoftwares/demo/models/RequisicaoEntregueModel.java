@@ -1,6 +1,6 @@
 package com.krsoftwares.demo.models;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,47 +12,46 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
 @Data
 @Entity
-@Table(name = "requisicao")
-public class RequisicaoModel {
+@Table(name = "requisicao_finalizada")
+public class RequisicaoEntregueModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long requisicaoId;
+    private Long id;
 
-    @Column(nullable = false)
-    private String solicitante;//NOME DO COLABORADOR QUE REQUISITOU OS PRODUTOS
-
-    private boolean status;
-
-    @OneToOne(mappedBy = "requisicaoId", cascade = CascadeType.ALL, optional = true,
-    fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "requisicao_id", referencedColumnName = "requisicaoId")
     @JsonIgnore
-    private RequisicaoEntregueModel entregaId;
+    private RequisicaoModel requisicaoId;
 
-    @Column(nullable = false)
-    private Date dataSolicitada;
 
     @Column(nullable = false)
     private Date dataEntrega;
 
-    @OneToMany(mappedBy = "requisicaoId", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, 
+    @Column(nullable = false)
+    @Size(max = 500)
+    private String observacao;
+
+    @OneToMany(mappedBy = "requisicaoEntId", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, 
     orphanRemoval = true, fetch = FetchType.LAZY)
     @Setter(value = AccessLevel.NONE)
-    private List<ItemRequisicaoModel> itens; 
+    private List<ItemEntregueModel> itens;
 
-    public void setItemRequisicao(List<ItemRequisicaoModel> itemRequi){
-        for(ItemRequisicaoModel i: itemRequi){
-            i.setRequisicaoId(this);
+    public void setItemRequisicao(List<ItemEntregueModel> itemEntregue){
+        for(ItemEntregueModel i: itemEntregue){
+            i.setRequisicaoEntId(this);
         }
-        this.itens = itemRequi;
+        this.itens = itemEntregue;
     }
 }

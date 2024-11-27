@@ -1,10 +1,8 @@
 package com.krsoftwares.demo.controllers;
 
-import java.util.Optional;
-import org.hibernate.PropertyValueException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +18,7 @@ import com.krsoftwares.demo.models.UserModel;
 import com.krsoftwares.demo.repository.ProdutoRepository;
 
 import jakarta.validation.Valid;
+import com.krsoftwares.demo.services.ProdutoService;
 
 @RestController
 @RequestMapping("/produto")
@@ -27,27 +26,31 @@ import jakarta.validation.Valid;
 public class ProdutoController {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @GetMapping("/listar")
-    public Iterable<ProdutoModel> listarProdutos() {
-        return produtoRepository.findAll();
-    }
+    private ProdutoService produtoService;
 
     @PostMapping("/cadastrar")
-    public String Cadastrar(@RequestBody @Valid ProdutoModel produto) {
+    public ResponseEntity<String> create(@RequestBody ProdutoModel produto) {
+        produtoService.create(produto);
+        return ResponseEntity.ok("Produto cadastrado!");
+    }
 
-        try {
-            if (produtoRepository.existsBySKU(produto.getSKU())) {
-                return "SKU já cadastrado.";
-            } else {
-                produtoRepository.save(produto);
-                return "Produto cadastrado!";
-            }
+    @GetMapping("/listar")
+    public Iterable<ProdutoModel> listar() {
+        return produtoService.listAll();
+    }
 
-        } catch (PropertyValueException e) {
-            return "Preencha todos os campos.";
+    @PutMapping("/editar/{SKU}")
+    public ResponseEntity<String> editar(@PathVariable String SKU, @RequestBody ProdutoModel produto) {
+        if (produtoService.update(produto, SKU)) {
+            return ResponseEntity.ok("Produto editado com sucesso!");
         }
+        return ResponseEntity.ok("Produto não encontrado!");
+    }
+
+    @PutMapping("/inativar/{SKU}")
+    public ResponseEntity<String> intivar(@PathVariable String sku) {
+        produtoService.inativar(sku);
+        return ResponseEntity.ok("Produto inativado");
     }
 
     @PutMapping("/atualizar/{SKU}")

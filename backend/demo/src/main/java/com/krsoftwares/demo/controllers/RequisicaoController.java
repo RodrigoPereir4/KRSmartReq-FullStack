@@ -18,7 +18,6 @@ import com.krsoftwares.demo.models.RequisicaoModel;
 import com.krsoftwares.demo.models.UserModel;
 import com.krsoftwares.demo.repository.ProdutoRepository;
 import com.krsoftwares.demo.repository.RequisicaoRepository;
-import com.krsoftwares.demo.repository.UserRepository;
 
 @RestController
 @RequestMapping("/requisicao")
@@ -29,45 +28,36 @@ public class RequisicaoController {
     private RequisicaoRepository requisicaoRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private ProdutoRepository produtoRepository;
 
     @PostMapping("/requisitar")
-    public RequisicaoModel gerar(@RequestBody RequisicaoModel objeto) {
-
-        //Futuramente, trocar o método para um método com Spring Security...
-        UserModel user = userRepository.findByEmail(objeto.getNome().getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        objeto.setNome(user);
-        
+    public ResponseEntity<String> gerar(@RequestBody RequisicaoModel objeto) {
+    
 
         if (objeto.getItens() != null) {
             for (ItemRequisicaoModel item : objeto.getItens()) {
-                // Encontra o produto pelo SKU
                 ProdutoModel produto = produtoRepository.findBySKU(item.getProduto().getSKU())
                         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-                item.setProduto(produto);//associa o item ao produto encontrado...
-                item.setRequisicaoId(objeto);//associa a requisição ao item...
+                item.setProduto(produto);// associa o item ao produto encontrado...
+                item.setRequisicaoId(objeto);// associa a requisição ao item...
             }
         }
 
         objeto.setItemRequisicao(objeto.getItens());
+        objeto.setStatus(true);//toda requisição gerada automaticamente fica pendente
+        requisicaoRepository.save(objeto);
 
-        RequisicaoModel requisicao = requisicaoRepository.save(objeto);
-
-        return requisicao;
+        return ResponseEntity.ok("Requisição gerada com sucesso!");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> excluir(@PathVariable("id") Long id){
+
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<String> excluir(@PathVariable("id") Long id) {
 
         RequisicaoModel requisicao = requisicaoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Requisição não encontrada"));
-        
+                .orElseThrow(() -> new RuntimeException("Requisição não encontrada"));
+
         requisicaoRepository.delete(requisicao);
         return ResponseEntity.ok("Requisição do ID " + id + " excluída com sucesso");
     }
