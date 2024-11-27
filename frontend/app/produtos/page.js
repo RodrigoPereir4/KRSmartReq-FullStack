@@ -7,7 +7,6 @@ import { TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import user2 from "@/images/user2.png";
 import reload from "@/images/reload.svg";
 import reloadStatic from "@/images/reloadStatic.svg";
 import NovoProdutoDialog from "@/components/MUI/NovoProdutoDialog";
@@ -274,7 +273,6 @@ export default function Produtos(){
         if(searchTerm !== ''){
             setRowsProdutos(rowsPadroes.filter(row => row.nome.toLowerCase().includes(searchTerm)));
         } else {
-            console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             console.log(rowsProdutos);
             handleUpdateTable();
         }

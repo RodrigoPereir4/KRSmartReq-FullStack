@@ -7,9 +7,10 @@ import { TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import user2 from "@/images/user2.png";
+import reload from "@/images/reload.svg";
+import reloadStatic from "@/images/reloadStatic.svg";
 import NovoUsuarioDialog from "@/components/MUI/NovoUsuarioDialog";
-import { listarUsuarios,  procurarSetorNome, cadastrarUsuario, atualizarUsuario } from "@/services/UsuarioService";
+import { listarUsuarios,  procurarSetorNome, cadastrarUsuario, atualizarUsuario, inativarUsuarios } from "@/services/UsuarioService";
 
 const tableHeaderSetores = [
     {
@@ -102,7 +103,7 @@ export default function Usuarios(){
 
     const [selectedRows, setSelectedRows] = useState([]);
     const [updateTable, setUpdateTable] = useState(false);
-
+    const [updateTablePressionado, setUpdateTablePressionado] = useState(false);
 
     const [resetSelect, setResetSelect] = useState(false);
 
@@ -146,7 +147,7 @@ export default function Usuarios(){
                 console.log({email, password, setor});
                 const result = await cadastrarUsuario({email, password, setor});
                 console.log(result);
-                if(result !== "Usuario Cadastrado com sucesso!"){
+                if(result !== "Usuário cadastrado!"){
                     alert("Não foi possível cadastrar esse usuário!");
                 } else {
                     alert(result);
@@ -209,8 +210,7 @@ export default function Usuarios(){
                 alert(result);
             } else {
                 alert(result);
-                setOpenUpdateDialog(false); 
-                setResetSelect(!resetSelect);     
+                setOpenUpdateDialog(false);    
                 handleUpdateTable();
             }
     }
@@ -250,24 +250,46 @@ export default function Usuarios(){
         
     }
 
-    useEffect(() => {
-        const rowsPadroes = [...rowsUsuarios];
-
-        if(pesquisa.length>0){
-            setRowsUsuarios(rowsUsuarios.filter(row => row.email.includes(pesquisa)));
+    const handleInativarProduto = async () => {
+        if(selectedRows.length == 0){
+            alert("Selecione um usuário da tabela para inativar!");
+        } else if(selectedRows.length > 1){
+            alert("Selecione apenas um usuário da tabela!")
         } else {
-            setRowsUsuarios(rowsPadroes);
+            const response = await inativarUsuarios(selectedRows[0].id);
+            console.log(response);
+            if(response !== "Usuário inativado"){
+                alert("Não foi possivel inativar esse usuário!");
+            }else {
+                alert("Usuário inativado com sucesso!");
+                handleUpdateTable();
+            }
         }
-    }, [pesquisa])
+    }
 
     const handleSearchChange = (e) => {
-        setPesquisa(e.target.value);
+        const searchTerm = e.target.value.toLowerCase();
+        console.log(searchTerm);
 
-        
+        setPesquisa(searchTerm);
+
+        if(searchTerm !== ''){
+            setRowsUsuarios(rowsPadroes.filter(row => row.email.toLowerCase().includes(searchTerm)));
+        } else {
+            console.log(rowsUsuarios);
+            handleUpdateTable();
+        }
     };
 
     const handleUpdateTable = () => {
         setUpdateTable(!updateTable);
+
+        setUpdateTablePressionado(true);
+        setResetSelect(!resetSelect)
+
+        setTimeout(() => {
+            setUpdateTablePressionado(false);
+        }, 2000)
     }
 
     useEffect(() => {
@@ -275,7 +297,10 @@ export default function Usuarios(){
             const response = await listarUsuarios();
             
             setRowsUsuarios([]);
+            setRowsPadroes([]);
             setRowsBanco([]);
+            setPesquisa('');
+
             response.forEach(row => {
                 setRowsBanco(prevRows => [
                     ...prevRows,
@@ -296,26 +321,36 @@ export default function Usuarios(){
                         setorNome: row.setor.setorNome // Mantém apenas setorNome
                     }
                 ]);
+
+                setRowsPadroes(prevRows => [
+                    ...prevRows,
+                    {
+                        id: prevRows.length,
+                        ...row,
+                    }
+                ]);
             });
         }
         fetchData();
     }, [updateTable])
-
-    useEffect(() => {
-        console.log(rowsBanco);
-        console.log(rowsUsuarios);
-    }, [rowsBanco, rowsUsuarios]);
 
     return(
         <div style={{display:'flex'}}>
             <Navbar/>
             <ContainerTabela>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <h1>Lista de Usuários</h1>
-                    <button onClick={handleUpdateTable}>Atualizar Tabela</button>
-                    <div style={{display: 'flex', alignItems:'center', gap: 10, marginBottom: 10}}>
-                        <TextField style={{width: 500}} label={'Pesquisar'} onChange={handleSearchChange}/>
-                        <button style={{border: 'none', borderRadius: 6, padding: '10px 15px', background: '#584438'}}><Image src={user2}/></button>
+                    <div style={{display: "flex", alignItems: "center", gap: 20}}>
+                        <h1>Lista de Usuários</h1>
+                        <button onClick={handleUpdateTable} 
+                            style={{border: "none", backgroundColor: "#ffffff", cursor: "pointer"}}> 
+
+                            {updateTablePressionado ? (<Image src={reload} alt="Botão para recarregar"/> )
+                            : (<Image src={reloadStatic} alt="Botão para recarregar"/>)}
+                        </button>
+                    </div>
+
+                    <div style={{display: 'flex', alignItems:'center', gap: 10}}>
+                        <TextField style={{width: 500}} label={'Pesquisar'} value={pesquisa} onChange={handleSearchChange}/>
                     </div>
                 </div>
                 
@@ -336,7 +371,7 @@ export default function Usuarios(){
                     <BotaoPersonalizado onClick={handleAddUsuario} width="100%" height="100%" text="+ Novo Usuário" color="marrom"/> 
                     <BotaoPersonalizado onClick={handleViewUsuario} width="100%" height="100%" text="Visualizar" color="amarelo"/> 
                     <BotaoPersonalizado onClick={handleUpdateUsuario} width="100%" height="100%" text="Editar" color="amarelo"/> 
-                    <BotaoPersonalizado width="100%" height="100%" text="Excluir" color="vermelho"/> 
+                    <BotaoPersonalizado onClick={handleInativarProduto} width="100%" height="100%" text="Inativar" color="vermelho"/> 
                 </div>
                 <NovoUsuarioDialog
                     open={openInsertDialog} 

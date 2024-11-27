@@ -72,3 +72,21 @@ export async function procurarSetorNome(nome){
     return response.json();
 
 }
+
+export async function inativarUsuarios(id){
+
+    const url = 'http://localhost:8080/users/inativar/' + id;
+
+    const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    
+    if(!response.ok){
+        alert("Falha no banco de dados!");
+    }
+
+    return response.text();
+}
