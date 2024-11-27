@@ -47,6 +47,8 @@ public class ProdutoController {
         if (produtoService.inativar(SKU)) {
             return ResponseEntity.ok("Produto inativado");
         }
+        return ResponseEntity.ok("Produto não encontrado");
+    }
 
     @PutMapping("/atualizar/{SKU}")
     public String editar(@PathVariable String SKU, @RequestBody ProdutoModel produtoAtt){

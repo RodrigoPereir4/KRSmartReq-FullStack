@@ -207,7 +207,6 @@ export default function Produtos(){
             } else {
                 alert(result);
                 setOpenUpdateDialog(false); 
-                setResetSelect(!resetSelect);     
                 handleUpdateTable();
             }
     }
@@ -257,10 +256,11 @@ export default function Produtos(){
         } else {
             const response = await inativarProdutos(selectedRows[0].sku);
 
-            if(response !== "Produto inativado!"){
+            if(response !== "Produto inativado"){
                 alert("Não foi possivel inativar esse produto!");
             }else {
-                alert(response);
+                alert("Produto inativado com sucesso!");
+                handleUpdateTable();
             }
         }
     }
@@ -284,6 +284,7 @@ export default function Produtos(){
         setUpdateTable(!updateTable);
 
         setUpdateTablePressionado(true);
+        setResetSelect(!resetSelect)
 
         setTimeout(() => {
             setUpdateTablePressionado(false);
