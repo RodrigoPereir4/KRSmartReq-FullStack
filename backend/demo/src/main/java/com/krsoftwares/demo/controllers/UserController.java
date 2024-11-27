@@ -86,8 +86,10 @@ public class UserController {
 
     @PutMapping("/inativar/{id}")
     public ResponseEntity<String> inativar(@PathVariable int id) {
-        userService.inativar(id);
-        return ResponseEntity.ok("Usuário inativado!");
+        if (userService.inativar(id)) {
+            return ResponseEntity.ok("Usuário inativado");
+        }
+        return ResponseEntity.ok("Usuário não encontrado!");
     }
 
     @PutMapping("/atualizar/{idUsuario}")

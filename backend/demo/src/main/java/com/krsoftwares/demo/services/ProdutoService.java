@@ -8,5 +8,5 @@ public interface ProdutoService {
     List<ProdutoModel> listAll();
     ProdutoModel create(ProdutoModel produto);
     Boolean update(ProdutoModel produto, String SKU);
-    String inativar(String sku);
+    Boolean inativar(String sku);
 }

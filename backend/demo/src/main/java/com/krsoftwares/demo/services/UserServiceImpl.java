@@ -51,18 +51,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String inativar(int id) {
+    public Boolean inativar(int id) {
         Optional<UserModel> userOpt = userRepository.findById(id);
 
         if (userOpt.isEmpty()) {
-            return "Usuário não encontrado!";
+            return false;
 
         }
         userOpt.get().setStatus(false);
 
         userRepository.save(userOpt.get());
 
-        return "Usuário inativado";
+        return true;
 
     }
 
