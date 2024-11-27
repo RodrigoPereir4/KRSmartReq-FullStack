@@ -50,18 +50,18 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public String inativar(String SKU) {
+    public Boolean inativar(String SKU) {
         Optional<ProdutoModel> produtoOpt = produtoRepository.findBySKU(SKU);
 
         if(produtoOpt.isEmpty()){
-            return "Produto não encontrado";
+            return false;
         }
 
         produtoOpt.get().setStatus(false);
 
         produtoRepository.save(produtoOpt.get());
 
-        return "Produto inativado!";
+        return true;
     }
 
 }

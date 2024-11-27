@@ -43,9 +43,11 @@ public class ProdutoController {
     }
 
     @PutMapping("/inativar/{SKU}")
-    public ResponseEntity<String> intivar(@PathVariable String sku) {
-        produtoService.inativar(sku);
-        return ResponseEntity.ok("Produto inativado");
-    }
+    public ResponseEntity<String> intivar(@PathVariable String SKU) {
+        if (produtoService.inativar(SKU)) {
+            return ResponseEntity.ok("Produto inativado");
+        }
 
+        return ResponseEntity.ok("Produto não encontrado!");
+    }
 }
