@@ -1,19 +1,13 @@
 package com.krsoftwares.demo.services;
 
-
-
-
-import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import com.krsoftwares.demo.models.UserModel;
-import com.krsoftwares.demo.repository.RoleRepository;
 import com.krsoftwares.demo.repository.UserRepository;
-import com.krsoftwares.demo.role.Role;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,51 +15,55 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
-
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
     @Override
     public UserModel create(UserModel user) {
-        
+
         try {
-            if(userRepository.existsByEmail(user.getEmail())){
+            if (userRepository.existsByEmail(user.getEmail())) {
                 throw new Error("Usuário já existe");
             }
         } catch (Exception e) {
             throw new Error("Preencha todos os campos");
         }
-    
-        user.setPassword(passwordEncoder().encode(user.getPassword()));
 
-        definirRole(user);
-        
+        user.setStatus(true);
         UserModel createdUser = userRepository.save(user);
 
         return createdUser;
     }
 
-    public void definirRole(UserModel user){
-        if(user.getRoles() == null){
-            user.setRoles(new ArrayList<>());
-        }
+    @Override
+    public Boolean update(UserModel user, int id) {
+        Optional<UserModel> userOpt = userRepository.findById(id);
 
-        Role role = null;
+        if (userOpt.isPresent()) {
+            UserModel userExistente = userOpt.get();
 
-        if(user.getSetor().getSetorId() == 1){//setor de adm
-            role = roleRepository.findByName("ADMIN");
-        }else if(user.getSetor().getSetorId() == 2){//setor do estoque
-            role = roleRepository.findByName("ALMOXARIFE");
-        } else{ // qualquer outro setor
-            role = roleRepository.findByName("USER");
-        }
+            userExistente.setEmail(user.getEmail());
+            userExistente.setPassword(user.getPassword());
+            userExistente.setSetor(user.getSetor());
+            userExistente.setStatus(user.isStatus());
 
-        if(role != null && !user.getRoles().contains(role)){
-            user.getRoles().add(role);
+            userRepository.save(userExistente);
+            return true;
         }
+        return false;
     }
-    
+
+    @Override
+    public String inativar(int id) {
+        Optional<UserModel> userOpt = userRepository.findById(id);
+
+        if (userOpt.isEmpty()) {
+            return "Usuário não encontrado!";
+
+        }
+        userOpt.get().setStatus(false);
+
+        userRepository.save(userOpt.get());
+
+        return "Usuário inativado";
+
+    }
+
 }

@@ -1,24 +1,14 @@
 package com.krsoftwares.demo.controllers;
 
-import java.nio.file.attribute.UserPrincipal;
-import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -39,44 +29,24 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @PostMapping("/login")
     public String loginUsuario(@RequestBody UserModel userModel) {
 
         Optional<UserModel> userOptional = userRepository.findByEmail(userModel.getEmail());
 
-        if (!userOptional.isPresent()) {
+        if (userOptional.isEmpty()) {
             return "Usuário ou senha incorretos.";
         }
 
         UserModel user = userOptional.get();
 
-        if (!passwordEncoder.matches(userModel.getPassword(), user.getPassword())) {
+        if (!user.getPassword().equals(userModel.getPassword())) {
             return "Usuário ou senha incorretos.";
         }
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user.getEmail(),
-                userModel.getPassword(),
-                getAuthorities(user));
-
-        try {
-
-            Authentication userAutenticado = authenticationManager.authenticate(authentication);
-            SecurityContextHolder.getContext().setAuthentication(userAutenticado);
-            return "Login realizado com sucesso!";
-
-        } catch (AuthenticationException ex) {
-            return "Usuário ou senha incorreto";
-        }
+        return "Login realizado com sucesso!";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/listar")
     public Iterable<UserModel> listarUsuarios() {
         return userRepository.findAll();
@@ -88,9 +58,17 @@ public class UserController {
         return ResponseEntity.ok("Usuário cadastrado!");
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(UserModel user) {
-        return user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-                .collect(Collectors.toList());
+    @PutMapping("editar/{id}")
+    public ResponseEntity<String> editar(@RequestBody UserModel user, @PathVariable int id) {
+        if (userService.update(user, id)) {
+            return ResponseEntity.ok("Usuário editado!");
+        }
+        return ResponseEntity.ok("Usuário não encontrado!");
+    }
+
+    @PutMapping("inativar/{id}")
+    public ResponseEntity<String> inativar(@PathVariable int id) {
+        userService.inativar(id);
+        return ResponseEntity.ok("Usuário inativado");
     }
 }

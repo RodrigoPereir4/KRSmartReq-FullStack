@@ -32,26 +32,36 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public ProdutoModel update(ProdutoModel produtoAtt, String SKU) {
+    public Boolean update(ProdutoModel produtoAtt, String SKU) {
         Optional<ProdutoModel> produto = produtoRepository.findBySKU(SKU);
 
         if (produto.isPresent()) {
             ProdutoModel produtoExistente = produto.get();
-
             produtoExistente.setNome(produtoAtt.getNome());
             produtoExistente.setCategoria(produtoAtt.getCategoria());
             produtoExistente.setStatus(produtoAtt.isStatus());
             produtoExistente.setUnMedida(produtoAtt.getUnMedida());
 
-            return produtoRepository.save(produtoExistente);
+            produtoRepository.save(produtoExistente);
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
     @Override
-    public void delete(String SKU) {
-        produtoRepository.deleteBySKU(SKU);
+    public String inativar(String SKU) {
+        Optional<ProdutoModel> produtoOpt = produtoRepository.findBySKU(SKU);
+
+        if(produtoOpt.isEmpty()){
+            return "Produto não encontrado";
+        }
+
+        produtoOpt.get().setStatus(false);
+
+        produtoRepository.save(produtoOpt.get());
+
+        return "Produto inativado!";
     }
 
 }

@@ -20,7 +20,4 @@ public interface UserRepository extends JpaRepository<UserModel, Integer> {
 
     @Query("SELECT u.email FROM UserModel u WHERE u.setor.id = :setor")
     Iterable<String> findBySetor(Integer setor);
-
-    @Query("SELECT u FROM UserModel u JOIN FETCH u.roles WHERE u.email = :email")
-    UserModel findByEmailFetchRoles(@Param("email") String email);
 }

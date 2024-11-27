@@ -12,8 +12,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -30,10 +28,6 @@ public class RequisicaoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long requisicaoId;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_setor", referencedColumnName = "id")
-    private UserModel usuario_setor;//alterar posteriormente para "usuarioSetor"
-    
     @Column(nullable = false)
     private String solicitante;//NOME DO COLABORADOR QUE REQUISITOU OS PRODUTOS
 

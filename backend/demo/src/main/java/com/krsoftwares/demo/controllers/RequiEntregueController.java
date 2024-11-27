@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +36,6 @@ public class RequiEntregueController {
     @Autowired
     RequisicaoRepository requisicaoRepository;
 
-    @PreAuthorize("hasAnyRole('ADMIN','ALMOXARIFE')")
     @PostMapping("{id}")
     public ResponseEntity<String> entrega(@PathVariable Long id, @RequestBody RequisicaoEntregueModel objeto) {
 
@@ -70,7 +69,6 @@ public class RequiEntregueController {
         return ResponseEntity.ok("Requisição finalizada!");
     }
 
-     @PreAuthorize("hasAnyRole('ADMIN','ALMOXARIFE')")
     @GetMapping("/listar")
     public ResponseEntity listar() {
         Iterable<RequisicaoEntregueModel> requisicoes = requiEntregueRepository.findAll();

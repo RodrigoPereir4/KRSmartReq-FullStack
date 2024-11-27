@@ -7,6 +7,6 @@ import com.krsoftwares.demo.models.ProdutoModel;
 public interface ProdutoService {
     List<ProdutoModel> listAll();
     ProdutoModel create(ProdutoModel produto);
-    ProdutoModel update(ProdutoModel produto, String SKU);
-    void delete(String sku);
+    Boolean update(ProdutoModel produto, String SKU);
+    String inativar(String sku);
 }
