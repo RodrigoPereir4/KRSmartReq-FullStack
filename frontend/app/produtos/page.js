@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import user2 from "@/images/user2.png";
+import reload from "@/images/reload.svg";
+import reloadStatic from "@/images/reloadStatic.svg";
 import NovoProdutoDialog from "@/components/MUI/NovoProdutoDialog";
 import { listarProdutos, cadastrarProdutos, atualizarProdutos } from "@/services/ProdutoService";
 
@@ -103,9 +105,7 @@ export default function Produtos(){
 
     const [selectedRows, setSelectedRows] = useState([]);
     const [updateTable, setUpdateTable] = useState(false);
-
-    const [idRows, setIdRows] = useState(0);
-
+    const [updateTablePressionado, setUpdateTablePressionado] = useState(false);
 
     const [resetSelect, setResetSelect] = useState(false);
 
@@ -277,6 +277,12 @@ export default function Produtos(){
 
     const handleUpdateTable = () => {
         setUpdateTable(!updateTable);
+
+        setUpdateTablePressionado(true);
+
+        setTimeout(() => {
+            setUpdateTablePressionado(false);
+        }, 2000)
     }
 
     useEffect(() => {
@@ -286,6 +292,7 @@ export default function Produtos(){
             setRowsProdutos([]);
             setRowsPadroes([]);
             setRowsBanco([]);
+            setPesquisa('');
 
             response.forEach(row => {
                 setRowsBanco(prevRows => [
@@ -327,11 +334,17 @@ export default function Produtos(){
             <Navbar/>
             <ContainerTabela>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <h1>Lista de Produtos</h1>
-                    <button onClick={handleUpdateTable}>Atualizar Tabela</button>
-                    <div style={{display: 'flex', alignItems:'center', gap: 10, marginBottom: 10}}>
-                        <TextField style={{width: 500}} label={'Pesquisar'} value={pesquisa} onChange={handleSearchChange}/>
-                        <button style={{border: 'none', borderRadius: 6, padding: '10px 15px', background: '#584438'}}><Image src={user2}/></button>
+                    <div style={{display: "flex", alignItems: "center", gap: 20}}>
+                        <h1>Lista de Produtos</h1>
+                        <button onClick={handleUpdateTable} 
+                            style={{border: "none", backgroundColor: "#ffffff", cursor: "pointer"}}> 
+
+                            {updateTablePressionado ? (<Image src={reload} alt="Botão para recarregar"/> )
+                            : (<Image src={reloadStatic} alt="Botão para recarregar"/>)}
+                        </button>
+                    </div>
+                    <div style={{display: 'flex', alignItems:'center', marginBottom: 10}}>
+                        <TextField style={{width: 500}} label={'Pesquisar Produto'} value={pesquisa} onChange={handleSearchChange}/>
                     </div>
                 </div>
                 

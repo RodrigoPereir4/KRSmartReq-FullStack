@@ -17,6 +17,7 @@ const IOSSwitch = styled((props) => (
   width: 42,
   height: 26,
   padding: 0,
+
   '& .MuiSwitch-switchBase': {
     padding: 0,
     margin: 2,
@@ -76,6 +77,7 @@ export default function RadiusButton(props) {
   return (
     <FormGroup>
       <FormControlLabel
+        style={{marginTop: 10, paddingLeft: 3}}
         control={
         <IOSSwitch 
             sx={{ m: 1 }} 
