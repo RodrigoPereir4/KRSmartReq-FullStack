@@ -1,7 +1,5 @@
 'use client'
 
-
-
 import BotaoPersonalizado from "@/components/generics/BotaoPersonalizado";
 import ComboBox from "@/components/MUI/ComboBox";
 import ObservacaoDialog from "@/components/MUI/ObservacaoDialog";
@@ -18,34 +16,41 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en-gb';
+import { pesquisarData } from "@/services/RelatorioService";
 
 const today = dayjs();
 const tomorrow = dayjs().add(1, 'day');
 
-const tableHeaderSetores = [
+const tableHeaderEntregas = [
       {
-        id: 'setorId',
+        id: 'requisicaoId',
         numeric: true,
         disablePadding: false,
-        label: 'ID Setor',
+        label: 'Requisição ID',
       },
       {
-        id: 'setor',
+        id: 'id',
+        numeric: true,
+        disablePadding: false,
+        label: 'Entrega ID',
+      },
+      {
+        id: 'solicitante',
         numeric: false,
         disablePadding: false,
-        label: 'Setor',
+        label: 'Solicitante',
       },
       {
-        id: 'situacao',
+        id: 'dataSolicitada',
         numeric: true,
         disablePadding: false,
-        label: 'Situação',
+        label: 'Data Solicitada',
       },
       {
-        id: 'qtdRequisicao',
+        id: 'dataEntrega',
         numeric: true,
         disablePadding: false,
-        label: 'Requisições',
+        label: 'Data Entregue',
       },
       
 ];
@@ -143,28 +148,7 @@ export default function Relatorio(){
     const [dataSolicitada, setDataSolicitada] = useState(today);
     const [dataEntrega, setDataEntrega] = useState(tomorrow);
 
-    const [rowsSetores, setRowsSetores] = useState([
-        {
-            id: 1,
-            idItem: 3,
-            setor: 'cozinha',
-            requisicoes: 3,
-            situacao: 'Pendente'
-        },
-        {
-            id: 2,
-            idItem: 6,
-            setor: 'café',
-            requisicoes: 5,
-            situacao: 'Pendente'
-        },
-        {
-            id: 3,
-            idItem: 1,
-            setor: 'bar',
-            requisicoes: 4,
-            situacao: 'Normal'
-        },
+    const [rowsEntregas, setRowsEntregas] = useState([
     ]);
 
     const [rowsItens, setRowsItens] = useState([]);
@@ -183,14 +167,14 @@ export default function Relatorio(){
     const [updateTablePressionado, setUpdateTablePressionado] = useState(false);
 
 
-    const handleDeleteRowSetor = (selected) => {setRowsSetores((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
+    const handleDeleteRowSetor = (selected) => {setRowsEntregas((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
    
     const handleDeleteRowItemEnviar = (selected) => {setRowsItensEnviar((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
 
     const handleSelected = (selected) =>{
         const newRow = Array.isArray(selected)
-        ? rowsSetores.filter((row) => selected.includes(row.id))  // Seleção múltipla
-        : rowsSetores.filter((row) => row.id === selected);  // Seleção única
+        ? rowsEntregas.filter((row) => selected.includes(row.id))  // Seleção múltipla
+        : rowsEntregas.filter((row) => row.id === selected);  // Seleção única
 
         setSelectedRows(newRow);
     }
@@ -209,6 +193,25 @@ export default function Relatorio(){
             console.log(newValue);
         }
         console.log(newValue);
+    }
+
+    const handlePesquisarData = async () => {
+        const response = await pesquisarData(dataSolicitada, dataEntrega);
+
+        if(response.length > 0){
+            const rowFiltrada = response.map(item => ({
+                requisicaoId: item.requisicaoId.requisicaoId,
+                id: item.id,
+                solicitante: item.solicitante,
+                dataSolicitada: item.dataSolicitada,
+                dataEntrega: item.dataEntrega
+            }));
+    
+            setRowsEntregas(rowFiltrada);
+        } else {
+            alert("Nenhum item encontrado nessa data!");
+            handleUpdateTable();
+        }
     }
 
     useEffect(() => {
@@ -306,11 +309,11 @@ export default function Relatorio(){
         const fetchData = async() =>{
             const response = await listarSetores();
             
-            setRowsSetores([]);
+            setRowsEntregas([]);
 
             response.forEach(row => {
 
-                setRowsSetores(prevRows => [
+                setRowsEntregas(prevRows => [
                     ...prevRows,
                     {
                         id: prevRows.length,
@@ -339,14 +342,14 @@ export default function Relatorio(){
         const fetchData = async() =>{
             const response = await listarSetores();
             
-            setRowsSetores([]);
+            setRowsEntregas([]);
             setRowsItens([]);
             setRowsItensEnviar([]);
             setNumRequisicao('');
             setQuantidade(0);
 
             response.forEach(row => {
-                setRowsSetores(prevRows => [
+                setRowsEntregas(prevRows => [
                     ...prevRows,
                     {
                         id: prevRows.length,
@@ -440,7 +443,7 @@ export default function Relatorio(){
 
     const [activateBodyHamburguer, setActivateBodyHamburguer] = useState(false);
 
-    console.log('Setores:',rowsSetores);
+    console.log('Setores:',rowsEntregas);
     return(
         <div style={{display:'flex'}}>
             <Navbar/>
@@ -488,7 +491,7 @@ export default function Relatorio(){
                         </LocalizationProvider>
 
                         <div style={{display: 'flex', gap: 15, alignItems: 'center'}}>
-                            <BotaoPersonalizado text="Pesquisar" color="marrom"/>  
+                            <BotaoPersonalizado onClick={handlePesquisarData} text="Pesquisar" color="marrom"/>  
 
                             <button onClick={handleUpdateTable} 
                                 style={{border: "none", backgroundColor: "#ffffff", cursor: "pointer"}}> 
@@ -502,8 +505,8 @@ export default function Relatorio(){
                         <div style={{display: "flex", gap: 30}}>
                             <Tabela
                                 title="Requisições de Cada Setor" 
-                                tableHeader={tableHeaderSetores} 
-                                rows={rowsSetores} 
+                                tableHeader={tableHeaderEntregas} 
+                                rows={rowsEntregas} 
                                 onDeleteRow={handleDeleteRowSetor}
                                 fontHeader={12}
                                 visibilityDense={false}
