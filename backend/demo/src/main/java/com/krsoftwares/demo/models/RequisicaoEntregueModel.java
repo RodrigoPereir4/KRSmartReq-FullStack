@@ -16,6 +16,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -35,8 +37,8 @@ public class RequisicaoEntregueModel {
     @JsonIgnore
     private RequisicaoModel requisicaoId;
 
-
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dataEntrega;
 
     @Column(nullable = false)

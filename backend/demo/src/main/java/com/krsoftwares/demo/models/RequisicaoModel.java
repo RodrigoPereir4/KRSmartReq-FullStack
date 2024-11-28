@@ -17,6 +17,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -45,9 +47,11 @@ public class RequisicaoModel {
     private RequisicaoEntregueModel entregaId;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dataSolicitada;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dataEntrega;
 
     @OneToMany(mappedBy = "requisicaoId", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, 
