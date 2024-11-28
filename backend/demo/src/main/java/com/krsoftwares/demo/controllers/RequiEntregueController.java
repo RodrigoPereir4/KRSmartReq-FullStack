@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krsoftwares.demo.models.ItemEntregueModel;
+import com.krsoftwares.demo.models.ItemRequisicaoModel;
 import com.krsoftwares.demo.models.ProdutoModel;
 import com.krsoftwares.demo.models.RequisicaoEntregueModel;
 import com.krsoftwares.demo.models.RequisicaoModel;
+import com.krsoftwares.demo.repository.ItemRequisicaoRepository;
 import com.krsoftwares.demo.repository.ProdutoRepository;
 import com.krsoftwares.demo.repository.RequiEntregueRepository;
 import com.krsoftwares.demo.repository.RequisicaoRepository;
@@ -36,6 +38,9 @@ public class RequiEntregueController {
 
     @Autowired
     RequisicaoRepository requisicaoRepository;
+
+    @Autowired
+    ItemRequisicaoRepository itemRequisicaoRepository;
 
     @PostMapping("{id}")
     public ResponseEntity<String> entrega(@PathVariable Long id, @RequestBody RequisicaoEntregueModel objeto) {
@@ -82,5 +87,11 @@ public class RequiEntregueController {
     public ResponseEntity listar() {
         Iterable<RequisicaoEntregueModel> requisicoes = requiEntregueRepository.findAll();
         return ResponseEntity.ok(requisicoes);
+    }
+
+    @GetMapping("/itemRequisitado/{requisicaoId}")
+    public ResponseEntity itemRequisitado(@PathVariable Long requisicaoId) {
+        Iterable<ItemRequisicaoModel> itens = itemRequisicaoRepository.findItensRequisicao(requisicaoId);
+        return ResponseEntity.ok(itens);
     }
 }
