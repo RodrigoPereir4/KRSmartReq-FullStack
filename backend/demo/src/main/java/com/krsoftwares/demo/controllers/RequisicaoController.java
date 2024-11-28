@@ -1,6 +1,5 @@
 package com.krsoftwares.demo.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +31,10 @@ public class RequisicaoController {
 
     @PostMapping("/requisitar")
     public ResponseEntity<String> gerar(@RequestBody RequisicaoModel objeto) {
-    
+        
+        if (objeto.getItens() == null || objeto.getItens().isEmpty()) {
+            return ResponseEntity.ok("Adicione itens a requisição!");
+        }
 
         if (objeto.getItens() != null) {
             for (ItemRequisicaoModel item : objeto.getItens()) {
@@ -45,12 +47,11 @@ public class RequisicaoController {
         }
 
         objeto.setItemRequisicao(objeto.getItens());
-        objeto.setStatus(true);//toda requisição gerada automaticamente fica pendente
+        objeto.setStatus(true);// toda requisição gerada automaticamente fica pendente
         requisicaoRepository.save(objeto);
 
         return ResponseEntity.ok("Requisição gerada com sucesso!");
     }
-
 
     @DeleteMapping("/excluir/{id}")
     public ResponseEntity<String> excluir(@PathVariable("id") Long id) {
