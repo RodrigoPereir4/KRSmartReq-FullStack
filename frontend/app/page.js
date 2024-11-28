@@ -7,16 +7,22 @@ import iconeLock from "/images/lock.png"
 
 import Image from "next/image";
 import "./styles/page.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLogin } from "@/hooks/useLogin";
 
 const Container = styled.div`
     display: flex;
-     max-height: 100%; /* Garante que o contêiner não exceda a largura da tela */
+    max-height: 100%; /* Garante que o contêiner não exceda a largura da tela */
     overflow: hidden; /* Oculta qualquer parte que sair do contêiner */
     
     justify-content: center; /* Centraliza a imagem horizontalmente */
     align-items: center;
+
+    .homeImage{
+        min-width: 800px;
+        height: auto;
+        object-fit: fill;
+    }
 `;
 
 const Login = styled.form`
@@ -27,15 +33,30 @@ const Login = styled.form`
     display:flex;
     flex-direction: column;
     justify-content: center;
+
+    margin-right: 40px;
     
     h1 {
         text-align: center;
-        font-size: 64px;
+        font-size: 48px;
     }
 
     label {
         display: block;
-        font-size: 40px;
+        font-size: 32px;
+    }
+
+   @media (max-width: 1530px) {
+        padding: 0px 82px 0px 120px;
+        margin-right: 20px;
+
+        h1{
+            font-size: 45px;
+        }
+
+        label {
+            font-size: 30px;
+        }
     }
 `;
 
@@ -53,7 +74,7 @@ const CampoTexto = styled.div`
         
         border: none;
         border-bottom: 1.5px solid #584439; 
-        padding: 8px 0px;
+        padding: 8px 32px 8px 0px;
         transition: 0.4s cubic-bezier(0.4, 0, 0.4, 0.97);
 
         outline: none
@@ -71,6 +92,7 @@ const CampoTexto = styled.div`
     img {
         position: relative;
         right: 30px;
+        top: 10px;
     }
 
     input:focus,
@@ -84,6 +106,21 @@ const CampoTexto = styled.div`
         top: -40px;
     }
 
+    input[type="password"]::-ms-reveal {
+        display: none; /* Para Edge */
+    }
+
+    input[type="password"]::-ms-clear {
+        display: none; /* Para Edge */
+    }
+
+    @media (max-width: 1530px) {
+        img {
+            width: 30px;
+            height: 30px;
+            right: 25px;
+        }
+    }
 `;
 
 const CheckboxContainer = styled.div`
@@ -111,6 +148,15 @@ const CheckboxContainer = styled.div`
 
     input, label {
         cursor: pointer;
+    }
+
+    
+    @media (max-width: 1530px) {
+        margin: 37px 0px 35px 0px;
+
+        label {
+            font-size: 26px;
+        }
     }
 `
 
@@ -153,6 +199,12 @@ const CustomCheckbox = styled.span`
     ${HiddenCheckbox}:checked + &::after{
         opacity: 1; /* Mostra quando marcado */
     }
+
+    
+    @media (max-width: 1530px) {
+        width: 26px;
+        height: 26px;
+    }
 `;
 
 const BotaoAmarelo = styled.button`
@@ -171,11 +223,26 @@ const BotaoAmarelo = styled.button`
     &:hover{
         background-color: #D2922A;
     }
+
+    
+    @media (max-width: 1530px) {
+        font-size: 36px;
+        margin-top: 40px;
+
+        width: 300px;
+        height: 85px;
+    }
 `
 
 export default function Home() {
 
     const {email, setEmail, password, setPassword, erro, setErro, checked, setChecked, handleSubmit, handleEmailChange, handlePasswordChange, handleCheckboxChange} = useLogin();
+
+    useEffect(() => {
+        if (erro) {
+          alert(erro.toString());
+        }
+    }, [erro]);
 
     return (
         <Container>
@@ -184,10 +251,10 @@ export default function Home() {
                 <h1>Iniciar Sessão</h1>
 
                 <CampoTexto>
-                    <inputContainer>
+                    <div>
                         <input required type="text" id="usuarios" onChange={handleEmailChange}/>
                         <label className="label" htmlFor="usuarios">Usuário</label>
-                    </inputContainer>
+                    </div>
                     <Image
                         src={iconeUser}
                         alt="Descrição da imagem"
@@ -226,7 +293,7 @@ export default function Home() {
                     </Checkbox>
                 </CheckboxContainer>
 
-                {erro && <p>{erro.toString()}</p>}
+                {erro && <p style={{fontSize:18,color:"red",marginBottom: 20}}>{erro.toString()}</p>}
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <BotaoAmarelo type="submit">Confirmar</BotaoAmarelo>
                 </div>
@@ -235,10 +302,7 @@ export default function Home() {
             <Image
                 src={capaLogin}
                 alt="Descrição da imagem"
-                max-width={100 + "%"} // largura desejada
-                height={"auto"} // altura desejada
-                style={{ marginLeft: 40 }}
-                layoult="responsive"
+                className="homeImage"
             />
 
         </Container>

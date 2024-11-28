@@ -18,7 +18,7 @@ export function useLogin(){
             const response = await loginUsuario({email, password});
 
             if(response === 'Login realizado com sucesso!'){
-                window.location.href = './boas-vindas'
+                window.location.href = './requisicao'
             } else {
                 setErro(response);
             }

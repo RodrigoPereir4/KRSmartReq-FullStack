@@ -1,0 +1,38 @@
+
+.menu {
+    list-style: none;
+    cursor: pointer;
+
+    position: absolute;
+    top: 20px;
+    margin-left: 10px;
+    z-index: 3;
+}
+
+.hamburguer {
+    margin-top: 5px;
+    height: 10px;
+    width: 50px;
+    background: #584439;
+    border-radius: 20% / 90%;
+    transition: 1s;
+    position: relative;
+}
+
+.menu.activate li:nth-child(1){
+    transform: translateY(15px) rotate(45deg);
+}
+
+.menu.activate li:nth-child(2){
+    transform: rotate(-45deg);
+}
+
+.menu.activate li:nth-child(3){
+    transform: translateY(-15px) rotate(-45deg);
+}
+
+@media (min-width: 920px){
+    .menu{
+        opacity: 0;
+    }
+}
