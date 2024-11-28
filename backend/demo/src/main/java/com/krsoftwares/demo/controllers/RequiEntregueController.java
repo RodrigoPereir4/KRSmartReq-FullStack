@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,6 +44,14 @@ public class RequiEntregueController {
 
         if (!requisicaoOpt.isPresent()) {
             return ResponseEntity.status(404).body("Requisição não encontrada");
+        }
+
+        if(!requisicaoOpt.get().isStatus()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requisição já está finalizada");
+        }
+
+        if(objeto.getItens() == null || objeto.getItens().isEmpty()){
+            return ResponseEntity.ok("Adicione itens a entrega!");
         }
 
         RequisicaoModel requisicao = requisicaoOpt.get();
