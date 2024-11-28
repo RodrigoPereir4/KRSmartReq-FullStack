@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.krsoftwares.demo.dto.ProdutoDTO;
 import com.krsoftwares.demo.dto.SetorRequisicaoDTO;
 import com.krsoftwares.demo.models.ItemRequisicaoModel;
 import com.krsoftwares.demo.models.ProdutoModel;
@@ -86,4 +87,10 @@ public class RequisicaoController {
         Iterable<SetorRequisicaoDTO> requisicoes = requisicaoRepository.findRequisicaoPorSetor();
         return requisicoes;
     }
+
+    @GetMapping("/listaRelatorioItem/{requisicaoId}")
+    public Iterable<ProdutoDTO> buscarPorRequi(@PathVariable Long requisicaoId) {
+        Iterable<ProdutoDTO> requisicoes = requisicaoRepository.buscarProdutosPorRequisicao(requisicaoId);
+        return requisicoes;
+    } 
 }
