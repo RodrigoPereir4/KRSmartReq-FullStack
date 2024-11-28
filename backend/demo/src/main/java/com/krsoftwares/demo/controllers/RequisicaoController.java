@@ -76,14 +76,14 @@ public class RequisicaoController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity listar() {
+    public Iterable<RequisicaoModel> listar() {
         Iterable<RequisicaoModel> requisicoes = requisicaoRepository.findAll();
-        return ResponseEntity.ok(requisicoes);
+        return requisicoes;
     }
 
     @GetMapping("/listarQtd")
-    public ResponseEntity listarQtd() {
+    public Iterable<SetorRequisicaoDTO> listarQtd() {
         Iterable<SetorRequisicaoDTO> requisicoes = requisicaoRepository.findRequisicaoPorSetor();
-        return ResponseEntity.ok(requisicoes);
+        return requisicoes;
     }
 }

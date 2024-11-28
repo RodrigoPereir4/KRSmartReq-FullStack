@@ -7,13 +7,14 @@ import ComboBox from "@/components/MUI/ComboBox";
 import ObservacaoDialog from "@/components/MUI/ObservacaoDialog";
 import Tabela from "@/components/MUI/Tabela";
 import Navbar from "@/components/sideBar/Navbar";
+import { listarSetores } from "@/services/EstoqueService";
 import { TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const tableHeaderSetores = [
       {
-        id: 'idSetor',
+        id: 'setorId',
         numeric: true,
         disablePadding: false,
         label: 'ID Setor',
@@ -25,17 +26,18 @@ const tableHeaderSetores = [
         label: 'Setor',
       },
       {
-        id: 'requisicoes',
+        id: 'situacao',
+        numeric: true,
+        disablePadding: false,
+        label: 'Situação',
+      },
+      {
+        id: 'qtdRequisicao',
         numeric: true,
         disablePadding: false,
         label: 'Requisições',
       },
-      {
-        id: 'situacao',
-        numeric: false,
-        disablePadding: false,
-        label: 'Situação',
-      },
+      
 ];
 
 const tableHeaderItens = [
@@ -197,6 +199,8 @@ export default function Estoque(){
     const [observacao, setObservacao] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
 
+    const [updateTable, setUpdateTable] = useState(false);
+
     const handleQuantidadeChange = (e) => {
         setQuantidade(e.target.value);
     };
@@ -220,6 +224,46 @@ export default function Estoque(){
     useEffect(() => {
         console.log("Observacao atualizado:", observacao);
     }, [observacao]);
+
+    
+    useEffect(() => {
+
+    }, [])
+
+    //UPDATE
+    useEffect(() => {
+        const fetchData = async() =>{
+            const response = await listarSetores();
+            
+            setRowsSetores([]);
+
+            response.forEach(row => {
+
+                setRowsSetores(prevRows => [
+                    ...prevRows,
+                    {
+                        id: prevRows.length,
+                        ...row,
+                        situacao: row.situacao ? "Pendente" : "Entregue"
+                    }
+                ]);
+
+            });
+        }
+        fetchData();
+    }, [updateTable])
+
+    const handleUpdateTable = () => {
+        setUpdateTable(!updateTable);
+
+        setUpdateTablePressionado(true);
+        setResetSelect(!resetSelect)
+
+        setTimeout(() => {
+            setUpdateTablePressionado(false);
+        }, 2000)
+    }
+
 
     const handleCloseDialog = (text) => {  
         setObservacao(text);

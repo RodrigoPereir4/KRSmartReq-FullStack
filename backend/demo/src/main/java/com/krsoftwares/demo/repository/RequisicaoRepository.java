@@ -12,7 +12,7 @@ import com.krsoftwares.demo.models.RequisicaoModel;
 @Repository
 public interface RequisicaoRepository extends JpaRepository<RequisicaoModel, Long> {
 
-    @Query("SELECT new com.krsoftwares.demo.dto.SetorRequisicaoDTO(s.setorNome, s.setorId, r.status, COUNT(r.requisicaoId)) " +
+    @Query("SELECT new com.krsoftwares.demo.dto.SetorRequisicaoDTO(s.setorId, s.setorNome, r.status, COUNT(r.requisicaoId)) " +
     "FROM RequisicaoModel r " +
     "JOIN r.usuario u " +
     "JOIN u.setor s " + 
