@@ -42,12 +42,6 @@ const tableHeaderSetores = [
 
 const tableHeaderItens = [
       {
-        id: 'sku',
-        numeric: false,
-        disablePadding: false,
-        label: 'SKU',
-      },
-      {
         id: 'produto',
         numeric: false,
         disablePadding: false,
@@ -64,6 +58,12 @@ const tableHeaderItens = [
         numeric: true,
         disablePadding: false,
         label: 'Quantidade',
+      },
+      {
+        id: 'sku',
+        numeric: false,
+        disablePadding: false,
+        label: 'SKU',
       },
 ];
 
@@ -155,41 +155,6 @@ export default function Estoque(){
     ]);
 
     const [rowsItens, setRowsItens] = useState([
-        {
-            id: 1,
-            idItem: '3333333KS',
-            produto: 'Barra de chocolate ao leite',
-            medida: 'kg',
-            quantidade: 20
-        },
-        {
-            id: 2,
-            idItem: '333VVVV33KS',
-            produto: 'Sorvete cream and Mulcream Dengo',
-            medida: 'kg',
-            quantidade: 10
-        },
-        {
-            id: 3,
-            idItem: '333VVV3333KS',
-            produto: 'Copos de 300ml',
-            medida: 'caixas',
-            quantidade: 20
-        },
-        {
-            id: 4,
-            idItem: '33VV33333KS',
-            produto: 'Barra de chocolate Branco',
-            medida: 'kg',
-            quantidade: 20
-        },
-        {
-            id: 5,
-            idItem: 'VVVADAWDWADAW',
-            produto: 'Barra de chocolate Crocante',
-            medida: 'kg',
-            quantidade: 20
-        },
     ]);
 
     const [rowsItensEnviar, setRowsItensEnviar] = useState([]);
