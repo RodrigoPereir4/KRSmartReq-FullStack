@@ -120,11 +120,11 @@ export default function Produtos(){
         if (selectedRows.length > 0) {
           console.log('Linhas selecionadas:', selectedRows);
         }
-      }, [selectedRows]); 
+    }, [selectedRows]); 
 
-      useEffect(() => {
+    useEffect(() => {
         console.log('ResetSelected:', resetSelect);
-      }, [resetSelect]); 
+    }, [resetSelect]); 
 
     const handleAddProduto = () =>{
         setOpenInsertDialog(true);

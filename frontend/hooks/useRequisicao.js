@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const tableHeader = [
     {
-      id: 'nome',
+      id: 'nomeProduto',
       numeric: false,
       disablePadding: true,
       label: 'Nome do Produto',
@@ -38,7 +38,7 @@ const tableHeader = [
 ];
 
 function createData(id, nome, categoria, quantidade, dataSolicitada, dataEntrega, nomeProduto, itemObj) {
-    return { id, nome, categoria, quantidade, dataSolicitada, dataEntrega, nomeProduto, itemObj };
+    return { id, nomeProduto, nome, categoria, quantidade, dataSolicitada, dataEntrega, itemObj };
 }
 
 const today = dayjs();
@@ -165,37 +165,43 @@ export function useRequisicao(){
         setInputNomeProdutoValue(newInputValue);
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if(rows.length==0){
-            alert("ERRO! Insira algum nomeProduto para realizar a requisição"); //TODO: Adicionar alert personalizado
+            alert("ERRO! Insira algum Produto para realizar a requisição"); //TODO: Adicionar alert personalizado
         } else {
             console.log('Submitting data:', rows);
-            const produto = rows.flatMap(({ itemObj, quantidade }) => 
-                [{sku: itemObj.sku, quantidade}]
-            );
-            
-            const rowsFiltados = {
-                nome,
+
+            const rowsFiltradas = {
+
+                solicitante: nome,
                 dataSolicitada,
-                dataEntrega, 
-                itens: {produto}
-            };
+                dataEntrega,
+                itens: rows.flatMap((row) => {
+                    return {
+                        produto: {
+                            sku: row.itemObj.sku
+                        },
+                        quantidade: row.quantidade
+                    }
+                })
+            }
             
-            console.log(rowsFiltados);
+            console.log('Rows Filtradas');
+            console.log(rowsFiltradas);
 
             try{
-                const response = await enviarRequisicao(rowsFiltados);
-                const msg = "Requisição enviada!";
-                if(response === msg){
-                    alert(msg);
-                } else {
+                const response = await enviarRequisicao(rowsFiltradas);
+
+                if(response !== "Requisição gerada com sucesso!"){
                     alert("Problema no envio!");
+                } else {
+                    alert(response);
                 }
                 
             }catch(error){
+                alert(error);
                 alert("Erro de comunicação com o servidor!");
             }
 

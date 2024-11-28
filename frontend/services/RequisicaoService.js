@@ -44,20 +44,23 @@ export async function procurarProdutoNome(nome){
 
 }
 
-export async function enviarRequisicao({dados}){
+export async function enviarRequisicao(dados){
     let url = "http://localhost:8080/requisicao/requisitar";
+    console.log("DADOOOOOOOOOOOOS");
+    console.log(dados);
+
 
     const response = await fetch(url, {
         method: 'POST',
         headers:{
             'Content-Type': 'application/json'
         },
-        body: json.stringfy(dados)
+        body: JSON.stringify(dados)
     });
 
     if(!response.ok){
         alert("Falha na requisição!");
     }
 
-    return "Requisição enviada!";
+    return response.text();
 }

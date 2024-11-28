@@ -235,8 +235,24 @@ export default function Requisicao(){
         setActivateBodyHamburguer((prev) => !prev);
     };
 
-    //TEST MUDANDO TABELA
-    const param = ['name', 'calories', 'fat', 'carbs'];
+    //SELECT
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [resetSelect, setResetSelect] = useState(false);
+
+    useEffect(() => {
+        if (selectedRows.length > 0) {
+          console.log('Linhas selecionadas:', selectedRows);
+        }
+    }, [selectedRows]); 
+
+
+    const handleSelected = (selected) =>{
+        const newRow = Array.isArray(selected)
+        ? rows.filter((row) => selected.includes(row.id))  // Seleção múltipla
+        : rows.filter((row) => row.id === selected);  // Seleção única
+
+        setSelectedRows(newRow);
+    }
 
     return(
         <div style={{display:"flex", background: activateBodyHamburguer ? 'rgba(0,0,0,0.7)' : '#ffffff'}}>
@@ -375,16 +391,18 @@ export default function Requisicao(){
                         <BotaoPersonalizado type="button" onClick={handleAddRow} text="Adicionar Linha" color="amarelo"/>
                     </InputContainer>
 
-                        <Tabela 
-                            title="Produtos Requisitados" 
-                            parameters={param} 
-                            tableHeader={tableHeader} 
-                            rows={rows} 
-                            onDeleteRow={handleDeleteRow}
-                            fontHeader={12}
-                            visibilityDense={visibilityDense}
-                            activateBodyHamburguer = {activateBodyHamburguer}
-                            />
+                    <Tabela 
+                        title="Produtos Requisitados" 
+                        tableHeader={tableHeader} 
+                        rows={rows} 
+                        fontHeader={12}
+                        visibilityDense={visibilityDense}
+                        onDeleteRow={handleDeleteRow}
+                        updateSelect={handleSelected}
+                        resetSelect={resetSelect}
+                        activateBodyHamburguer = {activateBodyHamburguer}
+                    />
+
                     <BotaoPersonalizado type="submit" text="Enviar" color="amarelo"/>
                 </FormInput>
             </Container>
