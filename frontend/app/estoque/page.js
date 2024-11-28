@@ -311,6 +311,7 @@ export default function Estoque(){
                         visibilityDense={false}
                         disableDelete={true}
                         activateBodyHamburguer = {activateBodyHamburguer}
+                        updateSelect={handleSelected}
                     />
                     <ComboBox    
                         label="Selecione o Nº da Requisição"
@@ -357,6 +358,7 @@ export default function Estoque(){
                             fontHeader={12}
                             visibilityDense={false}
                             activateBodyHamburguer = {activateBodyHamburguer}
+                            updateSelect={handleSelected}
                         />
                         <BotaoPersonalizado width="100%" text="Confirmar Entrega" color="marrom"/>  
                     </div>

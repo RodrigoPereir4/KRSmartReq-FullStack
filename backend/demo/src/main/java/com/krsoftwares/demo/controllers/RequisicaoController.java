@@ -1,6 +1,7 @@
 package com.krsoftwares.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,9 +19,11 @@ import com.krsoftwares.demo.models.UserModel;
 import com.krsoftwares.demo.repository.ProdutoRepository;
 import com.krsoftwares.demo.repository.RequisicaoRepository;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/requisicao")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class RequisicaoController {
 
     @Autowired
@@ -30,8 +33,16 @@ public class RequisicaoController {
     private ProdutoRepository produtoRepository;
 
     @PostMapping("/requisitar")
-    public ResponseEntity<String> gerar(@RequestBody RequisicaoModel objeto) {
-        
+    public ResponseEntity<String> gerar(@RequestBody RequisicaoModel objeto, HttpSession session) {
+
+        UserModel usuarioLogado = (UserModel) session.getAttribute("usuarioLogado");
+
+        if (usuarioLogado == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado.");
+        }
+
+        objeto.setUsuario(usuarioLogado);
+
         if (objeto.getItens() == null || objeto.getItens().isEmpty()) {
             return ResponseEntity.ok("Adicione itens a requisição!");
         }

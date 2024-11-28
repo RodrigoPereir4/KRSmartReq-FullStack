@@ -3,6 +3,7 @@ package com.krsoftwares.demo.controllers;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,12 @@ import com.krsoftwares.demo.models.UserModel;
 import com.krsoftwares.demo.repository.UserRepository;
 import com.krsoftwares.demo.services.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -30,21 +34,23 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public String loginUsuario(@RequestBody UserModel userModel) {
+    public ResponseEntity<String> loginUsuario(HttpSession session, @RequestBody UserModel userModel) {
 
         Optional<UserModel> userOptional = userRepository.findByEmail(userModel.getEmail());
 
         if (userOptional.isEmpty()) {
-            return "Usuário ou senha incorretos.";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha incorretos.");
         }
 
         UserModel user = userOptional.get();
 
         if (!user.getPassword().equals(userModel.getPassword())) {
-            return "Usuário ou senha incorretos.";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha incorretos.");
         }
 
-        return "Login realizado com sucesso!";
+        session.setAttribute("usuarioLogado", user);
+
+        return ResponseEntity.ok("Login realizado com sucesso!");
     }
 
     @GetMapping("/listar")

@@ -5,7 +5,8 @@ export async function loginUsuario(dadosUsuario){
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(dadosUsuario)
+        body: JSON.stringify(dadosUsuario),
+        credentials: 'include'
     })
 
     if(!response.ok){
