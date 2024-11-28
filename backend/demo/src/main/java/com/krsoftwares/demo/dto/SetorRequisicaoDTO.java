@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SetorRequisicaoDTO {
-    private String setor;
     private Integer setorId;
+    private String setor;
     private Boolean situacao;
     private Long qtdRequisicao;
 }
