@@ -69,14 +69,26 @@ const tableHeaderItens = [
         label: 'Unidade de Medida',
       },
       {
-        id: 'quantidade',
+        id: 'quantidadeSolicitada',
         numeric: true,
         disablePadding: false,
         label: 'Quantidade',
       },
       {
-        id: 'sku',
+        id: 'quantidadeEntregue',
+        numeric: true,
+        disablePadding: false,
+        label: 'Quantidade',
+      },
+      {
+        id: 'observacao',
         numeric: false,
+        disablePadding: false,
+        label: 'Observação',
+      },
+      {
+        id: 'sku',
+        numeric: true,
         disablePadding: false,
         label: 'SKU',
       },
@@ -90,28 +102,22 @@ const tableHeaderItensEnviar = [
         label: 'Nome',
     },
     {
-        id: 'unMedida',
-        numeric: false,
-        disablePadding: false,
-        label: 'Unidade de Medida',
-    },
-    {
       id: 'quantidade',
       numeric: false,
       disablePadding: false,
       label: 'Quantidade',
     },
     {
-      id: 'sku',
-      numeric: true,
-      disablePadding: false,
-      label: 'SKU',
-    },
-    {
       id: 'observacao',
       numeric: false,
       disablePadding: false,
       label: 'Observação',
+    },
+    {
+        id: 'sku',
+        numeric: true,
+        disablePadding: false,
+        label: 'SKU',
     },
 ];
 
@@ -152,7 +158,7 @@ export default function Relatorio(){
     ]);
 
     const [rowsItens, setRowsItens] = useState([]);
-    const [rowsItensEnviar, setRowsItensEnviar] = useState([]);
+    const [rowsItensEntregas, setRowsItensEntregas] = useState([]);
     
     const [selectedRows, setSelectedRows] = useState([]);
     const [selectedRowsRequisitadas, setSelectedRowsRequisitadas] = useState([]);
@@ -169,7 +175,7 @@ export default function Relatorio(){
 
     const handleDeleteRowSetor = (selected) => {setRowsEntregas((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
    
-    const handleDeleteRowItemEnviar = (selected) => {setRowsItensEnviar((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
+    const handleDeleteRowItemEnviar = (selected) => {setRowsItensEntregas((prevRows) => prevRows.filter((row) => !selected.includes(row.id)));};
 
     const handleSelected = (selected) =>{
         const newRow = Array.isArray(selected)
@@ -220,7 +226,7 @@ export default function Relatorio(){
         if(selectedRows.length > 0) {
             const carregarNumRequisicao = async(id) => {
                 try{
-                    const url = 'http://localhost:8080/estoque/pendente/' + id;
+                    const url = 'http://localhost:8080/requisicao/listaRelatorioItem/' + id;
                 
                     const response = await fetch(url, {
                         method: 'GET',
@@ -234,13 +240,20 @@ export default function Relatorio(){
                     }
 
                     const result = await response.json();
-                    setListaNumRequisicao(result);
+
+                    const updatedRows = result.map((prevRow, index) => ({
+                        id: index + 1,   
+                        ...prevRow
+                    }));
+                    
+                    setRowsItensEntregas(updatedRows);
+                    
                 }catch(error){
                     alert("Erro ao carregar os números das requisições!: " + error.message);
                 }
             }
     
-            carregarNumRequisicao(selectedRows[0].setorId);
+            carregarNumRequisicao(selectedRows[0].requisicaoId);
         }
     }, [selectedRows]);
 
@@ -252,7 +265,7 @@ export default function Relatorio(){
     useEffect(() => {
         console.log("Observacao atualizado:", observacao);
 
-        setRowsItensEnviar(prevRows => 
+        setRowsItensEntregas(prevRows => 
             prevRows.map(row => ({
                 ...row, 
                 observacao: observacao
@@ -344,7 +357,7 @@ export default function Relatorio(){
             
             setRowsEntregas([]);
             setRowsItens([]);
-            setRowsItensEnviar([]);
+            setRowsItensEntregas([]);
             setNumRequisicao('');
             setQuantidade(0);
 
@@ -380,17 +393,17 @@ export default function Relatorio(){
                 }));
             
                 updatedRows.forEach(updatedRow => {
-                    const index = rowsItensEnviar.findIndex(row => row.id === updatedRow.id);
+                    const index = rowsItensEntregas.findIndex(row => row.id === updatedRow.id);
             
                     if (index !== -1) {
-                        setRowsItensEnviar(prevRows => 
+                        setRowsItensEntregas(prevRows => 
                             prevRows.map(row =>
                                 row.id === updatedRow.id ? { ...row, quantidade, observacao } : row
                             )
                         );
                     } else {
                         // Se o item não existir, adiciona ele com os campos quantidade e observacao
-                        setRowsItensEnviar(prevRows => [...prevRows, { ...updatedRow, quantidade, observacao}]);
+                        setRowsItensEntregas(prevRows => [...prevRows, { ...updatedRow, quantidade, observacao}]);
                     }
                 });
             } else {
@@ -403,13 +416,13 @@ export default function Relatorio(){
     }
 
     const handleConfirm = async () => {
-        if(rowsItensEnviar.length !== 0){
-            console.log(rowsItensEnviar);
+        if(rowsItensEntregas.length !== 0){
+            console.log(rowsItensEntregas);
 
             const rowsFiltradas = {
 
                 observacao: observacao,
-                itens: rowsItensEnviar.flatMap((row) => {
+                itens: rowsItensEntregas.flatMap((row) => {
                     return {
                         produto: {
                             sku: row.sku
@@ -514,6 +527,7 @@ export default function Relatorio(){
                                 disableHead={true}
                                 activateBodyHamburguer = {activateBodyHamburguer}
                                 resetSelect={resetSelect}
+                                height={700}
                                 updateSelect={handleSelected}
                             />
                         </div>
@@ -523,14 +537,15 @@ export default function Relatorio(){
                     <div>
                         <div style={{maxWidth: '794px'}}>
                             <Tabela
-                                title="Itens para enviar" 
-                                tableHeader={tableHeaderItensEnviar} 
-                                rows={rowsItensEnviar} 
+                                title="Itens entregues" 
+                                tableHeader={tableHeaderItens} 
+                                rows={rowsItensEntregas} 
                                 onDeleteRow={handleDeleteRowItemEnviar}
                                 fontHeader={12}
                                 visibilityDense={false}
                                 activateBodyHamburguer = {activateBodyHamburguer}
                                 resetSelect={resetSelect}
+                                height={700}
                                 updateSelect={handleSelected}
                             />
                         </div>
