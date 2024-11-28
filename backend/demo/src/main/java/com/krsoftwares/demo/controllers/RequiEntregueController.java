@@ -84,14 +84,20 @@ public class RequiEntregueController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity listar() {
+    public Iterable<RequisicaoEntregueModel> listar() {
         Iterable<RequisicaoEntregueModel> requisicoes = requiEntregueRepository.findAll();
-        return ResponseEntity.ok(requisicoes);
+        return requisicoes;
     }
 
     @GetMapping("/itemRequisitado/{requisicaoId}")
-    public ResponseEntity itemRequisitado(@PathVariable Long requisicaoId) {
+    public Iterable<ItemRequisitadoDTO> itemRequisitado(@PathVariable Long requisicaoId) {
         Iterable<ItemRequisitadoDTO> itens = itemRequisicaoRepository.findItensRequisicao(requisicaoId);
-        return ResponseEntity.ok(itens);
+        return itens;
+    }
+
+    @GetMapping("/pendente/{setorId}")
+    public Iterable<Long> requisicaoPorSetor(@PathVariable Integer setorId) {
+       Iterable<Long> requisicoes = requisicaoRepository.findRequisicaoPendente(setorId);
+        return requisicoes;
     }
 }

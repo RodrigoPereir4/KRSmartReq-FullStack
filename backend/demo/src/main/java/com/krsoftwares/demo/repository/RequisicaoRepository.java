@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.krsoftwares.demo.dto.SetorRequisicaoDTO;
@@ -19,6 +20,15 @@ public interface RequisicaoRepository extends JpaRepository<RequisicaoModel, Lon
     "WHERE r.status = true " +
     "GROUP BY s.setorNome, s.setorId, r.status")
     List<SetorRequisicaoDTO> findRequisicaoPorSetor();
+
+
+    @Query("SELECT r.requisicaoId " +
+       "FROM RequisicaoModel r " +
+       "JOIN r.usuario u " +
+       "JOIN u.setor s " +
+       "WHERE s.setorId = :setorId " +
+       "AND r.status = true")
+    List<Long> findRequisicaoPendente(@Param("setorId") Integer setorId);
     
     Optional<RequisicaoModel> findById (Long id);
 }

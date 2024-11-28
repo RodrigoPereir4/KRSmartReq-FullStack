@@ -7,9 +7,12 @@ import ComboBox from "@/components/MUI/ComboBox";
 import ObservacaoDialog from "@/components/MUI/ObservacaoDialog";
 import Tabela from "@/components/MUI/Tabela";
 import Navbar from "@/components/sideBar/Navbar";
-import { listarSetores } from "@/services/EstoqueService";
+import { enviarEntrega, listarNumRequisicao, listarSetores } from "@/services/EstoqueService";
 import { TextField } from "@mui/material";
 import { useState, useEffect } from "react";
+import Image from "next/image";
+import reload from "@/images/reload.svg";
+import reloadStatic from "@/images/reloadStatic.svg";
 import styled from "styled-components";
 
 const tableHeaderSetores = [
@@ -42,13 +45,13 @@ const tableHeaderSetores = [
 
 const tableHeaderItens = [
       {
-        id: 'produto',
+        id: 'nome',
         numeric: false,
         disablePadding: false,
         label: 'Nome',
       },
       {
-        id: 'medida',
+        id: 'unMedida',
         numeric: false,
         disablePadding: false,
         label: 'Unidade de Medida',
@@ -69,28 +72,28 @@ const tableHeaderItens = [
 
 const tableHeaderItensEnviar = [
     {
-        id: 'sku',
-        numeric: false,
-        disablePadding: false,
-        label: 'SKU',
-    },
-    {
-        id: 'produto',
+        id: 'nome',
         numeric: false,
         disablePadding: false,
         label: 'Nome',
     },
     {
-      id: 'medida',
-      numeric: false,
-      disablePadding: false,
-      label: 'Unidade de Medida',
+        id: 'unMedida',
+        numeric: false,
+        disablePadding: false,
+        label: 'Unidade de Medida',
     },
     {
       id: 'quantidade',
-      numeric: true,
+      numeric: false,
       disablePadding: false,
       label: 'Quantidade',
+    },
+    {
+      id: 'sku',
+      numeric: true,
+      disablePadding: false,
+      label: 'SKU',
     },
     {
       id: 'observacao',
@@ -160,11 +163,20 @@ export default function Estoque(){
     const [rowsItensEnviar, setRowsItensEnviar] = useState([]);
     
     const [selectedRows, setSelectedRows] = useState([]);
+    const [selectedRowsRequisitadas, setSelectedRowsRequisitadas] = useState([]);
     const [quantidade, setQuantidade] = useState(0);
     const [observacao, setObservacao] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
 
+
+    const [numRequisicao, setNumRequisicao] = useState('');
+    const [listaNumRequisicao, setListaNumRequisicao] = useState('');
+
+    const [inputNumRequisicaoValue, setInputNumRequisicaoValue] = useState('');
+
+    const [resetSelect, setResetSelect] = useState(false);
     const [updateTable, setUpdateTable] = useState(false);
+    const [updateTablePressionado, setUpdateTablePressionado] = useState(false);
 
     const handleQuantidadeChange = (e) => {
         setQuantidade(e.target.value);
@@ -176,24 +188,109 @@ export default function Estoque(){
 
     const handleSelected = (selected) =>{
         const newRow = Array.isArray(selected)
-        ? rowsItens.filter((row) => selected.includes(row.id))  // Seleção múltipla
-        : rowsItens.filter((row) => row.id === selected);  // Seleção única
+        ? rowsSetores.filter((row) => selected.includes(row.id))  // Seleção múltipla
+        : rowsSetores.filter((row) => row.id === selected);  // Seleção única
 
         setSelectedRows(newRow);
     }
 
+    const handleSelectedRequisitado = (selected) =>{
+        const newRow = Array.isArray(selected)
+        ? rowsItens.filter((row) => selected.includes(row.id))  // Seleção múltipla
+        : rowsItens.filter((row) => row.id === selected);  // Seleção única
+
+        setSelectedRowsRequisitadas(newRow);
+    }
+
     useEffect(() => {
         console.log("selectedRows atualizado:", selectedRows);
+
+        if(selectedRows.length > 0) {
+            const carregarNumRequisicao = async(id) => {
+                try{
+                    const url = 'http://localhost:8080/estoque/pendente/' + id;
+                
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers:{
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    
+                    if(!response.ok){
+                        alert("Falha no banco de dados!");
+                    }
+
+                    const result = await response.json();
+                    setListaNumRequisicao(result);
+                }catch(error){
+                    alert("Erro ao carregar os números das requisições!: " + error.message);
+                }
+            }
+    
+            carregarNumRequisicao(selectedRows[0].setorId);
+        }
     }, [selectedRows]);
+
+    useEffect(() => {
+        console.log("selectedRowsRequisitadas atualizado:", selectedRowsRequisitadas);
+
+    }, [selectedRowsRequisitadas]);
     
     useEffect(() => {
         console.log("Observacao atualizado:", observacao);
+
+        setRowsItensEnviar(prevRows => 
+            prevRows.map(row => ({
+                ...row, 
+                observacao: observacao
+            }))
+        );
     }, [observacao]);
 
     
     useEffect(() => {
+        console.log('NumRequisicao:', numRequisicao);
+        if(numRequisicao !== ''){
+            const carregarItensRequisitados = async(idRequisicao) => {
 
-    }, [])
+                try{
+    
+                    const url = "http://localhost:8080/estoque/itemRequisitado/" + idRequisicao;
+    
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers:{
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    
+                    if(!response.ok){
+                        alert("Falha no banco de dados!");
+                    }
+    
+                    const result = await response.json();
+
+                    result.forEach(row => {
+
+                        setRowsItens(prevRows => [
+                            ...prevRows,
+                            {
+                                id: prevRows.length,
+                                ...row,
+                            }
+                        ]);
+        
+                    });
+    
+                }catch(error){
+                    alert("Erro ao carregar os itens da requisição! " + error.message);
+                }
+                
+            }
+            carregarItensRequisitados(numRequisicao);
+        }
+    }, [numRequisicao])
 
     //UPDATE
     useEffect(() => {
@@ -216,7 +313,7 @@ export default function Estoque(){
             });
         }
         fetchData();
-    }, [updateTable])
+    }, [])
 
     const handleUpdateTable = () => {
         setUpdateTable(!updateTable);
@@ -229,14 +326,40 @@ export default function Estoque(){
         }, 2000)
     }
 
+    useEffect(() => {
+        const fetchData = async() =>{
+            const response = await listarSetores();
+            
+            setRowsSetores([]);
+            setRowsItens([]);
+            setRowsItensEnviar([]);
+            setNumRequisicao('');
+            setQuantidade(0);
+
+            response.forEach(row => {
+                setRowsSetores(prevRows => [
+                    ...prevRows,
+                    {
+                        id: prevRows.length,
+                        ...row,
+                        situacao: row.situacao ? "Pendente" : "Entregue"
+                    }
+                ]);
+            });
+        }
+        fetchData();
+    }, [updateTable])
+
 
     const handleCloseDialog = (text) => {  
         setObservacao(text);
-        const updatedRows = selectedRows.map(row => ({
+        const updatedRows = selectedRowsRequisitadas.map(row => ({
             ...row,
             quantidade,
             observacao: text,
         }));
+
+        console.log('UPDATE:',updatedRows)
     
         updatedRows.forEach(updatedRow => {
             const index = rowsItensEnviar.findIndex(row => row.id === updatedRow.id);
@@ -256,16 +379,16 @@ export default function Estoque(){
     }
 
     const handleSendItem = () => {
-        if (selectedRows.length > 0) {
+        if (selectedRowsRequisitadas.length > 0) {
             let testQtd = false;
-            selectedRows.forEach((row) =>{
+            selectedRowsRequisitadas.forEach((row) =>{
                 testQtd = quantidade == row.quantidade;
                 console.log(row.quantidade);
                 console.log(testQtd);
                 console.log(quantidade);
             });
             if(testQtd){
-                const updatedRows = selectedRows.map(row => ({
+                const updatedRows = selectedRowsRequisitadas.map(row => ({
                     ...row,
                     quantidade,
                     observacao: observacao
@@ -287,46 +410,103 @@ export default function Estoque(){
                 });
             } else {
                 setOpenDialog(true);
-                
             }
-        
-
 
         } else {
             alert("Selecione um item requisitado para enviar");
         }
     }
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         if(rowsItensEnviar.length !== 0){
+            console.log(rowsItensEnviar);
+
+            const rowsFiltradas = {
+
+                observacao: observacao,
+                itens: rowsItensEnviar.flatMap((row) => {
+                    return {
+                        produto: {
+                            sku: row.sku
+                        },
+                        quantidade: row.quantidade
+                    }
+                })
+            }
             
+            console.log('Rows Filtradas', rowsFiltradas);
+
+            console.log('Rows Filtradas', numRequisicao);
+
+            try{
+                const response = await enviarEntrega(numRequisicao, rowsFiltradas);
+
+                if(response !== "Requisição finalizada!"){
+                    alert("Problema no envio!");
+                } else {
+                    alert(response);
+                }
+                
+            }catch(error){
+                alert(error);
+                alert("Erro de comunicação com o servidor!");
+            }
+
+            handleUpdateTable();
         }
     }
 
+    const handleNumRequisicaoValueChange = (event, newValue) => {
+        setNumRequisicao(newValue);
+        if(newValue != null){
+            alert(newValue);
+        }
+    };
+
+    const handleInputNumRequisicaoValueChange = (event, newInputValue) => {
+        setInputNumRequisicaoValue(newInputValue);
+    };
+
     const [activateBodyHamburguer, setActivateBodyHamburguer] = useState(false);
 
+    console.log('Setores:',rowsSetores);
     return(
         <div style={{display:'flex'}}>
             <Navbar/>
             <ContainerTabelas>
                 <ContainerSetores>
-                    <TextField style={{width:'50%', margin:'40px 0px 20px 0px'}} label="Pesquisar"></TextField>
-                    <Tabela
-                        title="Requisições de Cada Setor" 
-                        tableHeader={tableHeaderSetores} 
-                        rows={rowsSetores} 
-                        onDeleteRow={handleDeleteRowSetor}
-                        fontHeader={12}
-                        visibilityDense={false}
-                        disableDelete={true}
-                        activateBodyHamburguer = {activateBodyHamburguer}
-                        updateSelect={handleSelected}
-                    />
+                    
+                    <div style={{display: "flex", gap: 30}}>
+                        <Tabela
+                            title="Requisições de Cada Setor" 
+                            tableHeader={tableHeaderSetores} 
+                            rows={rowsSetores} 
+                            onDeleteRow={handleDeleteRowSetor}
+                            fontHeader={12}
+                            visibilityDense={false}
+                            disableDelete={true}
+                            activateBodyHamburguer = {activateBodyHamburguer}
+                            resetSelect={resetSelect}
+                            updateSelect={handleSelected}
+                        />
+                        <button onClick={handleUpdateTable} 
+                                style={{border: "none", backgroundColor: "#ffffff", cursor: "pointer"}}> 
+
+                                {updateTablePressionado ? (<Image src={reload} alt="Botão para recarregar"/> )
+                                : (<Image src={reloadStatic} alt="Botão para recarregar"/>)}
+                        </button>
+                    </div>
                     <ComboBox    
-                        label="Selecione o Nº da Requisição"
                         sx={{
                             margin: '20px 0px 42px 0px'
                         }}
+                        label="Selecione o Nº da Requisição"
+                        
+                        value={numRequisicao}
+                        listarItens={listaNumRequisicao}
+                        inputValue={inputNumRequisicaoValue} 
+                        handleValueChange={handleNumRequisicaoValueChange} 
+                        handleInputValueChange={handleInputNumRequisicaoValueChange}
                     />
                     <Tabela
                             title="Itens Requisitados"
@@ -337,7 +517,8 @@ export default function Estoque(){
                             visibilityDense={false}
                             disableDelete={true}
                             activateBodyHamburguer = {activateBodyHamburguer}
-                            updateSelect={handleSelected}
+                            resetSelect={resetSelect}
+                            updateSelect={handleSelectedRequisitado}
                     />
                     <ContainerItensEnviados>
                         <TextField 
@@ -367,9 +548,10 @@ export default function Estoque(){
                             fontHeader={12}
                             visibilityDense={false}
                             activateBodyHamburguer = {activateBodyHamburguer}
+                            resetSelect={resetSelect}
                             updateSelect={handleSelected}
                         />
-                        <BotaoPersonalizado width="100%" text="Confirmar Entrega" color="marrom"/>  
+                        <BotaoPersonalizado width="100%" text="Confirmar Entrega" color="marrom" onClick={handleConfirm}/>  
                     </div>
                     
                     
