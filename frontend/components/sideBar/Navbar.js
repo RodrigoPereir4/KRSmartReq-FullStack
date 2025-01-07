@@ -100,10 +100,10 @@ export default function Navbar(props) {
         <li className="hamburguer"></li>
       </ul>
       <Container activateHamburguer={activateHamburguer}>
-        <Image className="logo" alt="Logo da Dengo" src={logoImage}/>
+        <Image style={{width: 179, height: 170}} className="logo" alt="Logo da Dengo" src={logoImage}/>
 
         <ListaBotoes>
-          <ButtonBar imageSrc={requisicaoBrilhante} text="Realizar Requisição"/>
+          <ButtonBar onClick={() => {window.location.href = './requisicao'}} imageSrc={requisicaoBrilhante} text="Realizar Requisição"/>
 
           <LinhaDividir />
 

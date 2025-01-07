@@ -303,6 +303,7 @@ export default function Home() {
                 src={capaLogin}
                 alt="Descrição da imagem"
                 className="homeImage"
+                style={{width: 1095, height: 1128}}
             />
 
         </Container>
