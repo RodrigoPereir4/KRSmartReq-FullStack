@@ -4,6 +4,10 @@
 
 Junto com meu colega [@Rodrigo](https://github.com/RodrigoPereir4), fomos desafiados a desenvolver um sistema completo, **utilizando as tecnologias mais avancadas do mercado para garantir performance, escalabilidade e seguranca**. O nosso foco foi criar um Sistema de ponto de venda com estoque, requisições, produtos, usuários e relátorios.
 
+## Apresentação 📦
+![Imagem do Projeto](frontend/images/CapaReq.jpeg) <br>
+**Link do vídeo de demonstração:** [Clique aqui](https://www.linkedin.com/posts/kaique-parente-da-silva-82697b216_ol%C3%A1-pessoal-hoje-eu-vim-compartilhar-voc%C3%AAs-activity-7282562390708097024-MxNo?utm_source=share&utm_medium=member_desktop) 🎬
+
 <h2>🚀 Tecnologias Usadas:</h2>
 
 <h3>• Next.js (Frontend):</h3>
@@ -21,10 +25,6 @@ A utilização do Postman foi essencial para realizar a automatização dos test
 <h3>• Banco de Dados MySQL na Azure:</h3>
 
 O MySQL foi a escolha para o banco de dados, e para garantir que nosso sistema fosse escalável e seguro, optamos por hospedar o banco de dados na Azure. Isso nos permitiu garantir uma infraestrutura de alta disponibilidade, com backup automático e uma performance excelente para suportar grandes volumes de dados.
-
-## Apresentação 📦
-![Imagem do Projeto](frontend/images/CapaReq.jpeg) <br>
-**Link do vídeo de demonstração:** [Clique aqui](https://www.linkedin.com/posts/kaique-parente-da-silva-82697b216_ol%C3%A1-pessoal-hoje-eu-vim-compartilhar-voc%C3%AAs-activity-7282562390708097024-MxNo?utm_source=share&utm_medium=member_desktop) 🎬
 
 <h2>📈 O Que Eu Aprendi:</h2>
 
