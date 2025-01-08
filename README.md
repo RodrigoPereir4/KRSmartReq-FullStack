@@ -1,3 +1,22 @@
+# KRSmart Req
+
+## Apresentação 📦
+![Imagem do Projeto](./src/main/resources/images/CapaKR.PNG) <br>
+**Link do vídeo de demonstração:** [Clique aqui](https://www.linkedin.com/posts/kaique-parente-da-silva-82697b216_ol%C3%A1-pessoal-hoje-eu-vim-compartilhar-voc%C3%AAs-activity-7282562390708097024-MxNo?utm_source=share&utm_medium=member_desktop) 🎬
+
+
+## Índice 📑
+
+1. [Principais Aspectos Trabalhados 🔍](#principais-aspectos-trabalhados-)
+   - [CRUD (Create, Read, Update, Delete)](#crud-create-read-update-delete)
+   - [Java Swing](#java-swing)
+   - [Banco de Dados MySQL](#banco-de-dados-mysql)
+   - [Engenharia de Requisitos](#engenharia-de-requisitos)
+   - [Diagrama de Casos de Uso e UML](#diagrama-de-casos-de-uso-e-uml)
+2. [Experiência e Aprendizado 🌟](#experiencia-e-aprendizado-)
+3. [Agradecimentos 🙏](#agradecimentos-)
+4. [Licença :memo:](#memo-licença)
+
 <h1>Sobre o Projeto:</h1>
 
 Junto com meu colega Rodrigo Lima, fomos desafiados a desenvolver um sistema completo, utilizando as tecnologias mais avancadas do mercado para garantir performance, escalabilidade e seguranca. O nosso foco foi criar um Sistema de ponto de venda com estoque, requisições, produtos, usuários e relátorios, aqui estão alguns dos principais aspectos trabalhados:
