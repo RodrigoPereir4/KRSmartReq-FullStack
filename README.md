@@ -2,7 +2,7 @@
 
 ### Sobre o Projeto:
 
-Junto com meu colega [@Rodrigo](https://github.com/RodrigoPereir4), fomos desafiados a desenvolver um sistema completo, **utilizando as tecnologias mais avancadas do mercado para garantir performance, escalabilidade e seguranca**. O nosso foco foi criar um Sistema de ponto de venda com estoque, requisições, produtos, usuários e relátorios.
+Junto com meu colega [@Kaique](https://github.com/Kaique-Parente), fomos desafiados a desenvolver um sistema completo, **utilizando as tecnologias mais avancadas do mercado para garantir performance, escalabilidade e seguranca**. O nosso foco foi criar um Sistema de ponto de venda com estoque, requisições, produtos, usuários e relátorios.
 
 ## Apresentação 📦
 ![Imagem do Projeto](frontend/images/CapaReq.jpeg) <br>
